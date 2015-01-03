@@ -35,12 +35,12 @@ M.availability_coursecompleted.form.getNode = function(json) {
     // Create HTML structure.
     var strings = M.str.availability_coursecompleted;
     var yeslabel = M.util.get_string('yes', 'moodle');
-    var nolabel = M.util.get_string('no', 'moodle')
+    var nolabel = M.util.get_string('no', 'moodle');
     var html = '<label>' + strings.title + ' <span class="availability-coursecompleted">' +
-            '<select name="id">' +
-            '<option value="choose">' + M.str.moodle.choosedots + '</option>' +
-            '<option value="1">' + yeslabel + '</option>' +
-            '<option value="0">' + nolabel + '</option>';
+               '<select name="id">' +
+               '<option value="choose">' + M.str.moodle.choosedots + '</option>' +
+               '<option value="1">' + yeslabel + '</option>' +
+               '<option value="0">' + nolabel + '</option>';
     html += '</select></span></label>';
     var node = Y.Node.create('<span>' + html + '</span>');
 
@@ -83,6 +83,5 @@ M.availability_coursecompleted.form.fillErrors = function(errors, node) {
         errors.push('availability_coursecompleted:missing');
     }
 };
-
 
 }, '@VERSION@', {"requires": ["base", "node", "event", "moodle-core_availability-form"]});

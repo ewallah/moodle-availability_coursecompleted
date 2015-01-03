@@ -18,7 +18,8 @@
  * Front-end class.
  *
  * @package availability_coursecompleted
- * @copyright 2014 iplusacademy (www.iplusacademy.org)
+ * @copyright 2015 iplusacademy (www.iplusacademy.org)
+ * @developped by Renaat Debleu {info@eWallah.net}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,11 +32,11 @@ require_once($CFG->libdir . '/completionlib.php');
  * Front-end class.
  *
  * @package availability_coursecompleted
- * @copyright 2014 iplusacademy (www.iplusacademy.org)
+ * @copyright 2015 iplusacademy (www.iplusacademy.org)
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class frontend extends \core_availability\frontend {
-    
+
     protected function allow_add($course, \cm_info $cm = null, \section_info $section = null) {
         $info = new \completion_info($course);
         return $info->has_criteria();

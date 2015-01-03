@@ -18,7 +18,8 @@
  * Condition main class.
  *
  * @package availability_coursecompleted
- * @copyright 2014 iplusacademy (www.iplusacademy.org)
+ * @copyright 2015 iplusacademy (www.iplusacademy.org)
+ * @developped by Renaat Debleu {info@eWallah.net}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,11 +32,11 @@ require_once($CFG->libdir . '/completionlib.php');
  * Condition main class.
  *
  * @package availability_coursecompleted
- * @copyright 2014 iplusacademy (www.iplusacademy.org)
+ * @copyright 2015 iplusacademy (www.iplusacademy.org)
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class condition extends \core_availability\condition {
-    
+
     /** @var string coursecompleted 0 => No, 1 => Yes */
     protected $coursecompleted;
 
@@ -46,7 +47,7 @@ class condition extends \core_availability\condition {
      * @throws \coding_exception If invalid data.
      */
     public function __construct($structure) {
-       if (!property_exists($structure, 'id')) {
+        if (!property_exists($structure, 'id')) {
             $this->coursecompleted = '';
         } else if (is_string($structure->id)) {
             $this->coursecompleted = $structure->id;
