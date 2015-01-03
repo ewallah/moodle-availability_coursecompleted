@@ -30,4 +30,4 @@ $string['missing'] = '(You must decide if the course has to be completed or not)
 $string['pluginname'] = 'Restriction by course completion';
 $string['requires_completed'] = 'You completed this course';
 $string['requires_notcompleted'] = 'You did <b>not</b> complete this course';
-$string['title'] = 'Course completion';
+$string['title'] = 'Course completed';

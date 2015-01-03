@@ -18,7 +18,7 @@
  * Version info.
  *
  * @package availability_coursecompleted
- * @copyright 2014 iplusacademy (www.iplusacademy.org)
+ * @copyright 2015 iplusacademy (www.iplusacademy.org)
  * @developped by Renaat Debleu {info@eWallah.net}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,3 +29,4 @@ $plugin->version = 2015030101;
 $plugin->requires = 2014050800;
 $plugin->component = 'availability_coursecompleted';
 $plugin->maturity = MATURITY_BETA;
+$plugin->release = 2015030101;
