@@ -1,4 +1,4 @@
-moodle--availability_condition_coursecompleted
+moodle--availability_coursecompleted
 ==============================================
 Restrict module and section access based on course completion.
 

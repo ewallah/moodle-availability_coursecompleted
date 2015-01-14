@@ -19,7 +19,7 @@
  *
  * @package availability_coursecompleted
  * @copyright 2015 iplusacademy (www.iplusacademy.org)
- * @developped by Renaat Debleu {info@eWallah.net}
+ * @author Renaat Debleu {info@eWallah.net}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -37,6 +37,16 @@ require_once($CFG->libdir . '/completionlib.php');
  */
 class frontend extends \core_availability\frontend {
 
+
+    /**
+     * Decides whether this plugin should be available in a given course. The
+     * plugin can do this depending on course or system settings.
+     *
+     * @param \stdClass $course Course object
+     * @param \cm_info $cm Course-module currently being edited (null if none)
+     * @param \section_info $section Section currently being edited (null if none)
+     * @return bool True if there are completion criteria
+     */
     protected function allow_add($course, \cm_info $cm = null, \section_info $section = null) {
         $info = new \completion_info($course);
         return $info->has_criteria();

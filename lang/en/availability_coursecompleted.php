@@ -19,7 +19,7 @@
  *
  * @package availability_coursecompleted
  * @copyright 2015 iplusacademy (www.iplusacademy.org)
- * @developped by Renaat Debleu {info@eWallah.net}
+ * @author Renaat Debleu {info@eWallah.net}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

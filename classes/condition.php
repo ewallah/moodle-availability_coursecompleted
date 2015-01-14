@@ -19,7 +19,7 @@
  *
  * @package availability_coursecompleted
  * @copyright 2015 iplusacademy (www.iplusacademy.org)
- * @developped by Renaat Debleu {info@eWallah.net}
+ * @author Renaat Debleu {info@eWallah.net}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -43,7 +43,7 @@ class condition extends \core_availability\condition {
     /**
      * Constructor.
      *
-     * @param \int $value from JSON decode
+     * @param \stdClass $structure Data structure from JSON decode
      * @throws \coding_exception If invalid data.
      */
     public function __construct($structure) {
@@ -56,6 +56,11 @@ class condition extends \core_availability\condition {
         }
     }
 
+    /**
+     * Saves tree data back to a structure object.
+     *
+     * @return \stdClass Structure object (ready to be made into JSON format)
+     */
     public function save() {
         $result = (object)array('type' => 'coursecompleted');
         if ($this->coursecompleted) {
@@ -64,6 +69,18 @@ class condition extends \core_availability\condition {
         return $result;
     }
 
+    /**
+     * Determines whether a particular item is currently available
+     * according to this availability condition.
+     *
+     * @param bool $not Set true if we are inverting the condition
+     * @param info $info Item we're checking
+     * @param bool $grabthelot Performance hint: if true, caches information
+     *   required for all course-modules, to make the front page and similar
+     *   pages work more quickly (works only for current user)
+     * @param int $userid User ID to check availability for
+     * @return bool True if available
+     */
     public function is_available($not, \core_availability\info $info, $grabthelot, $userid) {
         $course = $info->get_course();
         $completioninfo = new \completion_info($course);
@@ -74,6 +91,18 @@ class condition extends \core_availability\condition {
         return $allow;
     }
 
+    /**
+     * Obtains a string describing this restriction (whether or not
+     * it actually applies). Used to obtain information that is displayed to
+     * students if the activity is not available to them, and for staff to see
+     * what conditions are.
+     *
+     * @param bool $full Set true if this is the 'full information' view
+     * @param bool $not Set true if we are inverting the condition
+     * @param info $info Item we're checking
+     * @return string Information string (for admin) about all restrictions on
+     *   this item
+     */
     public function get_description($full, $not, \core_availability\info $info) {
         if ($this->coursecompleted == '') {
             return '';
@@ -88,6 +117,12 @@ class condition extends \core_availability\condition {
         return get_string('getdescriptionnot', 'availability_coursecompleted');
     }
 
+    /**
+     * Obtains a representation of the options of this condition as a string,
+     * for debugging.
+     *
+     * @return string Text representation of parameters
+     */
     protected function get_debug_string() {
         return $this->coursecompleted ? '#' . 'True' : 'False';
     }
