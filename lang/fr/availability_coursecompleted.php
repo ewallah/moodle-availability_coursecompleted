@@ -23,11 +23,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['description'] = 'Allow only students who already (or not yet) completed this course.';
+$string['description'] = 'Autoriser uniquement les étudiants qui ont déjà (ou pas encore) terminé ce cours.';
 $string['getdescription'] = 'Vous avez terminé ce cours.';
 $string['getdescriptionnot'] = 'Vous n\' avez pas terminé ce cours.';
-$string['missing'] = '(You must decide if the course has to be completed or not)';
-$string['pluginname'] = 'Restriction by course completion';
+$string['missing'] = '(Vous devez décider si le cours doit être complété ou non)';
+$string['pluginname'] = 'Restriction par achèvement du cours';
 $string['requires_completed'] = 'Vous avez terminé ce cours';
 $string['requires_notcompleted'] = 'Vous n\' avez pas terminé ce cours';
 $string['title'] = 'Cours complété';
