@@ -5,20 +5,9 @@ YUI.add('moodle-availability_coursecompleted-form', function (Y, NAME) {
  *
  * @module moodle-availability_coursecompleted-form
  */
+
 M.availability_coursecompleted = M.availability_coursecompleted || {};
-
-/**
- * @class M.availability_coursecompleted.form
- * @extends M.core_availability.plugin
- */
 M.availability_coursecompleted.form = Y.Object(M.core_availability.plugin);
-
-/**
- * Course completed available for selection.
- *
- * @property completed
- * @type Array
- */
 M.availability_coursecompleted.form.completed = null;
 
 /**
@@ -36,11 +25,9 @@ M.availability_coursecompleted.form.getNode = function(json) {
     var strings = M.str.availability_coursecompleted;
     var yeslabel = M.util.get_string('yes', 'moodle');
     var nolabel = M.util.get_string('no', 'moodle');
-    var html = '<label>' + strings.title + ' <span class="availability-coursecompleted">' +
-               '<select name="id">' +
-               '<option value="choose">' + M.str.moodle.choosedots + '</option>' +
-               '<option value="1">' + yeslabel + '</option>' +
-               '<option value="0">' + nolabel + '</option>';
+    var html = '<label>' + strings.title + ' <span class="availability-coursecompleted">';
+    html += '<select name="id"><option value="choose">' + M.str.moodle.choosedots + '</option>';
+    html += '<option value="1">' + yeslabel + '</option><option value="0">' + nolabel + '</option>';
     html += '</select></span></label>';
     var node = Y.Node.create('<span>' + html + '</span>');
 
