@@ -12,3 +12,5 @@ Installation:
 
  1. Unpack the zip file into the availability/condition/ directory. A new directory will be created called language.
  2. Go to Site administration > Notifications to complete the plugin installation.
+
+https://travis-ci.org/ewallah/moodle-availability_coursecompleted.svg
