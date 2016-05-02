@@ -48,7 +48,6 @@ class frontend extends \core_availability\frontend {
      * @return bool True if there are completion criteria
      */
     protected function allow_add($course, \cm_info $cm = null, \section_info $section = null) {
-        $info = new \completion_info($course);
-        return $info->has_criteria();
+        return $course->enablecompletion == COMPLETION_ENABLED;
     }
 }
