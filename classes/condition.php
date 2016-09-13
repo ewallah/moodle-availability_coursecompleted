@@ -85,6 +85,9 @@ class condition extends \core_availability\condition {
         $course = $info->get_course();
         $completioninfo = new \completion_info($course);
         $allow = $completioninfo->is_course_complete($userid);
+        if (!$this->coursecompleted) {
+            $allow = !$allow;
+        }
         if ($not) {
             $allow = !$allow;
         }
