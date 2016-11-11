@@ -20,10 +20,10 @@ matrix:
       php: 5.4
     - env: DB=mysqli   PHPUNIT=true    INSTALL=false   CITEST=false
       php: 7.0
-
+    
 env:
  global:
-  - MOODLE_BRANCH=MOODLE_31_STABLE
+  - MOODLE_BRANCH=master
  matrix:
   - DB=mysqli
 
@@ -45,4 +45,4 @@ script:
   - moodle-plugin-ci codechecker
   #- moodle-plugin-ci csslint
   - moodle-plugin-ci jshint
-  #- moodle-plugin-ci phpunit
+  - moodle-plugin-ci behat
