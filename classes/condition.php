@@ -62,11 +62,24 @@ class condition extends \core_availability\condition {
      * @return \stdClass Structure object (ready to be made into JSON format)
      */
     public function save() {
-        $result = (object)array('type' => 'coursecompleted');
+        $result = (object)array('type' => 'coursecompleted', 'id' => $this->coursecompleted);
         if ($this->coursecompleted) {
             $result->id = $this->coursecompleted;
         }
         return $result;
+    }
+
+    /**
+     * Returns a JSON object which corresponds to a condition of this type.
+     *
+     * Intended for unit testing, as normally the JSON values are constructed
+     * by JavaScript code.
+     *
+     * @param int $groupid Required group id (0 = any group)
+     * @return stdClass Object representing condition
+     */
+    public static function get_json($languageid = '') {
+        return (object)array('type' => 'coursecompleted', 'id' => $this->coursecompleted);
     }
 
     /**

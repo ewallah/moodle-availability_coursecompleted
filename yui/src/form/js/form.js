@@ -5,7 +5,11 @@
  */
 
 M.availability_coursecompleted = M.availability_coursecompleted || {};
+
+// Class M.availability_coursecompleted.form @extends M.core_availability.plugin.
 M.availability_coursecompleted.form = Y.Object(M.core_availability.plugin);
+
+// Options available for selection.
 M.availability_coursecompleted.form.completed = null;
 
 /**
@@ -20,15 +24,15 @@ M.availability_coursecompleted.form.initInner = function(completed) {
 
 M.availability_coursecompleted.form.getNode = function(json) {
     // Create HTML structure.
-    var strings = M.str.availability_coursecompleted;
-    var yeslabel = M.util.get_string('yes', 'moodle');
-    var nolabel = M.util.get_string('no', 'moodle');
-    var html = '<label>' + strings.title + ' <span class="availability-coursecompleted">';
-    html += '<select name="id"><option value="choose">' + M.str.moodle.choosedots + '</option>';
-    html += '<option value="1">' + yeslabel + '</option><option value="0">' + nolabel + '</option>';
+    var tit = M.util.get_string('title', 'availability_coursecompleted');
+    var html = '<label class="form-group"><span class="p-r-1">' + tit + '</span>';
+    html += '<span class="availability-coursecompleted"><select class="custom-select" name="id" title=' + tit + '>';
+    html += '<option value="choose">' + M.util.get_string('choosedots', 'moodle') + '</option>';
+    html += '<option value="1">' + M.util.get_string('yes', 'moodle') + '</option>';
+    html += '<option value="0">' + M.util.get_string('no', 'moodle') + '</option>';
     html += '</select></span></label>';
-    var node = Y.Node.create('<span>' + html + '</span>');
-
+    var node = Y.Node.create('<span class="form-inline">' + html + '</span>');
+    
     // Set initial values (leave default 'choose' if creating afresh).
     if (json.creating === undefined) {
         if (json.id !== undefined && node.one('select[name=id] > option[value=' + json.id + ']')) {
@@ -41,7 +45,7 @@ M.availability_coursecompleted.form.getNode = function(json) {
     // Add event handlers (first time only).
     if (!M.availability_coursecompleted.form.addedEvents) {
         M.availability_coursecompleted.form.addedEvents = true;
-        var root = Y.one('#fitem_id_availabilityconditionsjson');
+        var root = Y.one('.availability-field');
         root.delegate('change', function() {
             // Just update the form fields.
             M.core_availability.form.update();
@@ -64,7 +68,7 @@ M.availability_coursecompleted.form.fillErrors = function(errors, node) {
     var value = {};
     this.fillValue(value, node);
 
-    if (value.id === '') {
+    if (value.id && value.id === 'choose') {
         errors.push('availability_coursecompleted:missing');
     }
 };
