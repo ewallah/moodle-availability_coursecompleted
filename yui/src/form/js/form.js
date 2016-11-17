@@ -32,7 +32,7 @@ M.availability_coursecompleted.form.getNode = function(json) {
     html += '<option value="0">' + M.util.get_string('no', 'moodle') + '</option>';
     html += '</select></span></label>';
     var node = Y.Node.create('<span class="form-inline">' + html + '</span>');
-    
+
     // Set initial values (leave default 'choose' if creating afresh).
     if (json.creating === undefined) {
         if (json.id !== undefined && node.one('select[name=id] > option[value=' + json.id + ']')) {

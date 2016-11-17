@@ -78,8 +78,8 @@ class condition extends \core_availability\condition {
      * @param int $groupid Required group id (0 = any group)
      * @return stdClass Object representing condition
      */
-    public static function get_json($languageid = '') {
-        return (object)array('type' => 'coursecompleted', 'id' => $this->coursecompleted);
+    public static function get_json($coursecompleted = '') {
+        return (object)array('type' => 'coursecompleted', 'id' => $coursecompleted);
     }
 
     /**
