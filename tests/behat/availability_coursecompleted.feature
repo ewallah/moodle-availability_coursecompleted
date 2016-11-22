@@ -7,7 +7,7 @@ Feature: availability_coursecompleted
   Background:
     Given the following "courses" exist:
       | fullname | shortname | format | enablecompletion | numsections |
-      | Course 1 | C1        | topics | 1                | 2           |
+      | Course 1 | C1        | topics | 1                | 3           |
     And the following "activities" exist:
       | activity   | name   | intro                    | course | idnumber    | section | visible | 
       | page       | Page A | page description         | C1     | page1       | 0       | 1       | 
@@ -47,7 +47,6 @@ Feature: availability_coursecompleted
       | Name         | Page E |
       | Description  | x      |
       | Page content | x      |
-    And I expand all fieldsets
     And I click on "Add restriction..." "button"
     And I click on "Course completed" "button" in the "Add restriction..." "dialogue"
     And I set the field "Course completed" to "No"
