@@ -7,7 +7,7 @@ Feature: availability_coursecompleted
   Background:
     Given the following "courses" exist:
       | fullname | shortname | format | enablecompletion | numsections |
-      | Course 1 | C1        | topics | 1                | 3           |
+      | Course 1 | C1        | topics | 1                | 4           |
     And the following "activities" exist:
       | activity   | name   | intro                    | course | idnumber    | section | visible | 
       | page       | Page A | page description         | C1     | page1       | 0       | 1       | 
