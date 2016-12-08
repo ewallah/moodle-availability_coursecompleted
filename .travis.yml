@@ -21,7 +21,6 @@ matrix:
     - env: DB=mysqli   PHPUNIT=true    INSTALL=false   CITEST=false
       php: 7.0
   allow_failures:
-    # https://github.com/moodlerooms/moodle-plugin-ci/issues/33
     - php: 5.6 # travis seems to fail on adding activity - doesn't fail when running behat locally.
     
 env:
