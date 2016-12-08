@@ -1,6 +1,6 @@
 language: php
 
-sudo: false
+sudo: true
 
 cache:
   directories:
@@ -23,14 +23,14 @@ matrix:
     
 env:
  global:
-  - MOODLE_BRANCH=master
+  - MOODLE_BRANCH=MOODLE_32_STABLE
  matrix:
   - DB=mysqli
 
 before_install:
   - cd ../..
   - composer selfupdate
-  - composer create-project -n --no-dev  --prefer-dist moodlerooms/moodle-plugin-ci ci ^1
+  - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^1
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
@@ -42,10 +42,10 @@ script:
   - moodle-plugin-ci phplint
   - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
-  - moodle-plugin-ci codechecker
-  - moodle-plugin-ci csslint
+  #- moodle-plugin-ci codechecker
+  #- moodle-plugin-ci csslint
   - moodle-plugin-ci shifter
   - moodle-plugin-ci jshint
   - moodle-plugin-ci validate
-  - moodle-plugin-ci phpunit
+  #- moodle-plugin-ci phpunit
   - moodle-plugin-ci behat
