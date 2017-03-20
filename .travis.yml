@@ -16,7 +16,7 @@ matrix:
  fast_finish: true
  exclude:
     # MySQL - we do not use the database to store data
-    - env: DB=mysqli   PHPUNIT=true    INSTALL=false   CITEST=false
+    - env: DB=mysqli   PHPUNIT=false    INSTALL=true    CITEST=false
       php: 5.6
     - env: DB=mysqli   PHPUNIT=true    INSTALL=false   CITEST=false
       php: 7.0
