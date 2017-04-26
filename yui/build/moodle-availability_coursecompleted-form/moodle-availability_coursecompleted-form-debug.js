@@ -18,7 +18,7 @@ M.availability_coursecompleted.form.completed = null;
  * Initialises this plugin.
  *
  * @method initInner
- * @param {Array} groups Array of objects
+ * @param {boolean} completed Is completed or not
  */
 M.availability_coursecompleted.form.initInner = function(completed) {
     this.completed = completed;
