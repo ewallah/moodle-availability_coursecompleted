@@ -34,13 +34,15 @@ use availability_coursecompleted\condition;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class availability_coursecompleted_condition_testcase extends advanced_testcase {
+    
     /**
      * Load required classes.
      */
     public function setUp() {
         // Load the mock info class so that it can be used.
-        global $CFG;
+        global $CFG, $USER;
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
+        require_once($CFG->libdir . '/completionlib.php');
     }
 
     /**
@@ -51,30 +53,32 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         $this->resetAfterTest();
         $this->setAdminUser();
 
-        // Create course with coursecompleted turned on and a Page.
+        // Create course with coursecompleted turned on.
         $CFG->enableavailability = true;
-        $generator = $this->getDataGenerator();
-        $course = $generator->create_course([]);
-        $info = new \core_availability\mock_info($course, $USER->id);
+        $course = $this->getDataGenerator()->create_course(['enablecompletion' => true]);
+        $user = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($user->id, $course->id);
+        $info = new \core_availability\mock_info($course, $user->id);
 
-        $arr1 = ['type' => 'coursecompleted', 'id' => 1];
-        $arr2 = ['type' => 'coursecompleted', 'id' => 0];
-        $structure1 = (object)['op' => '|', 'show' => true, 'c' => [(object)$arr1]];
-        $structure2 = (object)['op' => '|', 'show' => true, 'c' => [(object)$arr2]];
+        $structure1 = (object)['op' => '|', 'show' => true, 'c' => [(object)['type' => 'coursecompleted', 'id' => '1']]];
+        $structure2 = (object)['op' => '|', 'show' => true, 'c' => [(object)['type' => 'coursecompleted', 'id' => '0']]];
         $tree1 = new \core_availability\tree($structure1);
         $tree2 = new \core_availability\tree($structure2);
 
         // Initial check.
-        $result1 = $tree1->check_available(false, $info, true, $USER->id);
-        $result2 = $tree2->check_available(false, $info, true, $USER->id);
-        $this->assertTrue($result1->is_available());
-        $this->assertFalse($result2->is_available());
-
-        // Change course completed.
-        $result1 = $tree1->check_available(false, $info, true, $USER->id);
-        $result2 = $tree2->check_available(false, $info, true, $USER->id);
+        $result1 = $tree1->check_available(false, $info, true, $user->id);
+        $result2 = $tree2->check_available(false, $info, true, $user->id);
         $this->assertFalse($result1->is_available());
         $this->assertTrue($result2->is_available());
+
+        // Change course completed.
+        $ccompletion = new completion_completion(['course' => $course->id, 'userid' => $user->id]);
+        $ccompletion->mark_complete();
+       
+        $result1 = $tree1->check_available(false, $info, true, $user->id);
+        $result2 = $tree2->check_available(false, $info, true, $user->id);
+        $this->assertTrue($result1->is_available());
+        $this->assertFalse($result2->is_available());
     }
 
     /**
@@ -84,31 +88,40 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         // This works with no parameters.
         $structure = (object)[];
         $completed = new condition($structure);
-
-        // This works with true.
-        $structure->id = true;
+        
+        // This works with '1'.
+        $structure->id = '1';
         $completed = new condition($structure);
 
-        // This works with false.
-        $structure->id = false;
+        // This works with '0'.
+        $structure->id = '0';
         $completed = new condition($structure);
-
-        // Invalid ->id.
+        
+        // This fails with null.
         $structure->id = null;
         try {
             $completed = new condition($structure);
             $this->fail();
         } catch (coding_exception $e) {
-            $this->assertContains('Invalid ->id for coursecompleted condition', $e->getMessage());
+            $this->assertContains('Invalid value for course completed condition', $e->getMessage());
         }
 
-        // Invalid string.
-        $structure->id = 'completed';
+        // Invalid ->id.
+        $structure->id = false;
+        try {
+            $completed = new condition($structure);
+            $this->fail();
+        } catch (coding_exception $e) {
+            $this->assertContains('Invalid value for course completed condition', $e->getMessage());
+        }
+
+        // Invalid string. Should be checked 'longer string'.
+        $structure->id = 1;
         try {
             $language = new condition($structure);
             $this->fail();
         } catch (coding_exception $e) {
-            $this->assertContains('Invalid ->id for coursecompleted condition', $e->getMessage());
+            $this->assertContains('Invalid value for course completed condition', $e->getMessage());
         }
     }
 
@@ -116,7 +129,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
      * Tests the save() function.
      */
     public function test_save() {
-        $structure = (object)['id' => 1];
+        $structure = (object)['id' => '1'];
         $cond = new condition($structure);
         $structure->type = 'coursecompleted';
         $this->assertEquals($structure, $cond->save());
@@ -127,7 +140,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
      */
     public function test_get_description() {
         $info = new \core_availability\mock_info();
-        $completed = new condition((object)['type' => 'coursecompleted', 'id' => 1]);
+        $completed = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
         $information = $completed->get_description(true, false, $info);
         $information = $completed->get_description(true, true, $info);
         $information = $completed->get_standalone_description(true, false, $info);
