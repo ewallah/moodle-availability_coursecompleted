@@ -18,6 +18,7 @@
  * Unit tests for the coursecompleted condition.
  *
  * @package availability_coursecompleted
+ * @category   phpunit
  * @copyright 2017 eWallah.net (info@eWallah.net)
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -40,7 +41,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
      */
     public function setUp() {
         // Load the mock info class so that it can be used.
-        global $CFG, $USER;
+        global $CFG;
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
         require_once($CFG->libdir . '/completionlib.php');
     }
@@ -49,7 +50,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
      * Tests constructing and using coursecompleted condition as part of tree.
      */
     public function test_in_tree() {
-        global $CFG, $USER;
+        global $CFG;
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -118,7 +119,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         // Invalid string. Should be checked 'longer string'.
         $structure->id = 1;
         try {
-            $language = new condition($structure);
+            $completed = new condition($structure);
             $this->fail();
         } catch (coding_exception $e) {
             $this->assertContains('Invalid value for course completed condition', $e->getMessage());
