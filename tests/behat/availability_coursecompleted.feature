@@ -39,9 +39,7 @@ Feature: availability_coursecompleted
 
     # Add a Page E for users who did not completed this course.
     When I log in as "teacher1"
-    And I am on site homepage
-    And I follow "Course 1"
-    And I turn editing mode on
+    And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "2"
     And I set the following fields to these values:
       | Name         | Page E |
@@ -93,8 +91,7 @@ Feature: availability_coursecompleted
 
     # Log in as student.
     When I log in as "student1"
-    And I am on site homepage
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage
     Then I should see "Page A" in the "region-main" "region"
     And I should see "Page B" in the "region-main" "region"
     And I should see "Page C" in the "region-main" "region"
@@ -106,11 +103,9 @@ Feature: availability_coursecompleted
     And I log out
     
     When I log in as "teacher1"
-    And I am on site homepage
-    And I follow "Course 1"
-    
-    When I navigate to "Course completion" node in "Course administration > Reports"
-    And I should see "Student First"
+    And I am on "Course 1" course homepage
+    And I navigate to "Course completion" node in "Course administration > Reports"
+    Then I should see "Student First"
     And I follow "Click to mark user complete"
     # Running completion task just after clicking sometimes fail, as record
     # should be created before the task runs.
@@ -122,9 +117,7 @@ Feature: availability_coursecompleted
     And I log out
 
     When I log in as "student1"
-    And I am on site homepage
-    And I follow "Course 1"
-
+    And I am on "Course 1" course homepage
     Then I should see "Page A" in the "region-main" "region"
     And I should see "Page B" in the "region-main" "region"
     And I should see "Page C" in the "region-main" "region"
