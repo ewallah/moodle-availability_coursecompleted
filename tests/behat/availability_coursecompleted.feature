@@ -9,10 +9,10 @@ Feature: availability_coursecompleted
       | fullname | shortname | format | enablecompletion | numsections |
       | Course 1 | C1        | topics | 1                | 4           |
     And the following "activities" exist:
-      | activity   | name   | intro                    | course | idnumber    | section | visible | 
-      | page       | Page A | page description         | C1     | page1       | 0       | 1       | 
-      | page       | Page B | page description         | C1     | page2       | 0       | 1       | 
-      | page       | Page C | page description         | C1     | page3       | 1       | 1       | 
+      | activity   | name   | intro                    | course | idnumber    | section | visible |
+      | page       | Page A | page description         | C1     | page1       | 0       | 1       |
+      | page       | Page B | page description         | C1     | page2       | 0       | 1       |
+      | page       | Page C | page description         | C1     | page3       | 1       | 1       |
       | page       | Page D | page description         | C1     | page4       | 1       | 0       |
     And the following "users" exist:
       | username | firstname | lastname | email                |
@@ -25,7 +25,7 @@ Feature: availability_coursecompleted
 
   @javascript
   Scenario: Complete a course
-    
+
     # Basic setup.
     Given I log in as "admin"
     And I am on site homepage
@@ -62,7 +62,7 @@ Feature: availability_coursecompleted
     And I click on "Course completed" "button"
     And I set the field "Course completed" to "No"
     And I click on "Save and return to course" "button"
-    
+
     # Page G for users who completed the course.
     And I add a "Page" to section "2"
     And I set the following fields to these values:
@@ -101,7 +101,7 @@ Feature: availability_coursecompleted
     And I should see "Page G" in the "region-main" "region"
     And I should not see "Page H" in the "region-main" "region"
     And I log out
-    
+
     When I log in as "teacher1"
     And I am on "Course 1" course homepage
     And I navigate to "Course completion" node in "Course administration > Reports"
@@ -126,4 +126,3 @@ Feature: availability_coursecompleted
     And I should see "Page F" in the "region-main" "region"
     And I should see "Page G" in the "region-main" "region"
     And I should see "Page H" in the "region-main" "region"
-    

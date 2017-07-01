@@ -36,7 +36,7 @@ use availability_coursecompleted\condition;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class availability_coursecompleted_condition_testcase extends advanced_testcase {
-    
+
     /**
      * Load required classes.
      */
@@ -76,7 +76,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         // Change course completed.
         $ccompletion = new completion_completion(['course' => $course->id, 'userid' => $user->id]);
         $ccompletion->mark_complete();
-       
+
         $result1 = $tree1->check_available(false, $info, true, $user->id);
         $result2 = $tree2->check_available(false, $info, true, $user->id);
         $this->assertTrue($result1->is_available());
@@ -90,7 +90,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         // This works with no parameters.
         $structure = (object)[];
         $completed = new condition($structure);
-        
+
         // This works with '1'.
         $structure->id = '1';
         $completed = new condition($structure);
@@ -98,7 +98,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         // This works with '0'.
         $structure->id = '0';
         $completed = new condition($structure);
-        
+
         // This fails with null.
         $structure->id = null;
         try {
