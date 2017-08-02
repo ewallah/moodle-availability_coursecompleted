@@ -1,7 +1,7 @@
 {
-  "name": "moodle-availability_courseCompleted-form",
+  "name": "moodle-availability_coursecompleted-form",
   "builds": {
-    "moodle-availability_courseCompleted-form": {
+    "moodle-availability_coursecompleted-form": {
       "jsfiles": [
         "form.js"
       ]
