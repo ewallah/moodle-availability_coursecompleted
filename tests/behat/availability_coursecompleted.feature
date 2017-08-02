@@ -60,7 +60,9 @@ Feature: availability_coursecompleted
     And I expand all fieldsets
     And I click on "Add restriction..." "button"
     And I click on "Course completed" "button"
+    Then I should see "Please set" in the "region-main" "region"
     And I set the field "Course completed" to "No"
+    Then I should not see "Please set" in the "region-main" "region"
     And I click on "Save and return to course" "button"
 
     # Page G for users who completed the course.

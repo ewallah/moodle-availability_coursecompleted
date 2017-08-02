@@ -1,18 +1,18 @@
-YUI.add('moodle-availability_coursecompleted-form', function (Y, NAME) {
+YUI.add('moodle-availability_courseCompleted-form', function (Y, NAME) {
 
 /**
  * JavaScript for form editing course completed condition.
  *
- * @module moodle-availability_coursecompleted-form
+ * @module moodle-availability_courseCompleted-form
  */
 
-M.availability_coursecompleted = M.availability_coursecompleted || {};
+M.availability_courseCompleted = M.availability_courseCompleted || {};
 
-// Class M.availability_coursecompleted.form @extends M.core_availability.plugin.
-M.availability_coursecompleted.form = Y.Object(M.core_availability.plugin);
+// Class M.availability_courseCompleted.form @extends M.core_availability.plugin.
+M.availability_courseCompleted.form = Y.Object(M.core_availability.plugin);
 
 // Options available for selection.
-M.availability_coursecompleted.form.completed = null;
+M.availability_courseCompleted.form.completed = null;
 
 /**
  * Initialises this plugin.
@@ -20,15 +20,15 @@ M.availability_coursecompleted.form.completed = null;
  * @method initInner
  * @param {boolean} completed Is completed or not
  */
-M.availability_coursecompleted.form.initInner = function(completed) {
+M.availability_courseCompleted.form.initInner = function(completed) {
     this.completed = completed;
 };
 
-M.availability_coursecompleted.form.getNode = function(json) {
+M.availability_courseCompleted.form.getNode = function(json) {
     // Create HTML structure.
-    var tit = M.util.get_string('title', 'availability_coursecompleted');
+    var tit = M.util.get_string('title', 'availability_courseCompleted');
     var html = '<label class="form-group"><span class="p-r-1">' + tit + '</span>';
-    html += '<span class="availability-coursecompleted"><select class="custom-select" name="id" title=' + tit + '>';
+    html += '<span class="availability-courseCompleted"><select class="custom-select" name="id" title=' + tit + '>';
     html += '<option value="choose">' + M.util.get_string('choosedots', 'moodle') + '</option>';
     html += '<option value="1">' + M.util.get_string('yes', 'moodle') + '</option>';
     html += '<option value="0">' + M.util.get_string('no', 'moodle') + '</option>';
@@ -45,19 +45,19 @@ M.availability_coursecompleted.form.getNode = function(json) {
     }
 
     // Add event handlers (first time only).
-    if (!M.availability_coursecompleted.form.addedEvents) {
-        M.availability_coursecompleted.form.addedEvents = true;
+    if (!M.availability_courseCompleted.form.addedEvents) {
+        M.availability_courseCompleted.form.addedEvents = true;
         var root = Y.one('.availability-field');
         root.delegate('change', function() {
             // Just update the form fields.
             M.core_availability.form.update();
-        }, '.availability_coursecompleted select');
+        }, '.availability_courseCompleted select');
     }
 
     return node;
 };
 
-M.availability_coursecompleted.form.fillValue = function(value, node) {
+M.availability_courseCompleted.form.fillValue = function(value, node) {
     var selected = node.one('select[name=id]').get('value');
     if (selected === 'choose') {
         value.id = '';
@@ -66,12 +66,10 @@ M.availability_coursecompleted.form.fillValue = function(value, node) {
     }
 };
 
-M.availability_coursecompleted.form.fillErrors = function(errors, node) {
-    var value = {};
-    this.fillValue(value, node);
-
-    if (value.id && value.id === 'choose') {
-        errors.push('availability_coursecompleted:missing');
+M.availability_courseCompleted.form.fillErrors = function(errors, node) {
+    var selected = node.one('select[name=id]').get('value');
+    if (selected === 'choose') {
+        errors.push('availability_courseCompleted:missing');
     }
 };
 
