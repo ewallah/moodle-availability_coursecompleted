@@ -6,8 +6,8 @@ Feature: availability_coursecompleted
 
   Background:
     Given the following "courses" exist:
-      | fullname | shortname | format | enablecompletion | numsections |
-      | Course 1 | C1        | topics | 1                | 4           |
+      | fullname | shortname | format | enablecompletion | numsections | enablecompletion |
+      | Course 1 | C1        | topics | 1                | 4           | 1                |
     And the following "activities" exist:
       | activity   | name   | intro                    | course | idnumber    | section | visible |
       | page       | Page A | page description         | C1     | page1       | 0       | 1       |
@@ -28,9 +28,7 @@ Feature: availability_coursecompleted
 
     # Basic setup.
     Given I log in as "admin"
-    And I am on site homepage
-    And I navigate to "Turn editing on" node in "Front page settings"
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage with editing mode on
     And I navigate to "Course completion" node in "Course administration"
     And I expand all fieldsets
     And I set the field "Teacher" to "1"
@@ -113,8 +111,7 @@ Feature: availability_coursecompleted
     # should be created before the task runs.
     And I wait "1" seconds
     And I run the scheduled task "core\task\completion_regular_task"
-    And I am on site homepage
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage
     And I navigate to "Course completion" node in "Course administration > Reports"
     And I log out
 
