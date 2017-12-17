@@ -10,7 +10,7 @@ Check the global documentation about availability conditions : https://docs.mood
 
 Installation:
 
- 1. Unpack the zip file into the availability/condition/ directory. A new directory will be created called language.
+ 1. Unpack the zip file into the availability/condition/ directory. A new directory will be created called coursecompleted.
  2. Go to Site administration > Notifications to complete the plugin installation.
 
 ![travis](https://travis-ci.org/ewallah/moodle-availability_coursecompleted.svg)
