@@ -22,14 +22,14 @@ cache:
     - $HOME/.npm
 
 php:
- - 7.0
  - 7.1
+ #- 7.2
 
 env:
-  - DB=pgsql MOODLE_BRANCH=MOODLE_34_STABLE
-  - DB=pgsql MOODLE_BRANCH=MOODLE_33_STABLE
+  #- DB=pgsql MOODLE_BRANCH=MOODLE_34_STABLE
+  #- DB=pgsql MOODLE_BRANCH=MOODLE_33_STABLE
   - DB=mysqli MOODLE_BRANCH=MOODLE_34_STABLE
-  - DB=mysqli MOODLE_BRANCH=MOODLE_33_STABLE
+  #- DB=mysqli MOODLE_BRANCH=MOODLE_33_STABLE
   
 
 before_install:
@@ -38,6 +38,7 @@ before_install:
   - nvm use 8.9
   - cd ../..
   - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^2
+  - composer require php-coveralls/php-coveralls
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
@@ -52,6 +53,9 @@ script:
   - moodle-plugin-ci savepoints
   - moodle-plugin-ci mustache
   - moodle-plugin-ci grunt
-  - moodle-plugin-ci phpunit
+  - moodle-plugin-ci phpunit --coverage-clover build/logs/clover.xml
   - moodle-plugin-ci behat
   - moodle-plugin-ci behat --profile chrome
+
+after_success:
+  - travis_retry php vendor/bin/php-coveralls
