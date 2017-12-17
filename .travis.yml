@@ -5,7 +5,7 @@ notifications:
     recipients:
         - rdebleu@eWallah.net
 
-sudo: true
+sudo: required
 
 addons:
   firefox: "47.0.1"
@@ -27,9 +27,9 @@ php:
 
 env:
   #- DB=pgsql MOODLE_BRANCH=MOODLE_34_STABLE
-  - DB=pgsql MOODLE_BRANCH=master
+  #- DB=pgsql MOODLE_BRANCH=master
   - DB=mysqli MOODLE_BRANCH=MOODLE_34_STABLE
-  #- DB=mysqli MOODLE_BRANCH=MOODLE_33_STABLE
+  #- DB=mysqli MOODLE_BRANCH=master
   
 
 before_install:
@@ -49,9 +49,12 @@ script:
   - moodle-plugin-ci phpmd
   - moodle-plugin-ci codechecker
   - moodle-plugin-ci validate
-  - moodle-plugin-ci savepoints
-  - moodle-plugin-ci mustache
+  #- moodle-plugin-ci savepoints
+  #- moodle-plugin-ci mustache
   - moodle-plugin-ci grunt
-  - moodle-plugin-ci phpunit
+  - moodle-plugin-ci phpunit --coverage-clover
   - moodle-plugin-ci behat
   - moodle-plugin-ci behat --profile chrome
+
+after_success:
+  - moodle-plugin-ci coveralls-upload
