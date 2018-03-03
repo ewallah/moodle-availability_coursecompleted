@@ -155,7 +155,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
      * Tests a page before and after completion.
      */
     public function test_page() {
-        global $CFG, $DB, $PAGE;
+        global $CFG;
         $this->resetAfterTest();
         $this->setAdminUser();
 
