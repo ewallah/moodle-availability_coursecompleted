@@ -142,13 +142,20 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         $info = new \core_availability\mock_info();
         $completed = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
         $information = $completed->get_description(true, false, $info);
+        $this->assertEquals($information, 'You completed this course.');
         $information = $completed->get_description(true, true, $info);
+        $this->assertEquals($information, 'You did <b>not</b> complete this course.');
         $information = $completed->get_standalone_description(true, false, $info);
+        $this->assertEquals($information, 'Not available unless: You completed this course.');
         $information = $completed->get_standalone_description(true, true, $info);
+        $this->assertEquals($information, 'Not available unless: You did <b>not</b> complete this course.');
     }
 
-	public function test_frontend() {
-    	global $CFG, $DB, $PAGE;
+    /**
+     * Tests a page before and after completion.
+     */
+    public function test_page() {
+        global $CFG, $DB, $PAGE;
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -158,19 +165,17 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         $course = $generator->create_course(['enablecompletion' => true]);
         $user = $generator->create_user();
         $generator->enrol_user($user->id, $course->id);
-        $info = new \core_availability\mock_info($course, $user->id);
         $page = $generator->get_plugin_generator('mod_page')->create_instance(['course' => $course]);
-        $DB->set_field('course_modules', 'availability', '{"op":"|","show":true,"c":[' .
-                '{"type":"coursecompleted","id":"1"}]}', ['id' => $page->cmid]);
         $modinfo = get_fast_modinfo($course);
         $cm = $modinfo->get_cm($page->cmid);
-        $information = '';
-        $this->assertTrue($info->is_available($information));
-        $PAGE->set_url(new moodle_url('/course/modedit.php', ['id' => $page->cmid]));
-        
+        $info = new \core_availability\info_module($cm);
+        $structure = (object)['type' => 'coursecompleted', 'id' => '1'];
+        $cond = new condition($structure);
+        $this->assertFalse($cond->is_available(false, $info, true, $user->id));
+        $this->assertFalse($cond->is_available(false, $info, false, $user->id));
         $ccompletion = new completion_completion(['course' => $course->id, 'userid' => $user->id]);
         $ccompletion->mark_complete();
-
-        $structure1 = (object)['op' => '|', 'show' => true, 'c' => [(object)['type' => 'coursecompleted', 'id' => '1']]];
+        $this->assertFalse($cond->is_available(true, $info, true, $user->id));
+        $this->assertFalse($cond->is_available(true, $info, false, $user->id));
     }
 }
