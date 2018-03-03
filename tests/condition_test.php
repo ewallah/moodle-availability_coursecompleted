@@ -146,4 +146,31 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         $information = $completed->get_standalone_description(true, false, $info);
         $information = $completed->get_standalone_description(true, true, $info);
     }
+
+	public function test_frontend() {
+    	global $CFG, $DB, $PAGE;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        // Create course with coursecompleted turned on.
+        $CFG->enableavailability = true;
+        $generator = $this->getDataGenerator();
+        $course = $generator->create_course(['enablecompletion' => true]);
+        $user = $generator->create_user();
+        $generator->enrol_user($user->id, $course->id);
+        $info = new \core_availability\mock_info($course, $user->id);
+        $page = $generator->get_plugin_generator('mod_page')->create_instance(['course' => $course]);
+        $DB->set_field('course_modules', 'availability', '{"op":"|","show":true,"c":[' .
+                '{"type":"coursecompleted","id":"1"}]}', ['id' => $page->cmid]);
+        $modinfo = get_fast_modinfo($course);
+        $cm = $modinfo->get_cm($page->cmid);
+        $information = '';
+        $this->assertTrue($info->is_available($information));
+        $PAGE->set_url(new moodle_url('/course/modedit.php', ['id' => $page->cmid]));
+        
+        $ccompletion = new completion_completion(['course' => $course->id, 'userid' => $user->id]);
+        $ccompletion->mark_complete();
+
+        $structure1 = (object)['op' => '|', 'show' => true, 'c' => [(object)['type' => 'coursecompleted', 'id' => '1']]];
+    }
 }
