@@ -10,7 +10,6 @@ sudo: required
 addons:
   firefox: "47.0.1"
   postgresql: "9.6"
-  mariadb: "10.2"
   apt:
     packages:
       - oracle-java8-installer
