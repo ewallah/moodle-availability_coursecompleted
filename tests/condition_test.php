@@ -42,6 +42,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         // Load the mock info class so that it can be used.
         global $CFG;
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
+        require_once($CFG->dirroot . '/availability/tests/fixtures/mock_condition.php');
         require_once($CFG->libdir . '/completionlib.php');
     }
 
@@ -155,7 +156,7 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
      * Tests a page before and after completion.
      */
     public function test_page() {
-        global $CFG;
+        global $CFG, $PAGE;
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -168,14 +169,39 @@ class availability_coursecompleted_condition_testcase extends advanced_testcase 
         $page = $generator->get_plugin_generator('mod_page')->create_instance(['course' => $course]);
         $modinfo = get_fast_modinfo($course);
         $cm = $modinfo->get_cm($page->cmid);
+        $PAGE->set_url('/course/modedit.php', ['update' => $page->cmid]);
+        \core_availability\frontend::include_all_javascript($course, $cm);
         $info = new \core_availability\info_module($cm);
-        $structure = (object)['type' => 'coursecompleted', 'id' => '1'];
-        $cond = new condition($structure);
+        $cond = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
         $this->assertFalse($cond->is_available(false, $info, true, $user->id));
         $this->assertFalse($cond->is_available(false, $info, false, $user->id));
+        $this->assertTrue($cond->is_available(true, $info, false, $user->id));
+        $this->assertTrue($cond->is_available(true, $info, true, $user->id));
         $ccompletion = new completion_completion(['course' => $course->id, 'userid' => $user->id]);
         $ccompletion->mark_complete();
         $this->assertFalse($cond->is_available(true, $info, true, $user->id));
         $this->assertFalse($cond->is_available(true, $info, false, $user->id));
+        $this->assertTrue($cond->is_available(false, $info, false, $user->id));
+        $this->assertTrue($cond->is_available(false, $info, true, $user->id));
+    }
+
+    /**
+     * Tests using course completion condition in front end.
+     */
+    public function test_other() {
+        global $CFG;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $CFG->enableavailability = true;
+        $condition = \availability_coursecompleted\condition::get_json('3');
+        $this->assertEquals($condition, (object)['type' => 'coursecompleted', 'id' => '3']);
+    }
+
+    /**
+     * Test privacy.
+     */
+    public function test_privacy() {
+        $privacy = new availability_coursecompleted\privacy\provider();
+        $this->assertEquals($privacy->get_reason(), 'privacy:metadata');
     }
 }
