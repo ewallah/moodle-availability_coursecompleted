@@ -33,7 +33,7 @@ use availability_coursecompleted\condition;
  * @copyright 2017 eWallah.net (info@eWallah.net)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class availability_coursecompleted_condition_testcase extends advanced_testcase {
+class testcase extends advanced_testcase {
 
     /**
      * Load required classes.
