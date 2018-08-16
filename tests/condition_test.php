@@ -183,6 +183,13 @@ class testcase extends advanced_testcase {
         $this->assertFalse($cond->is_available(true, $info, false, $user->id));
         $this->assertTrue($cond->is_available(false, $info, false, $user->id));
         $this->assertTrue($cond->is_available(false, $info, true, $user->id));
+        // No id.
+        $cond = new condition((object)['type' => 'coursecompleted']);
+        $this->assertFalse($cond->is_available(false, $info, false, $user->id));
+        $this->assertFalse($cond->is_available_for_all());
+        $this->assertFalse($cond->update_dependency_id(null, 1, 2));
+        $this->assertEquals($cond->__toString(), '{coursecompleted:False}');
+        $this->assertEquals($cond->get_standalone_description(true, true, $info), 'Not available unless: ');
     }
 
     /**
