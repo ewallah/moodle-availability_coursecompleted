@@ -1,4 +1,4 @@
-@availability @availability_coursecompleted
+@ewallah @availability @availability_coursecompleted
 Feature: availability_coursecompleted
   In order to control student access to activities
   As a teacher
