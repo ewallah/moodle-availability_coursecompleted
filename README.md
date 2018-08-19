@@ -14,3 +14,4 @@ Installation:
  2. Go to Site administration > Notifications to complete the plugin installation.
 
 ![travis](https://travis-ci.org/ewallah/moodle-availability_coursecompleted.svg)
+[![Coverage Status](https://coveralls.io/repos/github/ewallah/moodle-availability_coursecompleted/badge.svg?branch=master)](https://coveralls.io/github/ewallah/moodle-availability_coursecompleted?branch=master)
