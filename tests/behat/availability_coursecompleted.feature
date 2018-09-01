@@ -104,13 +104,14 @@ Feature: availability_coursecompleted
 
     When I log in as "teacher1"
     And I am on "Course 1" course homepage
-    And I navigate to "Course completion" node in "Course administration > Reports"
+    And I navigate to "Reports > Course completion" in current page administration
     Then I should see "Student First"
     And I follow "Click to mark user complete"
     # Running completion task just after clicking sometimes fail, as record
     # should be created before the task runs.
     And I wait "1" seconds
     And I run the scheduled task "core\task\completion_regular_task"
+    And I run all adhoc tasks
     And I am on "Course 1" course homepage
     And I navigate to "Course completion" node in "Course administration > Reports"
     And I log out
