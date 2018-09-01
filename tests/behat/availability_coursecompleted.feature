@@ -29,7 +29,7 @@ Feature: availability_coursecompleted
     # Basic setup.
     Given I log in as "admin"
     And I am on "Course 1" course homepage with editing mode on
-    And I navigate to "Course completion" node in "Course administration"
+    And I navigate to "Course completion" in current page administration
     And I expand all fieldsets
     And I set the field "Teacher" to "1"
     And I press "Save changes"
