@@ -113,7 +113,7 @@ Feature: availability_coursecompleted
     And I run the scheduled task "core\task\completion_regular_task"
     And I run all adhoc tasks
     And I am on "Course 1" course homepage
-    And I navigate to "Course completion" node in "Course administration > Reports"
+    And I navigate to "Reports > Course completion" in current page administration
     And I log out
 
     When I log in as "student1"
