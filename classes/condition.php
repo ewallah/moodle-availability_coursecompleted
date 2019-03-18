@@ -62,11 +62,7 @@ class condition extends \core_availability\condition {
      * @return \stdClass Structure object (ready to be made into JSON format)
      */
     public function save() {
-        $result = (object)array('type' => 'coursecompleted', 'id' => $this->coursecompleted);
-        if ($this->coursecompleted) {
-            $result->id = $this->coursecompleted;
-        }
-        return $result;
+        return (object)['type' => 'coursecompleted', 'id' => $this->coursecompleted];
     }
 
     /**
@@ -79,7 +75,7 @@ class condition extends \core_availability\condition {
      * @return stdClass Object representing condition
      */
     public static function get_json($coursecompleted = '') {
-        return (object)array('type' => 'coursecompleted', 'id' => $coursecompleted);
+        return (object)['type' => 'coursecompleted', 'id' => $coursecompleted];
     }
 
     /**
@@ -95,9 +91,15 @@ class condition extends \core_availability\condition {
      * @return bool True if available
      */
     public function is_available($not, \core_availability\info $info, $grabthelot, $userid) {
+        global $USER;
+        $grabthelot = true;
         $course = $info->get_course();
         $completioninfo = new \completion_info($course);
-        $allow = $completioninfo->is_course_complete($userid);
+        if ($userid != $USER->id) {
+            $allow = $completioninfo->is_course_complete($userid);
+        } else {
+            $allow = $completioninfo->is_course_complete($USER->id);
+        }
         if (!$this->coursecompleted) {
             $allow = !$allow;
         }
@@ -120,14 +122,11 @@ class condition extends \core_availability\condition {
      *   this item
      */
     public function get_description($full, $not, \core_availability\info $info) {
-        if ($this->coursecompleted == '') {
-            return '';
-        }
-        $available = $this->coursecompleted;
+        $allow = $this->coursecompleted;
         if ($not) {
-            $available = !$available;
+            $allow = !$allow;
         }
-        if ($available) {
+        if ($allow) {
             return get_string('getdescription', 'availability_coursecompleted');
         }
         return get_string('getdescriptionnot', 'availability_coursecompleted');
