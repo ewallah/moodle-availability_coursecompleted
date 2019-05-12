@@ -21,7 +21,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @package   availability_coursecompleted
  * @copyright 2017 eWallah.net (info@eWallah.net)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 return new class extends phpunit_coverage_info {
