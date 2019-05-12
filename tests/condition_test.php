@@ -32,6 +32,7 @@ use availability_coursecompleted\condition;
  * @package   availability_coursecompleted
  * @copyright 2017 eWallah.net (info@eWallah.net)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @coversDefaultClass availability_coursecompleted
  */
 class availability_coursecompleted_testcase extends advanced_testcase {
 
@@ -48,6 +49,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests constructing and using coursecompleted condition as part of tree.
+     * @covers availability_coursecompleted\condition
      */
     public function test_in_tree() {
         global $CFG, $USER;
@@ -91,6 +93,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests the constructor including error conditions.
+     * @covers availability_coursecompleted\condition
      */
     public function test_constructor() {
         // This works with no parameters.
@@ -135,6 +138,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests the save() function.
+     * @covers availability_coursecompleted\condition
      */
     public function test_save() {
         $structure = (object)['id' => '1'];
@@ -145,11 +149,27 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests the get_description and get_standalone_description functions.
+     * @covers availability_coursecompleted\condition
+     * @covers availability_coursecompleted\frontend
      */
     public function test_get_description() {
         $this->resetAfterTest();
         $this->setAdminUser();
         $userid = $this->getDataGenerator()->create_user()->id;
+        $course = $this->getDataGenerator()->create_course();
+
+        $frontend = new availability_coursecompleted\frontend();
+        $class = new ReflectionClass('availability_coursecompleted\frontend');
+        $method = $class->getMethod('get_javascript_strings');
+        $method->setAccessible(true);
+        $this->assertEquals([], $method->invokeArgs($frontend, []));
+        $method = $class->getMethod('get_javascript_init_params');
+        $method->setAccessible(true);
+        $this->assertEquals(0, count($method->invokeArgs($frontend, [$course])));
+        $method = $class->getMethod('allow_add');
+        $method->setAccessible(true);
+        $this->assertFalse($method->invokeArgs($frontend, [$course]));
+
         $info = new \core_availability\mock_info();
         $completed = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
         $information = $completed->get_description(true, false, $info);
@@ -173,6 +193,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests a page before and after completion.
+     * @covers availability_coursecompleted\condition
      */
     public function test_page() {
         global $CFG, $PAGE;
@@ -214,6 +235,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests using course completion condition in front end.
+     * @covers availability_coursecompleted\condition
      */
     public function test_other() {
         global $CFG;
@@ -228,6 +250,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Test privacy.
+     * @covers availability_coursecompleted\privacy\provider
      */
     public function test_privacy() {
         $privacy = new availability_coursecompleted\privacy\provider();

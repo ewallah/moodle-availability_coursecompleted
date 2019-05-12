@@ -24,16 +24,16 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-/**
- * Coverage information for the availability_coursecompleted component.
- *
- * @package   availability_coursecompleted
- * @copyright 2017 eWallah.net (info@eWallah.net)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 return new class extends phpunit_coverage_info {
+    /** @var array The list of folders relative to the plugin root to whitelist in coverage generation. */
     protected $whitelistfolders = ['classes'];
+
+    /** @var array The list of files relative to the plugin root to whitelist in coverage generation. */
     protected $whitelistfiles = [];
-    protected $excludelistfolders = [];
+
+    /** @var array The list of folders relative to the plugin root to excludelist in coverage generation. */
+    protected $excludelistfolders = ['lang', 'tests'];
+
+    /** @var array The list of files relative to the plugin root to excludelist in coverage generation. */
     protected $excludelistfiles = [];
 };
