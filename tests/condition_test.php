@@ -153,10 +153,14 @@ class availability_coursecompleted_testcase extends advanced_testcase {
      * @covers availability_coursecompleted\frontend
      */
     public function test_get_description() {
+        global $CFG;
         $this->resetAfterTest();
         $this->setAdminUser();
+        $CFG->enableavailability = true;
         $userid = $this->getDataGenerator()->create_user()->id;
-        $course = $this->getDataGenerator()->create_course();
+        $course = $this->getDataGenerator()->create_course(['enablecompletion' => true]);
+        $modinfo = get_fast_modinfo($course);
+        $sections = $modinfo->get_section_info_all();
 
         $frontend = new availability_coursecompleted\frontend();
         $class = new ReflectionClass('availability_coursecompleted\frontend');
@@ -168,7 +172,8 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $this->assertEquals(0, count($method->invokeArgs($frontend, [$course])));
         $method = $class->getMethod('allow_add');
         $method->setAccessible(true);
-        $this->assertFalse($method->invokeArgs($frontend, [$course]));
+        $this->assertTrue($method->invokeArgs($frontend, [$course, null, null]));
+        $this->assertFalse($method->invokeArgs($frontend, [$course, null, $sections[0]]));
 
         $info = new \core_availability\mock_info();
         $completed = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
