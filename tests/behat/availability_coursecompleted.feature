@@ -24,6 +24,25 @@ Feature: availability_coursecompleted
       | student1 | C1     | student        |
 
   @javascript
+  Scenario: Restrict section0 hidden
+
+    Given I log in as "admin"
+    And I am on "Course 1" course homepage with editing mode on
+    And I navigate to "Course completion" in current page administration
+    And I expand all fieldsets
+    And I set the field "Teacher" to "1"
+    And I press "Save changes"
+    And I log out
+
+    # Add a Page E for users who did not completed this course.
+    When I log in as "teacher1"
+    And I am on "Course 1" course homepage with editing mode on
+    When I edit the section "0"
+    And I expand all fieldsets
+    And I click on "Add restriction..." "button"
+    Then "Course completed" "button" should not exist in the "Add restriction..." "dialogue"
+
+  @javascript
   Scenario: Complete a course
 
     # Basic setup.
