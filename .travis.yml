@@ -22,14 +22,10 @@ cache:
 
 php:
  - 7.2
- - 7.3
 
 env:
-  - DB=pgsql MOODLE_BRANCH=MOODLE_37_STABLE
   - DB=pgsql MOODLE_BRANCH=master
-  - DB=mysqli MOODLE_BRANCH=MOODLE_37_STABLE
   - DB=mysqli MOODLE_BRANCH=master
-  - DB=mariadb MOODLE_BRANCH=MOODLE_37_STABLE
   - DB=mariadb MOODLE_BRANCH=master
 
 matrix:
@@ -40,6 +36,10 @@ matrix:
       env: DB=pgsql MOODLE_BRANCH=MOODLE_35_STABLE
     - php: 7.2
       env: DB=pgsql MOODLE_BRANCH=MOODLE_36_STABLE
+    - php: 7.2
+      env: DB=pgsql MOODLE_BRANCH=MOODLE_37_STABLE
+    - php: 7.3
+      env: DB=pgsql MOODLE_BRANCH=master
   
 before_install:
   - phpenv config-rm xdebug.ini

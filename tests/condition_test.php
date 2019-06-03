@@ -174,6 +174,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $method->setAccessible(true);
         $this->assertTrue($method->invokeArgs($frontend, [$course, null, null]));
         $this->assertFalse($method->invokeArgs($frontend, [$course, null, $sections[0]]));
+        $this->assertTrue($method->invokeArgs($frontend, [$course, null, $sections[1]]));
 
         $info = new \core_availability\mock_info();
         $completed = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
