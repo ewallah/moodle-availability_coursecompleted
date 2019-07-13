@@ -18,7 +18,7 @@
  * Unit tests for the coursecompleted condition.
  *
  * @package   availability_coursecompleted
- * @copyright 2017 eWallah.net (info@eWallah.net)
+ * @copyright 2017 eWallah.net <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,7 +30,7 @@ use availability_coursecompleted\condition;
  * Unit tests for the coursecompleted condition.
  *
  * @package   availability_coursecompleted
- * @copyright 2017 eWallah.net (info@eWallah.net)
+ * @copyright 2017 eWallah.net <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversDefaultClass availability_coursecompleted
  */
