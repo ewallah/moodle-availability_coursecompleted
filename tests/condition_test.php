@@ -32,7 +32,6 @@ use availability_coursecompleted\condition;
  * @package   availability_coursecompleted
  * @copyright 2017 eWallah.net <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass availability_coursecompleted
  */
 class availability_coursecompleted_testcase extends advanced_testcase {
 
@@ -177,24 +176,25 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $this->assertTrue($method->invokeArgs($frontend, [$course, null, $sections[1]]));
 
         $info = new \core_availability\mock_info();
+        $nau = 'Not available unless: ';
         $completed = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
         $information = $completed->get_description(true, false, $info);
-        $this->assertEquals($information, 'You completed this course.');
+        $this->assertEquals($information, get_string('getdescription', 'availability_coursecompleted'));
         $information = $completed->get_description(true, true, $info);
-        $this->assertEquals($information, 'You did <b>not</b> complete this course.');
+        $this->assertEquals($information, get_string('getdescriptionnot', 'availability_coursecompleted'));
         $information = $completed->get_standalone_description(true, false, $info);
-        $this->assertEquals($information, 'Not available unless: You completed this course.');
+        $this->assertEquals($information, $nau . get_string('getdescription', 'availability_coursecompleted'));
         $information = $completed->get_standalone_description(true, true, $info);
-        $this->assertEquals($information, 'Not available unless: You did <b>not</b> complete this course.');
+        $this->assertEquals($information, $nau . get_string('getdescriptionnot', 'availability_coursecompleted'));
         $this->setuser($userid);
         $information = $completed->get_description(true, false, $info);
-        $this->assertEquals($information, 'You completed this course.');
+        $this->assertEquals($information, get_string('getdescription', 'availability_coursecompleted'));
         $information = $completed->get_description(true, true, $info);
-        $this->assertEquals($information, 'You did <b>not</b> complete this course.');
+        $this->assertEquals($information, get_string('getdescriptionnot', 'availability_coursecompleted'));
         $information = $completed->get_standalone_description(true, false, $info);
-        $this->assertEquals($information, 'Not available unless: You completed this course.');
+        $this->assertEquals($information, $nau . get_string('getdescription', 'availability_coursecompleted'));
         $information = $completed->get_standalone_description(true, true, $info);
-        $this->assertEquals($information, 'Not available unless: You did <b>not</b> complete this course.');
+        $this->assertEquals($information, $nau . get_string('getdescriptionnot', 'availability_coursecompleted'));
     }
 
     /**
