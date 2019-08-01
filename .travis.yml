@@ -14,11 +14,9 @@ services:
 addons:
   firefox: "47.0.1"
   postgresql: "9.6"
-  chrome: stable
   apt:
     packages:
       - openjdk-8-jre-headless
-      - chromium-chromedriver
 
 cache:
   directories:
@@ -53,7 +51,6 @@ before_install:
   - cd ../..
   - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci ^2
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 install:
   - moodle-plugin-ci install
@@ -70,4 +67,4 @@ script:
   - moodle-plugin-ci grunt
   - moodle-plugin-ci phpunit
   - moodle-plugin-ci behat
-  - moodle-plugin-ci behat --profile chrome
+  
