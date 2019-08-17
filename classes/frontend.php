@@ -26,7 +26,6 @@
 namespace availability_coursecompleted;
 
 defined('MOODLE_INTERNAL') || die();
-require_once($CFG->libdir . '/completionlib.php');
 
 /**
  * Front-end class.
@@ -52,6 +51,6 @@ class frontend extends \core_availability\frontend {
         if ($section && $section->section === 0) {
             return false;
         }
-        return $course->enablecompletion == COMPLETION_ENABLED;
+        return $course->enablecompletion == 1;
     }
 }
