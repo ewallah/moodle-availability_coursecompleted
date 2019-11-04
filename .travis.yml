@@ -59,7 +59,7 @@ install:
   - moodle-plugin-ci install
 
 script:
-  - /home/travis/build/moodle/vendor/bin/phpunit "provider_testcase|tool_dataprivacy_expired_contexts_testcase"
+  - /home/travis/build/moodle/vendor/bin/phpunit 'provider_testcase|tool_dataprivacy_expired_contexts_testcase'
   - moodle-plugin-ci phplint
   - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
