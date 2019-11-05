@@ -59,7 +59,8 @@ install:
   - moodle-plugin-ci install
 
 script:
-  - /home/travis/build/moodle/vendor/bin/phpunit 'provider_testcase|tool_dataprivacy_expired_contexts_testcase'
+  - /home/travis/build/moodle/vendor/bin/phpunit "provider_testcase" /home/travis/build/moodle/privacy/tests/provider_test.php
+  - /home/travis/build/moodle/vendor/bin/phpunit "tool_dataprivacy_expired_contexts_testcase" /home/travis/build/moodle/admin/tool/dataprivacy/tests/expired_contexts_test.php
   - moodle-plugin-ci phplint
   - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
@@ -71,6 +72,7 @@ script:
   - moodle-plugin-ci grunt
   - moodle-plugin-ci phpunit --coverage-text --coverage-clover
   - moodle-plugin-ci behat
+  - curl https://github.com/timhunt/php-webdriver/commit/7a0aa38f591b7395939df25d8cb6677bf99a481f.patch | git apply --directory moodle/vendor/instaclick/php-webdriver
   - moodle-plugin-ci behat --profile chrome
 
 after_success:
