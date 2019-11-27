@@ -1,4 +1,4 @@
-@ewallah @availability @availability_coursecompleted
+@ewallah @availability @availability_coursecompleted @javascript
 Feature: availability_coursecompleted
   In order to control student access to activities
   As a teacher
@@ -23,41 +23,18 @@ Feature: availability_coursecompleted
       | teacher1 | C1     | editingteacher |
       | student1 | C1     | student        |
 
-  @javascript
-  Scenario: Restrict section0 hidden
-
-    Given I log in as "admin"
-    And I am on "Course 1" course homepage with editing mode on
-    And I navigate to "Course completion" in current page administration
-    And I expand all fieldsets
-    And I set the field "Teacher" to "1"
-    And I press "Save changes"
-    And I log out
-
-    # Add a Page E for users who did not completed this course.
-    When I log in as "teacher1"
-    And I am on "Course 1" course homepage with editing mode on
-    When I edit the section "0"
-    And I expand all fieldsets
-    And I click on "Add restriction..." "button"
-    Then "Course completed" "button" should not exist in the "Add restriction..." "dialogue"
-
-  @javascript
   Scenario: Complete a course
 
-    # Basic setup.
-    Given I log in as "admin"
-    And I am on "Course 1" course homepage with editing mode on
+    When I log in as "teacher1"
+    And I am on "Course 1" course homepage
     And I navigate to "Course completion" in current page administration
     And I expand all fieldsets
     And I set the field "Teacher" to "1"
-    And I press "Save changes"
-    And I log out
+    And I click on "Save changes" "button"
+    And I turn editing mode on
 
     # Add a Page E for users who did not completed this course.
-    When I log in as "teacher1"
-    And I am on "Course 1" course homepage with editing mode on
-    And I add a "Page" to section "2"
+    When I add a "Page" to section "2"
     And I set the following fields to these values:
       | Name         | Page E |
       | Description  | x      |
