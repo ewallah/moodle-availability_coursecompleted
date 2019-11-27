@@ -21,4 +21,3 @@ Feature: Section 0 availability_coursecompleted
     And I expand all fieldsets
     And I click on "Add restriction..." "button"
     Then "Course completed" "button" should not exist in the "Add restriction..." "dialogue"
-
