@@ -11,6 +11,7 @@ services:
 addons:
   postgresql: "9.6"
   chrome: stable
+  firefox: "35.0.1"
   apt:
     packages:
       - openjdk-8-jre-headless
