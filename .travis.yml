@@ -59,7 +59,6 @@ script:
   - moodle-plugin-ci behat
   - moodle-plugin-ci behat --profile chrome
   - moodle-plugin-ci phplint
-  - moodle-plugin-ci eslint
   - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
   - moodle-plugin-ci phpdoc || true
