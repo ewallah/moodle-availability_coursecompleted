@@ -92,14 +92,8 @@ class condition extends \core_availability\condition {
      */
     public function is_available($not, \core_availability\info $info, $grabthelot, $userid) {
         global $USER;
-        $grabthelot = true;
-        $course = $info->get_course();
-        $completioninfo = new \completion_info($course);
-        if ($userid != $USER->id) {
-            $allow = $completioninfo->is_course_complete($userid);
-        } else {
-            $allow = $completioninfo->is_course_complete($USER->id);
-        }
+        $completioninfo = new \completion_info($info->get_course());
+        $allow = $completioninfo->is_course_complete($userid != $USER->id ? $userid : $USER->id);
         if (!$this->coursecompleted) {
             $allow = !$allow;
         }
@@ -126,10 +120,7 @@ class condition extends \core_availability\condition {
         if ($not) {
             $allow = !$allow;
         }
-        if ($allow) {
-            return get_string('getdescription', 'availability_coursecompleted');
-        }
-        return get_string('getdescriptionnot', 'availability_coursecompleted');
+        return get_string($allow ? 'getdescription' : 'getdescriptionnot', 'availability_coursecompleted');
     }
 
     /**
