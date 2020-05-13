@@ -25,8 +25,7 @@ Feature: availability_coursecompleted
 
   Scenario: Complete a course
 
-    When I log in as "teacher1"
-    And I am on "Course 1" course homepage
+    When I am on the "C1" "Course" page logged in as "teacher1"
     And I navigate to "Course completion" in current page administration
     And I expand all fieldsets
     And I set the field "Teacher" to "1"
@@ -86,8 +85,7 @@ Feature: availability_coursecompleted
     And I log out
 
     # Log in as student.
-    When I log in as "student1"
-    And I am on "Course 1" course homepage
+    When I am on the "C1" "Course" page logged in as "student1"
     Then I should see "Page A" in the "region-main" "region"
     And I should see "Page B" in the "region-main" "region"
     And I should see "Page C" in the "region-main" "region"
@@ -98,8 +96,7 @@ Feature: availability_coursecompleted
     And I should not see "Page H" in the "region-main" "region"
     And I log out
 
-    When I log in as "teacher1"
-    And I am on "Course 1" course homepage
+    When I am on the "C1" "Course" page logged in as "teacher1"
     And I navigate to "Reports > Course completion" in current page administration
     Then I should see "Student First"
     And I follow "Click to mark user complete"
@@ -112,8 +109,7 @@ Feature: availability_coursecompleted
     And I navigate to "Reports > Course completion" in current page administration
     And I log out
 
-    When I log in as "student1"
-    And I am on "Course 1" course homepage
+    When I am on the "C1" "Course" page logged in as "student1"
     Then I should see "Page A" in the "region-main" "region"
     And I should see "Page B" in the "region-main" "region"
     And I should see "Page C" in the "region-main" "region"

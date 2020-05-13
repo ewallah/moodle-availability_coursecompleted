@@ -15,9 +15,9 @@ Feature: Section 0 availability_coursecompleted
 
   Scenario: Restrict section0 hidden
 
-    When I log in as "teacher1"
-    And I am on "Course 1" course homepage with editing mode on
-    When I edit the section "0"
+    When I am on the "C1" "Course" page logged in as "admin"
+    And I turn editing mode on
+    And I edit the section "0"
     And I expand all fieldsets
     And I click on "Add restriction..." "button"
     Then "Course completed" "button" should not exist in the "Add restriction..." "dialogue"
