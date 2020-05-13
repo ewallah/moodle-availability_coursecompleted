@@ -63,7 +63,8 @@ script:
   - moodle-plugin-ci grunt || true
   - /home/travis/build/moodle/vendor/bin/phpunit "provider_testcase" /home/travis/build/moodle/privacy/tests/provider_test.php
   - /home/travis/build/moodle/vendor/bin/phpunit "tool_dataprivacy_expired_contexts_testcase" /home/travis/build/moodle/admin/tool/dataprivacy/tests/expired_contexts_test.php
-  - moodle-plugin-ci behat blocks/admin_bookmarks
+  - /home/travis/build/moodle/vendor/bin/behat /home/travis/build/moodle/blocks/admin_bookmarks/tests/behat/bookmark_admin_pages.feature
+    
   - >
         if [ "$MOODLE_BRANCH" = 'master' ];
         then
