@@ -47,11 +47,14 @@ before_install:
 
 install:
   - moodle-plugin-ci install
+  - ls -lRh /home/travis/
+  
 
 script:
   - moodle-plugin-ci phpunit --coverage-text --coverage-clover
   - moodle-plugin-ci behat
   - moodle-plugin-ci behat --profile chrome
+  - php /home/travis/build/moodle/vendor/bin/behat --config /home/travis/build/data/behat_moodledata/behatrun/behat/behat.yml --format progress --tags="@block_admin_bookmarks"
   - moodle-plugin-ci phplint
   - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
