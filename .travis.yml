@@ -10,12 +10,7 @@ services:
 
 addons:
   postgresql: "9.6"
-  chrome: stable
-  firefox: "35.0.1"
-  apt:
-    packages:
-      - openjdk-8-jre-headless
-      - chromium-chromedriver
+  firefox: "47.0.1"
 
 cache:
   directories:
@@ -31,6 +26,8 @@ env:
 
 jobs:
   include:
+    - php: 7.1
+      env: DB=pgsql MOODLE_BRANCH=MOODLE_35_STABLE
     - php: 7.2
       env: DB=pgsql MOODLE_BRANCH=MOODLE_37_STABLE
     - env: DB=pgsql MOODLE_BRANCH=MOODLE_38_STABLE
@@ -43,17 +40,14 @@ before_install:
   - cd ../..
   - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci ^2
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
-  - google-chrome-stable --headless --disable-extensions --no-sandbox --remote-debugging-port=9222 --remote-debugging-address=127.0.0.1 &>/dev/null &
 
 install:
   - moodle-plugin-ci install
-  
 
 script:
   - moodle-plugin-ci phpunit --coverage-text --coverage-clover
   - moodle-plugin-ci behat
-  - moodle-plugin-ci behat --profile chrome
-  - php /home/travis/build/moodle/vendor/bin/behat --config /home/travis/build/moodledata/behat_moodledata/behatrun/behat/behat.yml --format progress --tags="@block_admin_bookmarks"
+  - moodle-plugin-ci behat --dump /home/travis/build/moodle/blocks/admin_bookmarks
   - moodle-plugin-ci phplint
   - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
@@ -70,7 +64,6 @@ script:
         then
             php /home/travis/build/moodle/admin/tool/behat/cli/init.php -a="classic"
             moodle-plugin-ci behat --suite="classic"
-            moodle-plugin-ci behat --suite="classic" --profile chrome
         fi
 
 after_success:
