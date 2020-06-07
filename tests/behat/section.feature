@@ -14,7 +14,6 @@ Feature: Section 0 availability_coursecompleted
       | teacher1 | C1     | editingteacher |
 
   Scenario: Restrict section0 hidden
-
     When I am on the "C1" "Course" page logged in as "admin"
     And I turn editing mode on
     And I edit the section "0"

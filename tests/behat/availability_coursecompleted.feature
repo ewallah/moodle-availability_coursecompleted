@@ -24,7 +24,6 @@ Feature: availability_coursecompleted
       | student1 | C1     | student        |
 
   Scenario: Complete a course
-
     When I am on the "C1" "Course" page logged in as "teacher1"
     And I navigate to "Course completion" in current page administration
     And I expand all fieldsets
