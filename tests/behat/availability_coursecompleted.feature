@@ -98,14 +98,20 @@ Feature: availability_coursecompleted
     When I am on the "C1" "Course" page logged in as "teacher1"
     And I navigate to "Reports > Course completion" in current page administration
     Then I should see "Student First"
+    And "img[title=\"Completed\"]" "css_element" should not exist
     And I follow "Click to mark user complete"
-    # Running completion task just after clicking sometimes fail, as record
-    # should be created before the task runs.
+    # Completion cron won't mark the whole course completed unless the
+    # individual criteria was marked completed more than a second ago. So
+    # run it twice, first to mark the criteria and second for the course.
+    And I wait "1" seconds
+    And I run the scheduled task "core\task\completion_regular_task"
     And I wait "1" seconds
     And I run the scheduled task "core\task\completion_regular_task"
     And I run all adhoc tasks
     And I am on "Course 1" course homepage
     And I navigate to "Reports > Course completion" in current page administration
+    Then I should see "Student First"
+    And "img[title=\"Completed\"]" "css_element" should exist
     And I log out
 
     When I am on the "C1" "Course" page logged in as "student1"
