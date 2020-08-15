@@ -253,13 +253,4 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $condition = \availability_coursecompleted\condition::get_json('0');
         $this->assertEquals($condition, (object)['type' => 'coursecompleted', 'id' => '0']);
     }
-
-    /**
-     * Test privacy.
-     * @covers availability_coursecompleted\privacy\provider
-     */
-    public function test_privacy() {
-        $privacy = new availability_coursecompleted\privacy\provider();
-        $this->assertEquals($privacy->get_reason(), 'privacy:metadata');
-    }
 }
