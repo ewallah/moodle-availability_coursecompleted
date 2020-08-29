@@ -48,7 +48,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests constructing and using coursecompleted condition as part of tree.
-     * @covers availability_coursecompleted\condition
+     * @coversDefaultClass availability_coursecompleted\condition
      */
     public function test_in_tree() {
         global $CFG, $USER;
@@ -92,7 +92,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests the constructor including error conditions.
-     * @covers availability_coursecompleted\condition
+     * @coversDefaultClass availability_coursecompleted\condition
      */
     public function test_constructor() {
         // This works with no parameters.
@@ -137,7 +137,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests the save() function.
-     * @covers availability_coursecompleted\condition
+     * @coversDefaultClass availability_coursecompleted\condition
      */
     public function test_save() {
         $structure = (object)['id' => '1'];
@@ -148,8 +148,8 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests the get_description and get_standalone_description functions.
-     * @covers availability_coursecompleted\condition
-     * @covers availability_coursecompleted\frontend
+     * @coversDefaultClass availability_coursecompleted\condition
+     * @coversDefaultClass availability_coursecompleted\frontend
      */
     public function test_get_description() {
         global $CFG;

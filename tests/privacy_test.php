@@ -37,7 +37,7 @@ class availability_coursecompleted_privacy_testcase extends provider_testcase {
 
     /**
      * Test returning metadata.
-     * @covers availability_coursecompleted\privacy\provider
+     * @coversDefaultClass availability_coursecompleted\privacy\provider
      */
     public function test_get_metadata() {
         $this->resetAfterTest(true);
