@@ -148,7 +148,6 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
     /**
      * Tests the get_description and get_standalone_description functions.
-     * @coversDefaultClass availability_coursecompleted\condition
      * @coversDefaultClass availability_coursecompleted\frontend
      */
     public function test_get_description() {
@@ -225,6 +224,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $this->assertTrue($cond->is_available(true, $info, true, $user->id));
         $ccompletion = new completion_completion(['course' => $course->id, 'userid' => $user->id]);
         $ccompletion->mark_complete();
+        rebuild_course_cache($course->id, true);
         $this->assertFalse($cond->is_available(true, $info, true, $user->id));
         $this->assertFalse($cond->is_available(true, $info, false, $user->id));
         $this->assertTrue($cond->is_available(false, $info, false, $user->id));
@@ -245,9 +245,6 @@ class availability_coursecompleted_testcase extends advanced_testcase {
      */
     public function test_other() {
         global $CFG;
-        $this->resetAfterTest();
-        $this->setAdminUser();
-        $CFG->enableavailability = true;
         $condition = \availability_coursecompleted\condition::get_json('3');
         $this->assertEquals($condition, (object)['type' => 'coursecompleted', 'id' => '3']);
         $condition = \availability_coursecompleted\condition::get_json('0');
