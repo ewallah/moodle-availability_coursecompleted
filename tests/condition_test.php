@@ -97,15 +97,33 @@ class availability_coursecompleted_testcase extends advanced_testcase {
     public function test_constructor() {
         // This works with no parameters.
         $structure = (object)[];
-        $completed = new condition($structure);
+        try {
+            $completed = new condition($structure);
+            $this->fail();
+        } catch (exception $e) {
+            $this->assertEquals('', $e->getMessage());
+        }
+        $this->assertNotEmpty($completed);
 
         // This works with '1'.
         $structure->id = '1';
-        $completed = new condition($structure);
+        try {
+            $completed = new condition($structure);
+            $this->fail();
+        } catch (exception $e) {
+            $this->assertEquals('', $e->getMessage());
+        }
+        $this->assertNotEmpty($completed);
 
         // This works with '0'.
         $structure->id = '0';
-        $completed = new condition($structure);
+        try {
+            $completed = new condition($structure);
+            $this->fail();
+        } catch (exception $e) {
+            $this->assertEquals('', $e->getMessage());
+        }
+        $this->assertNotEmpty($completed);
 
         // This fails with null.
         $structure->id = null;
@@ -244,7 +262,6 @@ class availability_coursecompleted_testcase extends advanced_testcase {
      * @covers availability_coursecompleted\condition
      */
     public function test_other() {
-        global $CFG;
         $condition = \availability_coursecompleted\condition::get_json('3');
         $this->assertEquals($condition, (object)['type' => 'coursecompleted', 'id' => '3']);
         $condition = \availability_coursecompleted\condition::get_json('0');
