@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace availability_coursecompleted\privacy;
+
 defined('MOODLE_INTERNAL') || die();
 
 use \core_privacy\tests\provider_testcase;
@@ -33,18 +35,16 @@ use \core_privacy\tests\provider_testcase;
  * @copyright 2017 eWallah.net <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class availability_coursecompleted_privacy_testcase extends provider_testcase {
+class privacy_testcase extends provider_testcase {
 
     /**
      * Test returning metadata.
      * @coversDefaultClass availability_coursecompleted\privacy\provider
      */
     public function test_get_metadata() {
-        $this->resetAfterTest(true);
         $collection = new \core_privacy\local\metadata\collection('availability_coursecompleted');
         $reason = \availability_coursecompleted\privacy\provider::get_reason($collection);
         $this->assertEquals($reason, 'privacy:metadata');
-        $str = 'does not store';
-        $this->assertContains($str, get_string($reason, 'availability_coursecompleted'));
+        $this->assertStringContainsString('does not store', get_string($reason, 'availability_coursecompleted'));
     }
 }

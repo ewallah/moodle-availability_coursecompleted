@@ -38,7 +38,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
     /**
      * Load required classes.
      */
-    public function setUp() {
+    public function setUp():void {
         // Load the mock info class so that it can be used.
         global $CFG;
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
@@ -131,7 +131,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
             $completed = new condition($structure);
             $this->fail();
         } catch (coding_exception $e) {
-            $this->assertContains('Invalid value for course completed condition', $e->getMessage());
+            $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
         }
 
         // Invalid ->id.
@@ -140,7 +140,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
             $completed = new condition($structure);
             $this->fail();
         } catch (coding_exception $e) {
-            $this->assertContains('Invalid value for course completed condition', $e->getMessage());
+            $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
         }
 
         // Invalid string. Should be checked 'longer string'.
@@ -149,7 +149,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
             $completed = new condition($structure);
             $this->fail();
         } catch (coding_exception $e) {
-            $this->assertContains('Invalid value for course completed condition', $e->getMessage());
+            $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
         }
     }
 
@@ -182,10 +182,10 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $class = new ReflectionClass('availability_coursecompleted\frontend');
         $method = $class->getMethod('get_javascript_strings');
         $method->setAccessible(true);
-        $this->assertEquals([], $method->invokeArgs($frontend, []));
+        $this->assertEqualsCanonicalizing([], $method->invokeArgs($frontend, []));
         $method = $class->getMethod('get_javascript_init_params');
         $method->setAccessible(true);
-        $this->assertEquals(0, count($method->invokeArgs($frontend, [$course])));
+        $this->assertCount(0, $method->invokeArgs($frontend, [$course]));
         $method = $class->getMethod('allow_add');
         $method->setAccessible(true);
         $this->assertTrue($method->invokeArgs($frontend, [$course, null, null]));
@@ -263,8 +263,8 @@ class availability_coursecompleted_testcase extends advanced_testcase {
      */
     public function test_other() {
         $condition = \availability_coursecompleted\condition::get_json('3');
-        $this->assertEquals($condition, (object)['type' => 'coursecompleted', 'id' => '3']);
+        $this->assertEqualsCanonicalizing((object)['type' => 'coursecompleted', 'id' => '3'], $condition);
         $condition = \availability_coursecompleted\condition::get_json('0');
-        $this->assertEquals($condition, (object)['type' => 'coursecompleted', 'id' => '0']);
+        $this->assertEqualsCanonicalizing((object)['type' => 'coursecompleted', 'id' => '0'], $condition);
     }
 }
