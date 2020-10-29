@@ -35,7 +35,7 @@ use \core_privacy\tests\provider_testcase;
  * @copyright 2017 eWallah.net <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class privacy_testcase extends provider_testcase {
+class priv_testcase extends provider_testcase {
 
     /**
      * Test returning metadata.

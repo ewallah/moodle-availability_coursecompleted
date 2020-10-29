@@ -51,12 +51,12 @@ class availability_coursecompleted_testcase extends advanced_testcase {
      * @coversDefaultClass availability_coursecompleted\condition
      */
     public function test_in_tree() {
-        global $CFG, $USER;
+        global $USER;
         $this->resetAfterTest();
         $this->setAdminUser();
 
         // Create course with coursecompleted turned on.
-        $CFG->enableavailability = true;
+        set_config('enableavailability', true);
         $course = $this->getDataGenerator()->create_course(['enablecompletion' => true]);
         $userid = $this->getDataGenerator()->create_user()->id;
         $this->getDataGenerator()->enrol_user($userid, $course->id);
@@ -169,28 +169,19 @@ class availability_coursecompleted_testcase extends advanced_testcase {
      * @coversDefaultClass availability_coursecompleted\frontend
      */
     public function test_get_description() {
-        global $CFG;
         $this->resetAfterTest();
         $this->setAdminUser();
-        $CFG->enableavailability = true;
+        set_config('enableavailability', true);
         $userid = $this->getDataGenerator()->create_user()->id;
         $course = $this->getDataGenerator()->create_course(['enablecompletion' => true]);
         $modinfo = get_fast_modinfo($course);
         $sections = $modinfo->get_section_info_all();
 
         $frontend = new availability_coursecompleted\frontend();
-        $class = new ReflectionClass('availability_coursecompleted\frontend');
-        $method = $class->getMethod('get_javascript_strings');
-        $method->setAccessible(true);
-        $this->assertEqualsCanonicalizing([], $method->invokeArgs($frontend, []));
-        $method = $class->getMethod('get_javascript_init_params');
-        $method->setAccessible(true);
-        $this->assertCount(0, $method->invokeArgs($frontend, [$course]));
-        $method = $class->getMethod('allow_add');
-        $method->setAccessible(true);
-        $this->assertTrue($method->invokeArgs($frontend, [$course, null, null]));
-        $this->assertFalse($method->invokeArgs($frontend, [$course, null, $sections[0]]));
-        $this->assertTrue($method->invokeArgs($frontend, [$course, null, $sections[1]]));
+        $name = 'availability_coursecompleted\frontend';
+        $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
+        $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course, null, $sections[0]], $name));
+        $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course, null, $sections[1]], $name));
 
         $info = new \core_availability\mock_info();
         $nau = 'Not available unless: ';
@@ -219,12 +210,12 @@ class availability_coursecompleted_testcase extends advanced_testcase {
      * @covers availability_coursecompleted\condition
      */
     public function test_page() {
-        global $CFG, $PAGE;
+        global $PAGE;
         $this->resetAfterTest();
         $this->setAdminUser();
 
         // Create course with coursecompleted turned on.
-        $CFG->enableavailability = true;
+        set_config('enableavailability', true);
         $generator = $this->getDataGenerator();
         $course = $generator->create_course(['enablecompletion' => true]);
         $user = $generator->create_user();
