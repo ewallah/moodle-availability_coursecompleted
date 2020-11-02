@@ -18,7 +18,8 @@
  * Coursecompleted enrolment privacy tests.
  *
  * @package   availability_coursecompleted
- * @copyright 2017 eWallah.net <info@eWallah.net>
+ * @copyright 2017 iplusacademy (www.iplusacademy.org)
+ * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,7 +33,8 @@ use \core_privacy\tests\provider_testcase;
  * Coursecompleted enrolment privacy tests.
  *
  * @package   availability_coursecompleted
- * @copyright 2017 eWallah.net <info@eWallah.net>
+ * @copyright 2017 iplusacademy (www.iplusacademy.org)
+ * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class priv_testcase extends provider_testcase {

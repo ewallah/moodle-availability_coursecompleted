@@ -17,10 +17,10 @@
 /**
  * Language strings.
  *
- * @package availability_coursecompleted
+ * @package   availability_coursecompleted
  * @copyright 2015 iplusacademy (www.iplusacademy.org)
- * @author Renaat Debleu {info@eWallah.net}
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Renaat Debleu <info@eWallah.net>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $string['description'] = 'Allow only students who already (or not yet) completed this course.';

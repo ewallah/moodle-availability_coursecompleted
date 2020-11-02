@@ -17,15 +17,15 @@
 /**
  * Version info.
  *
- * @package availability_coursecompleted
- * @copyright 2017 iplusacademy (www.iplusacademy.org)
- * @author Renaat Debleu {info@eWallah.net}
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   availability_coursecompleted
+ * @copyright 2015 iplusacademy (www.iplusacademy.org)
+ * @author    Renaat Debleu <info@eWallah.net>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020102300;
+$plugin->version   = 2020110200;
 $plugin->requires  = 2019111800;
 $plugin->component = 'availability_coursecompleted';
 $plugin->maturity  = MATURITY_STABLE;

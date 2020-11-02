@@ -17,10 +17,10 @@
 /**
  * Condition main class.
  *
- * @package availability_coursecompleted
+ * @package   availability_coursecompleted
  * @copyright 2015 iplusacademy (www.iplusacademy.org)
- * @author Renaat Debleu {info@eWallah.net}
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Renaat Debleu <info@eWallah.net>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace availability_coursecompleted;
@@ -31,9 +31,10 @@ require_once($CFG->libdir . '/completionlib.php');
 /**
  * Condition main class.
  *
- * @package availability_coursecompleted
+ * @package   availability_coursecompleted
  * @copyright 2015 iplusacademy (www.iplusacademy.org)
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Renaat Debleu <info@eWallah.net>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class condition extends \core_availability\condition {
 
