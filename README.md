@@ -13,5 +13,5 @@ Installation:
  1. Unpack the zip file into the availability/condition/ directory. A new directory will be created called coursecompleted.
  2. Go to Site administration > Notifications to complete the plugin installation.
 
-[![Build Status](https://travis-ci.com/ewallah/moodle-availability_coursecompleted.svg?branch=main)](https://travis-ci.com/ewallah/moodle-availability_coursecompleted)
+[![Build Status](https://github.com/ewallah/moodle-availability_coursecompleted/workflows/Tests/badge.svg)](https://github.com/ewallah/moodle-availability_coursecompleted/actions)
 [![Coverage Status](https://coveralls.io/repos/github/ewallah/moodle-availability_coursecompleted/badge.svg?branch=main)](https://coveralls.io/github/ewallah/moodle-availability_coursecompleted?branch=main)
