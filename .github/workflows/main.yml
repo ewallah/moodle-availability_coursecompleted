@@ -1,7 +1,12 @@
 name: Tests
 
-# Run this workflow every time a new commit pushed to your repository
-on: push
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
 
 jobs:
   ci:
@@ -92,10 +97,17 @@ jobs:
         run: moodle-plugin-ci grunt || true
 
       - name: phpunit 
-        run: moodle-plugin-ci phpunit --coverage-text
+        run: moodle-plugin-ci phpunit --coverage-text --coverage-clover
 
       - name: firefox
         run: moodle-plugin-ci behat
       
       - name: chrome
         run: moodle-plugin-ci behat --profile chrome
+
+      - name: coveralls
+        env:
+          COVERALLS_RUN_LOCALLY: true
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: moodle-plugin-ci coveralls-upload
+        if: matrix.moodle-branch == 'master'
