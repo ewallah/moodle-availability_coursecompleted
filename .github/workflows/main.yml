@@ -1,12 +1,6 @@
 name: Tests
 
-on:
-  push:
-    branches:
-    - main
-  pull_request:
-    branches:
-    - main
+on: [push, pull_request]
 
 jobs:
   ci:
@@ -94,7 +88,7 @@ jobs:
         run: moodle-plugin-ci mustache
 
       - name: grunt
-        run: moodle-plugin-ci grunt || true
+        run: moodle-plugin-ci grunt
 
       - name: phpunit 
         run: moodle-plugin-ci phpunit --coverage-text --coverage-clover
