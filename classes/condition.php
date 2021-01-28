@@ -93,6 +93,7 @@ class condition extends \core_availability\condition {
      */
     public function is_available($not, \core_availability\info $info, $grabthelot, $userid) {
         global $USER;
+        $grabthelot = true;
         $completioninfo = new \completion_info($info->get_course());
         $allow = $completioninfo->is_course_complete($userid != $USER->id ? $userid : $USER->id);
         if (!$this->coursecompleted) {
@@ -132,5 +133,16 @@ class condition extends \core_availability\condition {
      */
     protected function get_debug_string() {
         return $this->coursecompleted ? '#' . 'True' : 'False';
+    }
+
+    /**
+     * The plugin has been configured to rely on a particular activity's completion value.
+     *
+     * @param \stdClass $course Moodle course object
+     * @param int $cmid ID of activity whose completion value is considered
+     * @return boolean True if the availability of something else may rely on it
+     */
+    public static function completion_value_used($course, $cmid) {
+        return true;
     }
 }
