@@ -233,7 +233,6 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $this->assertFalse($cond->is_available(false, $info, false, $user->id));
         $this->assertTrue($cond->is_available(true, $info, false, $user->id));
         $this->assertTrue($cond->is_available(true, $info, true, $user->id));
-        $this->assertTrue($cond->completion_value_used($course, $page->cmid));
         $ccompletion = new completion_completion(['course' => $course->id, 'userid' => $user->id]);
         $ccompletion->mark_complete();
         rebuild_course_cache($course->id, true);
