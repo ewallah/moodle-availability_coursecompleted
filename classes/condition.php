@@ -93,7 +93,6 @@ class condition extends \core_availability\condition {
      */
     public function is_available($not, \core_availability\info $info, $grabthelot, $userid) {
         global $USER;
-        $grabthelot = true;
         $completioninfo = new \completion_info($info->get_course());
         $allow = $completioninfo->is_course_complete($userid != $USER->id ? $userid : $USER->id);
         if (!$this->coursecompleted) {
