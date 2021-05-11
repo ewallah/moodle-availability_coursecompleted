@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moodle-branch: ['master', 'MOODLE_311_STABLE', 'MOODLE_310_STABLE', 'MOODLE_39_STABLE']
+        moodle-branch: ['master', 'MOODLE_311_STABLE', 'MOODLE_310_STABLE']
         php: ['8.0', '7.4']
         database: ['mariadb', 'pgsql']
 
@@ -42,7 +42,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, pgsql, mysqli, gd, zip
+          extensions: mbstring, pgsql, mysqli, gd, xmlrpc,zip
+          ini-values: max_input_vars=5000
  
       - name: composer
         run: |
