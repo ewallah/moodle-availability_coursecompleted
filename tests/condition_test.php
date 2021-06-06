@@ -182,7 +182,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $frontend = new availability_coursecompleted\frontend();
         $name = 'availability_coursecompleted\frontend';
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
-        $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course, null, $sections[0]], $name));
+        $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course, null, $sections[0]], $name));
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course, null, $sections[1]], $name));
 
         $info = new \core_availability\mock_info();

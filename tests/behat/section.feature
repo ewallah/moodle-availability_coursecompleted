@@ -13,10 +13,10 @@ Feature: Section 0 availability_coursecompleted
       | user     | course | role           |
       | teacher1 | C1     | editingteacher |
 
-  Scenario: Restrict section0 hidden
+  Scenario: Restrict section0 visible
     When I am on the "C1" "Course" page logged in as "admin"
     And I turn editing mode on
     And I edit the section "0"
     And I expand all fieldsets
     And I click on "Add restriction..." "button"
-    Then "Course completed" "button" should not exist in the "Add restriction..." "dialogue"
+    Then "Course completed" "button" should exist in the "Add restriction..." "dialogue"

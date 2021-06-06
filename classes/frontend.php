@@ -43,15 +43,11 @@ class frontend extends \core_availability\frontend {
      * plugin can do this depending on course or system settings.
      *
      * @param \stdClass $course Course object
-     * @param \cm_info|null $cm Course-module currently being edited (null if none)
-     * @param \section_info|null $section Section currently being edited (null if none)
+     * @param \cm_info $cm Course-module currently being edited (null if none)
+     * @param \section_info $section Section currently being edited (null if Course object)
      * @return bool True if there are completion criteria
      */
     protected function allow_add($course, \cm_info $cm = null, \section_info $section = null) {
-        // Section 0.
-        if ($section && $section->section === 0) {
-            return false;
-        }
         return $course->enablecompletion == 1;
     }
 }
