@@ -1,4 +1,4 @@
-@ewallah @availability @availability_coursecompleted @javascript
+@ewallah @availability @availability_coursecompleted
 Feature: Section 0 availability_coursecompleted
   Section 0 cannot be restricted
 
@@ -13,6 +13,7 @@ Feature: Section 0 availability_coursecompleted
       | user     | course | role           |
       | teacher1 | C1     | editingteacher |
 
+  @javascript
   Scenario: Restrict section0 visible
     When I am on the "C1" "Course" page logged in as "admin"
     And I turn editing mode on
