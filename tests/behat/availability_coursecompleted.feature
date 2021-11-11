@@ -23,8 +23,8 @@ Feature: availability_coursecompleted
       | teacher1 | C1     | editingteacher |
       | student1 | C1     | student        |
 
-   @javascript
-   Scenario: Complete a course
+  @javascript
+  Scenario: Complete a course
     Given I am on the "C1" "Course" page logged in as "teacher1"
     And I navigate to "Course completion" in current page administration
     And I expand all fieldsets
