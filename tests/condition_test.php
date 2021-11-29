@@ -23,9 +23,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace availability_coursecompleted;
+
 defined('MOODLE_INTERNAL') || die();
 
-use availability_coursecompleted\condition;
+use \availability_coursecompleted\condition;
 
 /**
  * Unit tests for the coursecompleted condition.
@@ -35,7 +37,7 @@ use availability_coursecompleted\condition;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class availability_coursecompleted_testcase extends advanced_testcase {
+class adv_testcase extends \advanced_testcase {
 
     /**
      * Load required classes.
@@ -82,7 +84,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
 
         // Change course completed.
         $this->setAdminUser();
-        $ccompletion = new completion_completion(['course' => $course->id, 'userid' => $userid]);
+        $ccompletion = new \completion_completion(['course' => $course->id, 'userid' => $userid]);
         $ccompletion->mark_complete();
 
         $this->assertTrue($tree1->check_available(false, $info, true, $userid)->is_available());
@@ -102,7 +104,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         try {
             $completed = new condition($structure);
             $this->fail();
-        } catch (exception $e) {
+        } catch (\exception $e) {
             $this->assertEquals('', $e->getMessage());
         }
         $this->assertNotEmpty($completed);
@@ -112,7 +114,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         try {
             $completed = new condition($structure);
             $this->fail();
-        } catch (exception $e) {
+        } catch (\exception $e) {
             $this->assertEquals('', $e->getMessage());
         }
         $this->assertNotEmpty($completed);
@@ -122,7 +124,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         try {
             $completed = new condition($structure);
             $this->fail();
-        } catch (exception $e) {
+        } catch (\exception $e) {
             $this->assertEquals('', $e->getMessage());
         }
         $this->assertNotEmpty($completed);
@@ -131,8 +133,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $structure->id = null;
         try {
             $completed = new condition($structure);
-            $this->fail();
-        } catch (coding_exception $e) {
+        } catch (\coding_exception $e) {
             $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
         }
 
@@ -140,8 +141,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $structure->id = false;
         try {
             $completed = new condition($structure);
-            $this->fail();
-        } catch (coding_exception $e) {
+        } catch (\coding_exception $e) {
             $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
         }
 
@@ -149,8 +149,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $structure->id = 1;
         try {
             $completed = new condition($structure);
-            $this->fail();
-        } catch (coding_exception $e) {
+        } catch (\coding_exception $e) {
             $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
         }
     }
@@ -179,7 +178,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $modinfo = get_fast_modinfo($course);
         $sections = $modinfo->get_section_info_all();
 
-        $frontend = new availability_coursecompleted\frontend();
+        $frontend = new \availability_coursecompleted\frontend();
         $name = 'availability_coursecompleted\frontend';
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course, null, $sections[0]], $name));
@@ -233,7 +232,7 @@ class availability_coursecompleted_testcase extends advanced_testcase {
         $this->assertFalse($cond->is_available(false, $info, false, $user->id));
         $this->assertTrue($cond->is_available(true, $info, false, $user->id));
         $this->assertTrue($cond->is_available(true, $info, true, $user->id));
-        $ccompletion = new completion_completion(['course' => $course->id, 'userid' => $user->id]);
+        $ccompletion = new \completion_completion(['course' => $course->id, 'userid' => $user->id]);
         $ccompletion->mark_complete();
         rebuild_course_cache($course->id, true);
         $this->assertFalse($cond->is_available(true, $info, true, $user->id));
