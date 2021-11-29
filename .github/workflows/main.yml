@@ -93,7 +93,7 @@ jobs:
         run: moodle-plugin-ci --ansi grunt
 
       - name: phpunit 
-        run: moodle-plugin-ci --ansi phpunit || true
+        run: moodle-plugin-ci --ansi phpunit  --coverage-text --coverage-clover || true
 
       - name: firefox
         run: moodle-plugin-ci --ansi behat
