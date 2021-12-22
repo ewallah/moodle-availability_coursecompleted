@@ -107,9 +107,21 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci --ansi phpunit --coverage-text
 
-      - name: behat
+      - name: firefox
         if: ${{ always() }}
-        run: moodle-plugin-ci --ansi behat --profile=chrome
+        run: moodle-plugin-ci --ansi behat
+      
+      - name: chrome
+        if: ${{ always() }}
+        run: moodle-plugin-ci --ansi behat --profile chrome
+
+      - name: firefox classic
+        if: ${{ always() }}
+        run: moodle-plugin-ci --ansi behat --suite="classic"
+      
+      - name: chrome classic
+        if: ${{ always() }}
+        run: moodle-plugin-ci --ansi behat  --suite="classic" --profile chrome
 
       - name: admin bookmarks
         if: ${{ always() }}
