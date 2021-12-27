@@ -28,6 +28,8 @@ namespace availability_coursecompleted\privacy;
 defined('MOODLE_INTERNAL') || die();
 
 use \core_privacy\tests\provider_testcase;
+use \core_privacy\local\metadata\collection;
+use \availability_coursecompleted\privacy\provider;
 
 /**
  * Coursecompleted enrolment privacy tests.
@@ -41,11 +43,10 @@ class privacy_test extends provider_testcase {
 
     /**
      * Test returning metadata.
-     * @coversDefaultClass availability_coursecompleted\privacy\provider
      */
     public function test_get_metadata() {
-        $collection = new \core_privacy\local\metadata\collection('availability_coursecompleted');
-        $reason = \availability_coursecompleted\privacy\provider::get_reason($collection);
+        $collection = new collection('availability_coursecompleted');
+        $reason = provider::get_reason($collection);
         $this->assertEquals($reason, 'privacy:metadata');
         $this->assertStringContainsString('does not store', get_string($reason, 'availability_coursecompleted'));
     }
