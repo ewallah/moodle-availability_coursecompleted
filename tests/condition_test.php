@@ -25,8 +25,6 @@
 
 namespace availability_coursecompleted;
 
-defined('MOODLE_INTERNAL') || die();
-
 use \availability_coursecompleted\condition;
 use \availability_coursecompleted\frontend;
 use core_availability\tree;
