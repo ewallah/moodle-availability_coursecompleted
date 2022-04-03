@@ -51,6 +51,7 @@ class condition_test extends \advanced_testcase {
      */
     public function test_in_tree() {
         global $CFG, $USER;
+        require_once($CFG->dirroot . '/completion/criteria/completion_criteria_activity.php');
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -172,11 +173,18 @@ class condition_test extends \advanced_testcase {
         set_config('enableavailability', true);
         $userid = $this->getDataGenerator()->create_user()->id;
         $course = $this->getDataGenerator()->create_course(['enablecompletion' => true]);
+        $assign = $this->getDataGenerator()->create_module('assign', ['course' => $course->id], ['completion' => 1]);
+
         $modinfo = get_fast_modinfo($course);
         $sections = $modinfo->get_section_info_all();
 
         $frontend = new frontend();
         $name = 'availability_coursecompleted\frontend';
+        $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
+
+        $data = (object) ['id' => $course->id, 'criteria_activity' => [$assign->cmid => 1]];
+        $criterion = new \completion_criteria_activity();
+        $criterion->update_config($data);
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course, null, $sections[0]], $name));
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course, null, $sections[1]], $name));
