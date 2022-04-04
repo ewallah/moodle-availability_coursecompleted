@@ -33,6 +33,7 @@ use core_availability\tree;
 use core_availability\info_module;
 use core_availability\mock_info;
 use core_availability\mock_condition;
+use core_completion;
 
 /**
  * Unit tests for the coursecompleted condition.
@@ -51,6 +52,7 @@ class condition_test extends \advanced_testcase {
      */
     public function test_in_tree() {
         global $CFG, $USER;
+        require_once($CFG->dirroot . '/completion/criteria/completion_criteria.php');
         require_once($CFG->dirroot . '/completion/criteria/completion_criteria_activity.php');
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
         $this->resetAfterTest();
