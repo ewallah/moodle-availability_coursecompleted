@@ -48,6 +48,12 @@ jobs:
           ini-values: max_input_vars=5000
           coverage: xdebug
  
+      - name: Cache composer
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/
+          key: composer-cache
+
       - name: composer
         run: |
            composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
