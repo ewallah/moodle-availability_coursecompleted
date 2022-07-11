@@ -30,7 +30,7 @@ jobs:
           ini-values: max_input_vars=5000
           coverage: xdebug
 
-      - name: Cache composer
+      - name: cache composer
         uses: actions/cache@v2
         with:
           path: ~/.composer/cache/
@@ -44,6 +44,7 @@ jobs:
            sudo locale-gen en_AU.UTF-8
            sed -i 's/phpdbg -d memory_limit=-1 -qrr//g' ci/src/Command/PHPUnitCommand.php
            sudo systemctl start mysql.service
+           echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
 
       - name: install Moodle
         run: moodle-plugin-ci install -v  --db-user=root --db-pass=root --db-host=127.0.0.1 --plugin this-plugin
@@ -94,11 +95,6 @@ jobs:
       - name: behat
         if: ${{ always() }}
         run: moodle-plugin-ci --ansi behat --profile=chrome
-
-      - name: admin bookmarks
-        if: ${{ always() }}
-        run: php admin/tool/behat/cli/run.php --tags=@block_admin_bookmarks --suite=${{ matrix.suite }}
-        working-directory: moodle
 
       - name: privacy
         if: ${{ always() }}
