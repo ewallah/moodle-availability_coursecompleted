@@ -48,6 +48,12 @@ jobs:
           ini-values: max_input_vars=5000
           coverage: xdebug
  
+      - name: cache composer
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/
+          key: composer-cache
+
       - name: composer
         run: |
            composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
@@ -117,11 +123,6 @@ jobs:
       - name: chrome classic
         if: ${{ always() }}
         run: moodle-plugin-ci --ansi behat  --suite="classic" --profile chrome
-
-      - name: admin bookmarks
-        if: ${{ always() }}
-        run: php admin/tool/behat/cli/run.php --tags=@block_admin_bookmarks --suite=${{ matrix.suite }}
-        working-directory: moodle
 
       - name: privacy
         if: ${{ always() }}
