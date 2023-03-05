@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moodle-branch: ['master', 'MOODLE_400_STABLE', 'MOODLE_401_STABLE']
+        moodle-branch: ['master', 'MOODLE_400_STABLE', 'MOODLE_401_STABLE', 'MOODLE_311_STABLE']
         php: ['8.0']
         database: ['mariadb', 'pgsql']
 
@@ -96,7 +96,7 @@ jobs:
         run: moodle-plugin-ci --ansi savepoints
 
       - name: grunt
-        if: ${{ always() }}
+        if: ${{ matrix.moodle-branch != 'MOODLE_311_STABLE'}}
         run: moodle-plugin-ci --ansi grunt
 
       - name: mustache
