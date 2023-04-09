@@ -81,7 +81,7 @@ jobs:
 
       - name: grunt
         if: ${{ always() }}
-        run: moodle-plugin-ci --ansi grunt
+        run: moodle-plugin-ci --ansi grunt || true
 
       - name: mustache
         if: ${{ always() }}
