@@ -30,9 +30,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moodle-branch: ['master', 'MOODLE_400_STABLE', 'MOODLE_401_STABLE', 'MOODLE_311_STABLE', 'MOODLE_402_STABLE']
+        moodle-branch: ['MOODLE_311_STABLE', 'MOODLE_400_STABLE', 'MOODLE_401_STABLE', 'MOODLE_402_STABLE', 'master']
         php: ['8.0']
         database: ['mariadb', 'pgsql']
+        include:
+          - php: '8.1'
+            moodle-branch: 'MOODLE_402_STABLE'
+            database: pgsql
 
     steps:
       - name: checkout plugin
