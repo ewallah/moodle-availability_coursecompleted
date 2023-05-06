@@ -170,6 +170,9 @@ class condition_test extends \advanced_testcase {
      * @covers \availability_coursecompleted\frontend
      */
     public function test_get_description() {
+        global $CFG;
+        require_once($CFG->dirroot . '/completion/criteria/completion_criteria_activity.php');
+        require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
         $this->resetAfterTest();
         $this->setAdminUser();
         set_config('enableavailability', true);
