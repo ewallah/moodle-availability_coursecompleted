@@ -25,10 +25,10 @@
 
 namespace availability_coursecompleted;
 
-use \completion_info;
-use \core_availability\info;
-use \coding_exception;
-use \stdClass;
+use completion_info;
+use core_availability\info;
+use coding_exception;
+use stdClass;
 
 
 /**
