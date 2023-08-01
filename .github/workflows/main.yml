@@ -51,9 +51,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, pgsql, mysqli, gd, xmlrpc, zip
           ini-values: max_input_vars=5000
-          coverage: xdebug
+          coverage: pcov
 
       - name: npm cache
         uses: actions/cache@v3
