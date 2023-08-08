@@ -30,16 +30,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moodle-branch: ['MOODLE_311_STABLE', 'MOODLE_400_STABLE', 'MOODLE_401_STABLE', 'MOODLE_402_STABLE', 'master']
-        php: ['8.0']
+        php: ['8.1']
+        moodle-branch: ['MOODLE_401_STABLE', 'MOODLE_402_STABLE', 'master']
         database: ['mariadb', 'pgsql']
         include:
-          - php: '8.1'
-            moodle-branch: 'MOODLE_402_STABLE'
+          - php: '8.0'
+            moodle-branch: 'MOODLE_400_STABLE'
             database: 'pgsql'
           - php: '7.4'
             moodle-branch: 'MOODLE_311_STABLE'
             database: pgsql
+          - php: '8.2'
+            moodle-branch: 'master'
+            database: 'pgsql'
         
     steps:
       - name: checkout plugin
@@ -104,7 +107,7 @@ jobs:
         run: moodle-plugin-ci --ansi savepoints
 
       - name: grunt
-        if: ${{ matrix.moodle-branch != 'MOODLE_311_STABLE'}}
+        if: ${{ matrix.moodle-branch == 'MOODLE_402_STABLE'}}
         run: moodle-plugin-ci --ansi grunt
 
       - name: mustache
@@ -114,6 +117,17 @@ jobs:
       - name: phpunit
         if: ${{ always() }}
         run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover
+
+      - name: privacy
+        if: ${{ always() }}
+        run: vendor/bin/phpunit --colors --no-coverage --testsuite tool_dataprivacy_testsuite,tool_policy_testsuite,core_privacy_testsuite
+        working-directory: moodle
+
+      - name: coveralls
+        if: ${{ always() }}
+        run: moodle-plugin-ci coveralls-upload
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: firefox
         if: ${{ always() }}
@@ -131,13 +145,12 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci --ansi behat  --suite="classic" --profile chrome
 
-      - name: privacy
+      - name: admin bookmarks
         if: ${{ always() }}
-        run: vendor/bin/phpunit --colors --no-coverage --testsuite tool_dataprivacy_testsuite,tool_policy_testsuite,core_privacy_testsuite
+        run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome blocks/admin_bookmarks
         working-directory: moodle
 
-      - name: coveralls
+      - name: admin xmldb
         if: ${{ always() }}
-        run: moodle-plugin-ci coveralls-upload
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome admin/tool/xmldb
+        working-directory: moodle
