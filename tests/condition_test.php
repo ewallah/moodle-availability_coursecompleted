@@ -222,8 +222,8 @@ class condition_test extends \advanced_testcase {
         $this->assertTrue($completed->is_applied_to_user_lists());
         $checker = new \core_availability\capability_checker(\context_course::instance($course->id));
         $completed->filter_user_list([], true, $info, $checker);
-        $completed->filter_user_list([$userid, $USER->id], true, $info, $checker);
-        $completed->filter_user_list([$userid, $USER->id], false, $info, $checker);
+        $completed->filter_user_list([$userid, $USER->id, $teacherid], true, $info, $checker);
+        $completed->filter_user_list([$userid, $USER->id, $teacherid], false, $info, $checker);
     }
 
     /**
