@@ -172,9 +172,10 @@ class condition extends \core_availability\condition {
         }
 
         $course = $info->get_course();
+        $cond = $this->coursecompleted ? 'NOT' : '';
         $sql = "SELECT DISTINCT userid
                   FROM {course_completions}
-                  WHERE course = ? AND timecompleted IS " . $this->coursecompleted ? "NOT NULL" : "NULL";
+                  WHERE timecompleted IS $cond NULL AND course = ?";
         $compusers = $DB->get_records_sql($sql, [$course->id]);
 
         // List users who have access to the completion report.
