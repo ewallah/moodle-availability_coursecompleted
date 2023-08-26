@@ -176,8 +176,12 @@ class condition_test extends \advanced_testcase {
         $this->resetAfterTest();
         $this->setAdminUser();
         set_config('enableavailability', true);
+
         $userid = $this->getDataGenerator()->create_user()->id;
+        $teacherid = $this->getDataGenerator()->create_user()->id;
         $course = $this->getDataGenerator()->create_course(['enablecompletion' => true]);
+        $this->getDataGenerator()->enrol_user($userid, $course->id, 'student');
+        $this->getDataGenerator()->enrol_user($teacherid, $course->id, 'editingteacher');
         $assign = $this->getDataGenerator()->create_module('assign', ['course' => $course->id], ['completion' => 1]);
 
         $modinfo = get_fast_modinfo($course);
