@@ -170,7 +170,7 @@ class condition_test extends \advanced_testcase {
      * @covers \availability_coursecompleted\frontend
      */
     public function test_get_description() {
-        global $CFG, $USER;
+        global $CFG;
         require_once($CFG->dirroot . '/completion/criteria/completion_criteria_activity.php');
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
         $this->resetAfterTest();
@@ -222,8 +222,8 @@ class condition_test extends \advanced_testcase {
         $this->assertTrue($completed->is_applied_to_user_lists());
         $checker = new \core_availability\capability_checker(\context_course::instance($course->id));
         $completed->filter_user_list([], true, $info, $checker);
-        $completed->filter_user_list([$userid, $USER->id, $teacherid], true, $info, $checker);
-        $completed->filter_user_list([$userid, $USER->id, $teacherid], false, $info, $checker);
+        $completed->filter_user_list([$userid, $teacherid], true, $info, $checker);
+        $completed->filter_user_list([$userid, $teacherid], false, $info, $checker);
     }
 
     /**
@@ -232,7 +232,7 @@ class condition_test extends \advanced_testcase {
      * @covers \availability_coursecompleted\frontend
      */
     public function test_page() {
-        global $PAGE, $USER;
+        global $PAGE;
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -241,7 +241,9 @@ class condition_test extends \advanced_testcase {
         $generator = $this->getDataGenerator();
         $course = $generator->create_course(['enablecompletion' => true]);
         $user = $generator->create_user();
+        $teacher = $generator->create_user();
         $generator->enrol_user($user->id, $course->id);
+        $generator->enrol_user($teacher->id, $course->id, 'teacher');
         $page = $generator->get_plugin_generator('mod_page')->create_instance(['course' => $course]);
         $modinfo = get_fast_modinfo($course);
         $cm = $modinfo->get_cm($page->cmid);
@@ -270,8 +272,8 @@ class condition_test extends \advanced_testcase {
             'Not available unless: You completed this course.');
 
         $checker = new \core_availability\capability_checker(\context_course::instance($course->id));
-        $cond->filter_user_list([$user->id, $USER->id], true, $info, $checker);
-        $cond->filter_user_list([$user->id, $USER->id], false, $info, $checker);
+        $cond->filter_user_list([$user->id, $teacher->id], true, $info, $checker);
+        $cond->filter_user_list([$user->id, $teacher->id], false, $info, $checker);
     }
 
     /**
