@@ -149,7 +149,7 @@ class condition extends \core_availability\condition {
     }
 
     /**
-     * Tests against a user list. Users who cannot access the activity due to 
+     * Tests against a user list. Users who cannot access the activity due to
      * availability restrictions will be removed from the list.
      *
      * @param array $users Array of userid => object
@@ -172,7 +172,7 @@ class condition extends \core_availability\condition {
         }
 
         $course = $info->get_course();
-        $calc = $this->coursecompleted ? 'IS NOT NULL' : 'IS NULL'; 
+        $calc = $this->coursecompleted ? 'IS NOT NULL' : 'IS NULL';
         $compusers = $DB->get_records_sql("
                 SELECT DISTINCT userid
                   FROM {course_completions}
