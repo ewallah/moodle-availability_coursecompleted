@@ -95,9 +95,8 @@ class condition extends \core_availability\condition {
      * @return bool True if available
      */
     public function is_available($not, info $info, $grabthelot, $userid) {
-        global $USER;
         $completioninfo = new \completion_info($info->get_course());
-        $allow = $completioninfo->is_course_complete($userid != $USER->id ? $userid : $USER->id);
+        $allow = $completioninfo->is_course_complete($userid);
         unset($completioninfo);
         if (!$this->coursecompleted) {
             $allow = !$allow;
@@ -136,5 +135,69 @@ class condition extends \core_availability\condition {
      */
     protected function get_debug_string() {
         return $this->coursecompleted ? '#' . 'True' : 'False';
+    }
+
+    /**
+     * Checks whether this condition applies to user lists.
+     *
+     * @return bool True if this condition applies to user lists
+     */
+    public function is_applied_to_user_lists() {
+        // Course completions are assumed to be 'permanent', so they affect the
+        // display of user lists for activities.
+        return true;
+    }
+
+    /**
+     * Tests against a user list. Users who cannot access the activity due to 
+     * availability restrictions will be removed from the list.
+     *
+     * @param array $users Array of userid => object
+     * @param bool $not If tree's parent indicates it's being checked negatively
+     * @param info $info Info about current context
+     * @param capability_checker $checker Capability checker
+     * @return array Filtered version of input array
+     */
+    public function filter_user_list(
+        array $users,
+        $not,
+        \core_availability\info $info,
+        \core_availability\capability_checker $checker) {
+
+        global $DB;
+
+        // If the array is empty already, just return it.
+        if (!$users) {
+            return $users;
+        }
+
+        $course = $info->get_course();
+        $calc = $this->coursecompleted ? 'IS NOT NULL' : 'IS NULL'; 
+        $compusers = $DB->get_records_sql("
+                SELECT DISTINCT userid
+                  FROM {course_completions}
+                  WHERE course = ? AND timecompleted ?", [$course->id, $calc]);
+
+        // List users who have access to the completion report.
+        $adusers = $checker->get_users_by_capability('report/completion:view');
+
+        // Filter the user list.
+        $result = [];
+        foreach ($users as $id => $user) {
+            // Always include users with access to completion report.
+            if (array_key_exists($id, $adusers)) {
+                $result[$id] = $user;
+                continue;
+            }
+            // Other users are included or not based on course completion.
+            $allow = array_key_exists($id, $compusers);
+            if ($not) {
+                $allow = !$allow;
+            }
+            if ($allow) {
+                $result[$id] = $user;
+            }
+        }
+        return $result;
     }
 }
