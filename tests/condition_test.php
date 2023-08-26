@@ -170,7 +170,7 @@ class condition_test extends \advanced_testcase {
      * @covers \availability_coursecompleted\frontend
      */
     public function test_get_description() {
-        global $CFG;
+        global $CFG, $USER;
         require_once($CFG->dirroot . '/completion/criteria/completion_criteria_activity.php');
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
         $this->resetAfterTest();
@@ -218,8 +218,8 @@ class condition_test extends \advanced_testcase {
         $this->assertTrue($completed->is_applied_to_user_lists());
         $checker = new \core_availability\capability_checker(\context_course::instance($course->id));
         $completed->filter_user_list([], true, $info, $checker);
-        $completed->filter_user_list([$userid], true, $info, $checker);
-        $completed->filter_user_list([$userid], false, $info, $checker);
+        $completed->filter_user_list([$userid, $USER->id], true, $info, $checker);
+        $completed->filter_user_list([$userid, $USER->id], false, $info, $checker);
     }
 
     /**
@@ -228,7 +228,7 @@ class condition_test extends \advanced_testcase {
      * @covers \availability_coursecompleted\frontend
      */
     public function test_page() {
-        global $PAGE;
+        global $PAGE, $USER;
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -264,6 +264,10 @@ class condition_test extends \advanced_testcase {
         $this->assertEquals($cond->__toString(), '{coursecompleted:False}');
         $this->assertEquals($cond->get_standalone_description(true, true, $info),
             'Not available unless: You completed this course.');
+
+        $checker = new \core_availability\capability_checker(\context_course::instance($course->id));
+        $cond->filter_user_list([$user->id, $USER->id], true, $info, $checker);
+        $cond->filter_user_list([$user->id, $USER->id], false, $info, $checker);
     }
 
     /**
