@@ -91,7 +91,7 @@ Feature: availability_coursecompleted
     And I should see "Page D" in the "region-main" "region"
 
   @javascript
-  Scenario: See restricted feedback users who have not responded 
+  Scenario: See restricted feedback users who have not responded
     Given I am on the "C1" "Course" page logged in as "teacher1"
     And I navigate to "Course completion" in current page administration
     And I expand all fieldsets

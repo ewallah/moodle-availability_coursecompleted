@@ -26,7 +26,9 @@
 // NOTE: no MOODLE_INTERNAL test here, this file may be required by behat before including /config.php.
 // For that reason, we can't even rely on $CFG->admin being available here.
 
+// @codeCoverageIgnoreStart
 require_once(__DIR__ . '/../../../../../lib/behat/behat_base.php');
+// @codeCoverageIgnoreEnd
 
 use Behat\Mink\Exception\ElementNotFoundException as ElementNotFoundException;
 
