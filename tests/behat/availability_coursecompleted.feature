@@ -127,5 +127,5 @@ Feature: availability_coursecompleted
     And I am on the Frogs "feedback activity" page logged in as teacher1
     And I navigate to "Responses" in current page administration
     And I select "Show non-respondents" from the "jump" singleselect
-    Then I should see "Student 2"
-    And I should not see "Student 1"
+    Then I should not see "Student 2"
+    And I should see "Student 1"
