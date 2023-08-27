@@ -128,4 +128,4 @@ Feature: availability_coursecompleted
     And I navigate to "Responses" in current page administration
     And I select "Show non-respondents" from the "jump" singleselect
     Then I should not see "Student 2"
-    And I should see "Student 1"
+    And I should not see "Student 1"
