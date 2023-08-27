@@ -180,7 +180,6 @@ class condition extends \core_availability\condition {
 
         // List users who have access to the completion report.
         $adusers = $checker->get_users_by_capability('report/completion:view');
-
         // Filter the user list.
         $result = [];
         foreach ($users as $id => $user) {

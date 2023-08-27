@@ -272,8 +272,15 @@ class condition_test extends \advanced_testcase {
             'Not available unless: You completed this course.');
 
         $checker = new \core_availability\capability_checker(\context_course::instance($course->id));
-        $cond->filter_user_list([$user->id, $teacher->id], true, $info, $checker);
-        $cond->filter_user_list([$user->id, $teacher->id], false, $info, $checker);
+        $arr = [$user->id => $user, $teacher->id => $teacher];
+        $result = $cond->filter_user_list([], true, $info, $checker);
+        $this->assertArrayNotHasKey($teacher->id, $result);
+        $result = $cond->filter_user_list($arr, true, $info, $checker);
+        $this->assertArrayHasKey($user->id, $result);
+        $this->assertArrayHasKey($teacher->id, $result);
+        $result = $cond->filter_user_list($arr, false, $info, $checker);
+        $this->assertArrayHasKey($teacher->id, $result);
+        $this->assertArrayNotHasKey($user->id, $result);
     }
 
     /**
