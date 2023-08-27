@@ -92,8 +92,12 @@ Feature: availability_coursecompleted
 
   @javascript
   Scenario: See restricted feedback users who have not responded 
-    # Set up a feedback.
-    When I log in as "teacher1"
+    Given I am on the "C1" "Course" page logged in as "teacher1"
+    And I navigate to "Course completion" in current page administration
+    And I expand all fieldsets
+    And I set the field "Teacher" to "1"
+    And I click on "Save changes" "button"
+
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Feedback" to section "2" and I fill the form with:
       | Name                | Frogs                                             |
