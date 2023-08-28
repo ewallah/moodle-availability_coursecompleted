@@ -176,8 +176,12 @@ class condition_test extends \advanced_testcase {
         $this->resetAfterTest();
         $this->setAdminUser();
         set_config('enableavailability', true);
+
         $userid = $this->getDataGenerator()->create_user()->id;
+        $teacherid = $this->getDataGenerator()->create_user()->id;
         $course = $this->getDataGenerator()->create_course(['enablecompletion' => true]);
+        $this->getDataGenerator()->enrol_user($userid, $course->id, 'student');
+        $this->getDataGenerator()->enrol_user($teacherid, $course->id, 'editingteacher');
         $assign = $this->getDataGenerator()->create_module('assign', ['course' => $course->id], ['completion' => 1]);
 
         $modinfo = get_fast_modinfo($course);
@@ -214,6 +218,12 @@ class condition_test extends \advanced_testcase {
         $this->assertEquals($information, $nau . get_string('getdescription', 'availability_coursecompleted'));
         $information = $completed->get_standalone_description(true, true, $info);
         $this->assertEquals($information, $nau . get_string('getdescriptionnot', 'availability_coursecompleted'));
+
+        $this->assertTrue($completed->is_applied_to_user_lists());
+        $checker = new \core_availability\capability_checker(\context_course::instance($course->id));
+        $completed->filter_user_list([], true, $info, $checker);
+        $completed->filter_user_list([$userid, $teacherid], true, $info, $checker);
+        $completed->filter_user_list([$userid, $teacherid], false, $info, $checker);
     }
 
     /**
@@ -231,7 +241,9 @@ class condition_test extends \advanced_testcase {
         $generator = $this->getDataGenerator();
         $course = $generator->create_course(['enablecompletion' => true]);
         $user = $generator->create_user();
+        $teacher = $generator->create_user();
         $generator->enrol_user($user->id, $course->id);
+        $generator->enrol_user($teacher->id, $course->id, 'teacher');
         $page = $generator->get_plugin_generator('mod_page')->create_instance(['course' => $course]);
         $modinfo = get_fast_modinfo($course);
         $cm = $modinfo->get_cm($page->cmid);
@@ -258,6 +270,17 @@ class condition_test extends \advanced_testcase {
         $this->assertEquals($cond->__toString(), '{coursecompleted:False}');
         $this->assertEquals($cond->get_standalone_description(true, true, $info),
             'Not available unless: You completed this course.');
+
+        $checker = new \core_availability\capability_checker(\context_course::instance($course->id));
+        $arr = [$user->id => $user, $teacher->id => $teacher];
+        $result = $cond->filter_user_list([], true, $info, $checker);
+        $this->assertArrayNotHasKey($teacher->id, $result);
+        $result = $cond->filter_user_list($arr, true, $info, $checker);
+        $this->assertArrayHasKey($user->id, $result);
+        $this->assertArrayHasKey($teacher->id, $result);
+        $result = $cond->filter_user_list($arr, false, $info, $checker);
+        $this->assertArrayHasKey($teacher->id, $result);
+        $this->assertArrayNotHasKey($user->id, $result);
     }
 
     /**
