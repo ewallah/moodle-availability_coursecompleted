@@ -56,10 +56,6 @@ class behat_availability_coursecompleted extends behat_base {
         $task = new \core\task\completion_regular_task();
         ob_start();
         $task->execute();
-        // Hopefully, some day MDL-33320 will be fixed and all these sleeps
-        // and double cron calls in behat and unit tests will be removed.
-        sleep(1);
-        $task->execute();
         ob_end_clean();
     }
 

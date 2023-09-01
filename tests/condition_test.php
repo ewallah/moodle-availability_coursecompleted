@@ -26,13 +26,9 @@
 namespace availability_coursecompleted;
 
 
-use \availability_coursecompleted\condition;
-use \availability_coursecompleted\frontend;
-use \completion_info;
-use core_availability\tree;
-use core_availability\info_module;
-use core_availability\mock_info;
-use core_availability\mock_condition;
+use \availability_coursecompleted\{condition, frontend};
+use completion_info;
+use \core_availability\{tree, info_module, mock_info, mock_condition};
 use core_completion;
 
 /**
