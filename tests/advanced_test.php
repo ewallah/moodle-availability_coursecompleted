@@ -194,7 +194,7 @@ class advanced_test extends \advanced_testcase {
         $this->assertFalse($cond->is_available(false, $info, false, $this->userid));
         $this->assertTrue($cond->is_available(true, $info, false, $this->userid));
         $this->assertTrue($cond->is_available(true, $info, true, $this->userid));
- 
+
         $ccompletion = new \completion_completion(['course' => $this->course->id, 'userid' => $this->userid]);
         $ccompletion->mark_complete();
         $this->assertTrue($cond->is_available(false, $info, true, $this->userid));
