@@ -178,8 +178,45 @@ class advanced_test extends \advanced_testcase {
 
         $result = $cond->filter_user_list($arr, false, $info, $checker);
         $this->assertArrayHasKey($this->teacherid, $result);
+        $this->assertArrayNotHasKey($this->compid, $result);
+        $this->assertArrayHasKey($this->userid, $result);
+    }
+
+    /**
+     * Tests get user list sql.
+     * @covers \availability_coursecompleted\condition
+     */
+    public function test_get_user_list_sql() {
+        global $DB;
+        $info = new \core_availability\mock_info_module($this->userid, $this->cm);
+        $cond = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
+
+        list($sql, $params) = $cond->get_user_list_sql(true, $info, true);
+        $result = $DB->get_records_sql($sql, $params);
         $this->assertArrayHasKey($this->compid, $result);
         $this->assertArrayNotHasKey($this->userid, $result);
+        $this->assertCount(1, $result);
+
+        list($sql, $params) = $cond->get_user_list_sql(false, $info, false);
+        $result = $DB->get_records_sql($sql, $params);
+        $this->assertArrayNotHasKey($this->compid, $result);
+        $this->assertArrayHasKey($this->userid, $result);
+        $this->assertCount(2, $result);
+
+        $cond = new condition((object)['type' => 'coursecompleted', 'id' => '0']);
+
+        list($sql, $params) = $cond->get_user_list_sql(true, $info, true);
+        $result = $DB->get_records_sql($sql, $params);
+        $this->assertArrayNotHasKey($this->compid, $result);
+        $this->assertArrayHasKey($this->userid, $result);
+        $this->assertCount(2, $result);
+
+        list($sql, $params) = $cond->get_user_list_sql(false, $info, false);
+        $result = $DB->get_records_sql($sql, $params);
+        $this->assertArrayHasKey($this->compid, $result);
+        $this->assertArrayNotHasKey($this->userid, $result);
+        $this->assertCount(1, $result);
+
     }
 
     /**
