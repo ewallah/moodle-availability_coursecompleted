@@ -170,13 +170,8 @@ class condition extends \core_availability\condition {
         if (!$users) {
             return $users;
         }
-
-        $course = $info->get_course();
-        $cond = $this->coursecompleted ? 'NOT' : '';
-        $sql = "SELECT DISTINCT userid
-                  FROM {course_completions}
-                  WHERE timecompleted IS $cond NULL AND course = ?";
-        $compusers = $DB->get_records_sql($sql, [$course->id]);
+        list($sql, $params) = $this->get_user_list_sql($not, $info, true);
+        $compusers = $DB->get_records_sql($sql, $params);
 
         // List users who have access to the completion report.
         $adusers = $checker->get_users_by_capability('report/completion:view');
@@ -198,5 +193,47 @@ class condition extends \core_availability\condition {
             }
         }
         return $result;
+    }
+
+    /**
+     * Obtains SQL that returns a list of enrolled users that has been filtered.
+     *
+     * If there are no conditions, the returned result is array('', array()).
+     *
+     * @param bool $not True if this condition is applying in negative mode
+     * @param \core_availability\info $info Item we're checking
+     * @param bool $onlyactive If true, only returns active enrolments
+     * @return array Array with two elements: SQL subquery and parameters array
+     * @throws \coding_exception If called on a condition that doesn't apply to user lists
+     */
+    public function get_user_list_sql($not, \core_availability\info $info, $onlyactive) {
+        $course = $info->get_course();
+        $param = ['courseid' => $course->id];
+        if ($not) {
+            $cond = $this->coursecompleted ? 'NOT' : '';
+        } else {
+            $cond = $this->coursecompleted ? '' : 'NOT';
+        }
+        $activesql = 'u.deleted = 0';
+        if ($onlyactive) {
+            $activesql = '
+                ue.status = 0 AND
+                e.status = 0 AND
+                ue.timestart < :start1 AND
+                (ue.timeend = 0 OR ue.timeend > :start2) AND
+                u.deleted = 0';
+            $param['start1'] = time();
+            $param['start2'] = time();
+        }
+        $sql = "SELECT DISTINCT u.id
+                  FROM {user} u
+                  JOIN {user_enrolments} ue ON (ue.userid = u.id)
+                  JOIN {enrol} e ON (e.id = ue.enrolid)
+                  LEFT JOIN {course_completions} cc ON (cc.userid = u.id AND cc.course = e.courseid)
+                  WHERE
+                    cc.timecompleted IS $cond NULL AND
+                    $activesql AND
+                    e.courseid = :courseid";
+        return [$sql, $param];
     }
 }

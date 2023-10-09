@@ -26,9 +26,9 @@
 namespace availability_coursecompleted;
 
 
-use \availability_coursecompleted\{condition, frontend};
+use availability_coursecompleted\{condition, frontend};
 use completion_info;
-use \core_availability\{tree, info_module, capability_checker};
+use core_availability\{tree, info_module, capability_checker};
 use core_completion;
 
 /**
@@ -166,7 +166,8 @@ class advanced_test extends \advanced_testcase {
         $arr = [
             $this->userid => \core_user::get_user($this->userid),
             $this->compid => \core_user::get_user($this->compid),
-            $this->teacherid => \core_user::get_user($this->teacherid)];
+            $this->teacherid => \core_user::get_user($this->teacherid),
+        ];
 
         $result = $cond->filter_user_list([], true, $info, $checker);
         $this->assertEquals([], $result);
@@ -178,8 +179,45 @@ class advanced_test extends \advanced_testcase {
 
         $result = $cond->filter_user_list($arr, false, $info, $checker);
         $this->assertArrayHasKey($this->teacherid, $result);
+        $this->assertArrayNotHasKey($this->compid, $result);
+        $this->assertArrayHasKey($this->userid, $result);
+    }
+
+    /**
+     * Tests get user list sql.
+     * @covers \availability_coursecompleted\condition
+     */
+    public function test_get_user_list_sql() {
+        global $DB;
+        $info = new \core_availability\mock_info_module($this->userid, $this->cm);
+        $cond = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
+
+        list($sql, $params) = $cond->get_user_list_sql(true, $info, true);
+        $result = $DB->get_records_sql($sql, $params);
         $this->assertArrayHasKey($this->compid, $result);
         $this->assertArrayNotHasKey($this->userid, $result);
+        $this->assertCount(1, $result);
+
+        list($sql, $params) = $cond->get_user_list_sql(false, $info, false);
+        $result = $DB->get_records_sql($sql, $params);
+        $this->assertArrayNotHasKey($this->compid, $result);
+        $this->assertArrayHasKey($this->userid, $result);
+        $this->assertCount(2, $result);
+
+        $cond = new condition((object)['type' => 'coursecompleted', 'id' => '0']);
+
+        list($sql, $params) = $cond->get_user_list_sql(true, $info, true);
+        $result = $DB->get_records_sql($sql, $params);
+        $this->assertArrayNotHasKey($this->compid, $result);
+        $this->assertArrayHasKey($this->userid, $result);
+        $this->assertCount(2, $result);
+
+        list($sql, $params) = $cond->get_user_list_sql(false, $info, false);
+        $result = $DB->get_records_sql($sql, $params);
+        $this->assertArrayHasKey($this->compid, $result);
+        $this->assertArrayNotHasKey($this->userid, $result);
+        $this->assertCount(1, $result);
+
     }
 
     /**

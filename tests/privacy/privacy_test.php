@@ -25,9 +25,9 @@
 
 namespace availability_coursecompleted\privacy;
 
-use \core_privacy\tests\provider_testcase;
-use \core_privacy\local\metadata\collection;
-use \availability_coursecompleted\privacy\provider;
+use core_privacy\tests\provider_testcase;
+use core_privacy\local\metadata\collection;
+use availability_coursecompleted\privacy\provider;
 
 /**
  * Coursecompleted enrolment privacy tests.

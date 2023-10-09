@@ -1,3 +1,12 @@
+## v3.11.1 (2023-09-02)
+
+* is aplied to user lists
+* code review
+* issue #4
+* PHP8.1
+* Version update
+
+
 ## v3.9.6 (2022-04-04)
 
 * require removal 

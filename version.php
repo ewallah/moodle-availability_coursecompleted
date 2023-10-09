@@ -29,5 +29,5 @@ $plugin->requires = 2020061500;
 $plugin->component = 'availability_coursecompleted';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->supported = [311, 402];
-$plugin->release = 'v3.9.6';
-$plugin->version = 2022040400;
+$plugin->release = 'v3.11.1';
+$plugin->version = 2023090200;
