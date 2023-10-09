@@ -26,9 +26,9 @@
 namespace availability_coursecompleted;
 
 
-use \availability_coursecompleted\{condition, frontend};
+use availability_coursecompleted\{condition, frontend};
 use completion_info;
-use \core_availability\{tree, info_module, capability_checker};
+use core_availability\{tree, info_module, capability_checker};
 use core_completion;
 
 /**
@@ -166,7 +166,8 @@ class advanced_test extends \advanced_testcase {
         $arr = [
             $this->userid => \core_user::get_user($this->userid),
             $this->compid => \core_user::get_user($this->compid),
-            $this->teacherid => \core_user::get_user($this->teacherid)];
+            $this->teacherid => \core_user::get_user($this->teacherid),
+        ];
 
         $result = $cond->filter_user_list([], true, $info, $checker);
         $this->assertEquals([], $result);
