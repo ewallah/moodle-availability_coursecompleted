@@ -80,31 +80,31 @@ jobs:
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
 
       - name: phplint
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phplint
 
       - name: phpcpd
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpcpd
 
       - name: phpmd
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpmd
 
       - name: phpdoc
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpdoc
 
       - name: codechecker
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi codechecker
 
       - name: validate
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi validate
 
       - name: savepoints
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi savepoints
 
       - name: grunt
@@ -112,11 +112,11 @@ jobs:
         run: moodle-plugin-ci --ansi grunt
 
       - name: mustache
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi mustache
 
       - name: phpunit
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover
 
       - name: privacy
