@@ -25,10 +25,10 @@
 
 namespace availability_coursecompleted;
 
-use \cm_info;
-use \completion_info;
-use \section_info;
-use \stdClass;
+use cm_info;
+use completion_info;
+use section_info;
+use stdClass;
 
 /**
  * Front-end class.
