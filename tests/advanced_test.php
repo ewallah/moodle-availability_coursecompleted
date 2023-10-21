@@ -93,7 +93,7 @@ class advanced_test extends \advanced_testcase {
      * Tests constructing and using coursecompleted condition as part of tree.
      * @covers \availability_coursecompleted\condition
      */
-    public function test_tree() {
+    public function test_tree(): void {
         $info1 = new \core_availability\mock_info($this->course, $this->userid);
         $info2 = new \core_availability\mock_info($this->course, $this->compid);
 
@@ -116,7 +116,7 @@ class advanced_test extends \advanced_testcase {
      * @covers \availability_coursecompleted\condition
      * @covers \availability_coursecompleted\frontend
      */
-    public function test_get_description() {
+    public function test_get_description(): void {
         $nau = 'Not available unless: ';
         $sections = get_fast_modinfo($this->course)->get_section_info_all();
 
@@ -157,7 +157,7 @@ class advanced_test extends \advanced_testcase {
      * Tests is aplied to user lists.
      * @covers \availability_coursecompleted\condition
      */
-    public function test_is_applied_to_user_lists() {
+    public function test_is_applied_to_user_lists(): void {
         $info = new \core_availability\mock_info_module($this->userid, $this->cm);
         $cond = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
         $this->assertTrue($cond->is_applied_to_user_lists());
@@ -187,7 +187,7 @@ class advanced_test extends \advanced_testcase {
      * @covers \availability_coursecompleted\condition
      * @covers \availability_coursecompleted\frontend
      */
-    public function test_page() {
+    public function test_page(): void {
         $info = new info_module($this->cm);
         $cond = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
         $this->assertFalse($cond->is_available(false, $info, true, $this->userid));
