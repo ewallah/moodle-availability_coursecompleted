@@ -60,7 +60,8 @@ jobs:
 
       - name: moodle-plugin-ci
         run: |
-           wget https://github.com/moodlehq/moodle-plugin-ci/releases/download/4.1.8/moodle-plugin-ci.phar -O moodle-plugin-ci
+           wget -q https://github.com/moodlehq/moodle-plugin-ci/releases/download/4.1.8/moodle-plugin-ci.phar -O moodle-plugin-ci
+           chmod +x moodle-plugin-ci
            ./moodle-plugin-ci selfupdate
            echo $(cd ci/bin; pwd) >> $GITHUB_PATH
            echo $(cd ci/vendor/bin; pwd) >> $GITHUB_PATH
