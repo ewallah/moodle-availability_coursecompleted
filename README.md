@@ -19,7 +19,7 @@ Check the global documentation about conditional availability conditions: https:
 
 ## Requirements
 
-This plugin requires Moodle 3.9+
+This plugin requires Moodle 3.11+
 
 ## Troubleshooting
 
