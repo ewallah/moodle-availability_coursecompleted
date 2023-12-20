@@ -58,6 +58,7 @@ jobs:
            wget -q https://github.com/moodlehq/moodle-plugin-ci/releases/download/4.3.0/moodle-plugin-ci.phar -O moodle-plugin-ci
            chmod +x moodle-plugin-ci
            ./moodle-plugin-ci selfupdate
+           echo $(cd ci; pwd) >> $GITHUB_PATH
            sudo locale-gen en_AU.UTF-8
 
       - name: install Moodle
