@@ -34,14 +34,9 @@ jobs:
         moodle-branch: ['MOODLE_401_STABLE', 'MOODLE_402_STABLE', 'MOODLE_403_STABLE']
         database: ['mariadb', 'pgsql']
         include:
-          - php: '8.0'
-            moodle-branch: 'MOODLE_400_STABLE'
-            database: 'pgsql'
-          - php: '7.4'
-            moodle-branch: 'MOODLE_311_STABLE'
-            database: pgsql
           - php: '8.2'
             moodle-branch: 'main'
+            MOODLE_APP: 'true'
             database: 'pgsql'
         
     steps:
@@ -60,11 +55,9 @@ jobs:
 
       - name: moodle-plugin-ci
         run: |
-           wget -q https://github.com/moodlehq/moodle-plugin-ci/releases/download/4.1.8/moodle-plugin-ci.phar -O moodle-plugin-ci
+           wget -q https://github.com/moodlehq/moodle-plugin-ci/releases/download/4.3.0/moodle-plugin-ci.phar -O moodle-plugin-ci
            chmod +x moodle-plugin-ci
            ./moodle-plugin-ci selfupdate
-           echo $(cd ci/bin; pwd) >> $GITHUB_PATH
-           echo $(cd ci/vendor/bin; pwd) >> $GITHUB_PATH
            sudo locale-gen en_AU.UTF-8
 
       - name: install Moodle
@@ -72,6 +65,7 @@ jobs:
         env:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
+          MOODLE_APP: 'true'
 
       - name: phplint
         if: ${{ !cancelled() }}
