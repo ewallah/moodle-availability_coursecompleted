@@ -50,7 +50,7 @@ Feature: availability_coursecompleted
     And I click on "Course completed" "button"
     Then I should see "Please set" in the "region-main" "region"
     And I set the field "Course completed" to "No"
-    Then I should not see "Please set" in the "region-main" "region"
+    But I should not see "Please set" in the "region-main" "region"
     And I click on "Save and return to course" "button"
 
     # Configure page C for users who completed the course.
@@ -85,10 +85,10 @@ Feature: availability_coursecompleted
     And I log out
 
     When I am on the "C1" "Course" page logged in as "student1"
-    Then I should not see "Page A" in the "region-main" "region"
     And I should see "Page B" in the "region-main" "region"
     And I should see "Page C" in the "region-main" "region"
     And I should see "Page D" in the "region-main" "region"
+    But I should not see "Page A" in the "region-main" "region"
 
   @javascript
   Scenario: See restricted feedback users who have not responded
@@ -99,7 +99,7 @@ Feature: availability_coursecompleted
     And I click on "Save changes" "button"
 
     And I am on "Course 1" course homepage with editing mode on
-    And I add a "Feedback" to section "2" and I fill the form with:
+    And I add a feedback activity to course "Course 1" section "2" and I fill the form with:
       | Name                | Frogs                                             |
       | Description         | x                                                 |
       | Record user names   | User's name will be logged and shown with answers |
@@ -117,7 +117,7 @@ Feature: availability_coursecompleted
     And I log out
 
     # Go in as student 1 and do the feedback.
-    And I am on the Frogs "feedback activity" page logged in as student1
+    When I am on the Frogs "feedback activity" page logged in as student1
     And I follow "Answer the questions"
     And I set the field "Y/N?" to "Y"
     And I press "Submit your answers"
@@ -126,6 +126,6 @@ Feature: availability_coursecompleted
     # Go in as teacher and check the users who haven't completed it.
     And I am on the Frogs "feedback activity" page logged in as teacher1
     And I navigate to "Responses" in current page administration
-    And I select "Show non-respondents" from the "jump" singleselect
-    Then I should not see "Student 2"
+    Then I select "Show non-respondents" from the "jump" singleselect
+    But I should not see "Student 2"
     And I should not see "Student 1"

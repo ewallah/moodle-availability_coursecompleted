@@ -34,12 +34,6 @@ jobs:
         moodle-branch: ['MOODLE_401_STABLE', 'MOODLE_402_STABLE', 'MOODLE_403_STABLE']
         database: ['mariadb', 'pgsql']
         include:
-          - php: '8.0'
-            moodle-branch: 'MOODLE_400_STABLE'
-            database: 'pgsql'
-          - php: '7.4'
-            moodle-branch: 'MOODLE_311_STABLE'
-            database: pgsql
           - php: '8.2'
             moodle-branch: 'main'
             database: 'pgsql'
@@ -57,14 +51,6 @@ jobs:
           ini-values: max_input_vars=5000
           tools: composer:v2.5
           coverage: pcov
-
-      - name: npm cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: node-${{ matrix.php }}-${{ matrix.moodle-branch }}-${{ matrix.database }}-cache
-          restore-keys: |
-            node-${{ matrix.php }}-${{ matrix.moodle-branch }}-${{ matrix.database }}-cache
 
       - name: composer
         run: |
@@ -124,6 +110,11 @@ jobs:
         run: vendor/bin/phpunit --colors --no-coverage --testsuite tool_dataprivacy_testsuite,tool_policy_testsuite,core_privacy_testsuite
         working-directory: moodle
 
+      - name: other
+        if: ${{ matrix.moodle-branch == 'main'}}
+        run: vendor/bin/phpunit --colors --no-coverage --testsuite core_availability_testsuite
+        working-directory: moodle
+
       - name: coveralls
         if: ${{ matrix.moodle-branch == 'main'}}
         run: moodle-plugin-ci coveralls-upload || true
@@ -131,19 +122,19 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: firefox
-        if: ${{ matrix.moodle-branch != 'MOODLE_311_STABLE'}}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi behat
       
       - name: chrome
-        if: ${{ matrix.moodle-branch != 'MOODLE_311_STABLE'}}
-        run: moodle-plugin-ci --ansi behat --profile chrome
+        if: ${{ !cancelled() }}
+        run: moodle-plugin-ci --ansi behat --profile chrome --tags='@core_availability' availability/condition/coursecompleted
 
       - name: firefox classic
-        if: ${{ matrix.moodle-branch != 'MOODLE_311_STABLE'}}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi behat --suite="classic"
       
       - name: chrome classic
-        if: ${{ matrix.moodle-branch != 'MOODLE_311_STABLE'}}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi behat  --suite="classic" --profile chrome
 
       - name: admin bookmarks
@@ -155,3 +146,4 @@ jobs:
         if: ${{ matrix.moodle-branch == 'main'}}
         run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome admin/tool/xmldb
         working-directory: moodle
+
