@@ -127,7 +127,7 @@ jobs:
       
       - name: chrome
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci --ansi behat --profile chrome --tags='@core_availability' availability/condition/coursecompleted
+        run: moodle-plugin-ci --ansi behat --profile chrome
 
       - name: firefox classic
         if: ${{ !cancelled() }}
