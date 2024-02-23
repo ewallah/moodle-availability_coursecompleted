@@ -60,7 +60,7 @@ class advanced_test extends \advanced_testcase {
     /**
      * Create course and page.
      */
-    public function setUp():void {
+    public function setUp(): void {
         global $CFG, $DB;
         require_once($CFG->dirroot . '/completion/criteria/completion_criteria.php');
         require_once($CFG->dirroot . '/completion/criteria/completion_criteria_activity.php');
