@@ -34,7 +34,7 @@ namespace availability_coursecompleted;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversDefaultClass \availability_coursecompleted
  */
-class behat_test extends \advanced_testcase {
+final class behat_test extends \advanced_testcase {
 
     /**
      * Test behat funcs

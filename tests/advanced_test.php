@@ -40,7 +40,7 @@ use core_completion;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversDefaultClass \availability_coursecompleted
  */
-class advanced_test extends \advanced_testcase {
+final class advanced_test extends \advanced_testcase {
 
     /** @var stdClass course. */
     private $course;

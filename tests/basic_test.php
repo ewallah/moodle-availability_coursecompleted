@@ -40,7 +40,7 @@ use core_completion;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversDefaultClass \availability_coursecompleted
  */
-class basic_test extends \basic_testcase {
+final class basic_test extends \basic_testcase {
 
     /**
      * Tests the constructor including error conditions.
