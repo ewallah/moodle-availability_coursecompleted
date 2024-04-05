@@ -41,7 +41,6 @@ use core_completion;
  * @coversDefaultClass \availability_coursecompleted
  */
 final class basic_test extends \basic_testcase {
-
     /**
      * Tests the constructor including error conditions.
      * @covers \availability_coursecompleted\condition

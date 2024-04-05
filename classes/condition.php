@@ -40,7 +40,6 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class condition extends \core_availability\condition {
-
     /** @var string coursecompleted 0 => No, 1 => Yes */
     protected $coursecompleted;
 
@@ -56,7 +55,7 @@ class condition extends \core_availability\condition {
         } else if (is_string($structure->id)) {
             $this->coursecompleted = $structure->id;
         } else {
-            throw new coding_exception('Invalid value for course completed condition');
+            new coding_exception('Invalid value for course completed condition');
         }
     }
 
@@ -134,7 +133,7 @@ class condition extends \core_availability\condition {
      * @return string Text representation of parameters
      */
     protected function get_debug_string() {
-        return $this->coursecompleted ? '#' . 'True' : 'False';
+        return get_string($this->coursecompleted ? 'true' : 'false', 'mod_quiz');
     }
 
     /**
@@ -162,7 +161,8 @@ class condition extends \core_availability\condition {
         array $users,
         $not,
         \core_availability\info $info,
-        \core_availability\capability_checker $checker) {
+        \core_availability\capability_checker $checker
+    ) {
 
         global $DB;
 
@@ -186,15 +186,15 @@ class condition extends \core_availability\condition {
             // Always include users with access to completion report.
             if (array_key_exists($id, $adusers)) {
                 $result[$id] = $user;
-                continue;
-            }
-            // Other users are included or not based on course completion.
-            $allow = array_key_exists($id, $compusers);
-            if ($not) {
-                $allow = !$allow;
-            }
-            if ($allow) {
-                $result[$id] = $user;
+            } else {
+                // Other users are included or not based on course completion.
+                $allow = array_key_exists($id, $compusers);
+                if ($not) {
+                    $allow = !$allow;
+                }
+                if ($allow) {
+                    $result[$id] = $user;
+                }
             }
         }
         return $result;

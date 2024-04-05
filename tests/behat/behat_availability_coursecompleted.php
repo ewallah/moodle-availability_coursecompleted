@@ -30,7 +30,7 @@
 require_once(__DIR__ . '/../../../../../lib/behat/behat_base.php');
 // @codeCoverageIgnoreEnd
 
-use Behat\Mink\Exception\ElementNotFoundException as ElementNotFoundException;
+use Behat\Mink\Exception\ElementNotFoundException;
 
 /**
  * Step definitions related to mark user complete.
@@ -41,7 +41,6 @@ use Behat\Mink\Exception\ElementNotFoundException as ElementNotFoundException;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class behat_availability_coursecompleted extends behat_base {
-
     /**
      * Complete user in a course
      * @Then /^I mark course "(?P<course>[^"]*)" completed for user "(?P<user>[^"]*)"$/

@@ -41,7 +41,6 @@ use core_completion;
  * @coversDefaultClass \availability_coursecompleted
  */
 final class advanced_test extends \advanced_testcase {
-
     /** @var stdClass course. */
     private $course;
 
@@ -208,7 +207,9 @@ final class advanced_test extends \advanced_testcase {
         $this->assertFalse($cond->is_available_for_all());
         $this->assertFalse($cond->update_dependency_id(null, 1, 2));
         $this->assertEquals($cond->__toString(), '{coursecompleted:False}');
-        $this->assertEquals($cond->get_standalone_description(true, true, $info),
-            'Not available unless: You completed this course.');
+        $this->assertEquals(
+            $cond->get_standalone_description(true, true, $info),
+            'Not available unless: You completed this course.'
+        );
     }
 }

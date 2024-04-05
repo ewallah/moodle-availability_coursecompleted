@@ -35,7 +35,6 @@ namespace availability_coursecompleted;
  * @coversDefaultClass \availability_coursecompleted
  */
 final class behat_test extends \advanced_testcase {
-
     /**
      * Test behat funcs
      * @covers \behat_availability_coursecompleted
