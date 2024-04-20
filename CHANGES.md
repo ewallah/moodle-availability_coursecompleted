@@ -1,3 +1,45 @@
+## v4.2.4 (2024-04-20)
+
+* MOODLE_404_STABLE 
+* speed test
+* Changes.md
+* code review
+* php 8.3
+* version Update
+
+## v4.2.1 (2024-03-11)
+
+* code review
+* pix
+* MOODLE_403_STABLE
+* set-output deprecated
+* moodle_app
+* main_fix
+* version update
+
+## v4.0.1 (2023-10-14)
+
+* Version update
+* MOODLE_402_STABLE
+* Update main.yml
+* code review
+
+## v3.11.1 (2023-09-02)
+
+* composer cache
+* Update cron.yml
+* fix gh
+* workflow
+* checkout@v3
+* MOODLE_401_STABLE
+* code review
+* MOODLE_402_STABLE
+* PHP 8.1
+* process-isolation
+* php 8.2
+* issue #4 (#5)
+* Version update
+
 ## v3.9.6 (2022-04-04)
 
 * require removal 
@@ -97,5 +139,3 @@
 * travis 
 * phpunit upgrade 
 * version update 3.8+ 
-
-
