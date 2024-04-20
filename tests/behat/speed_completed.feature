@@ -40,4 +40,3 @@ Feature: availability coursecompleted fast completion
     And I wait until "Done" "button" exists
     And I follow "Page 2"
     Then I should see "Test page content" in the "region-main" "region"
-
