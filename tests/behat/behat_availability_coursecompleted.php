@@ -18,7 +18,7 @@
  * Step definitions related to mark user complete.
  *
  * @package    availability_coursecompleted
- * @copyright  2021 iplusacademy (www.iplusacademy.org)
+ * @copyright  iplusacademy (www.iplusacademy.org)
  * @author     Renaat Debleu <info@eWallah.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -36,7 +36,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
  * Step definitions related to mark user complete.
  *
  * @package    availability_coursecompleted
- * @copyright  2021 iplusacademy (www.iplusacademy.org)
+ * @copyright  iplusacademy (www.iplusacademy.org)
  * @author     Renaat Debleu <info@eWallah.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

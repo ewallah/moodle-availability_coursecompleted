@@ -18,7 +18,7 @@
  * Unit tests for the behat coursecompleted condition.
  *
  * @package   availability_coursecompleted
- * @copyright 2017 iplusacademy (www.iplusacademy.org)
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +29,7 @@ namespace availability_coursecompleted;
  * Unit tests for the behat coursecompleted condition.
  *
  * @package   availability_coursecompleted
- * @copyright 2017 iplusacademy (www.iplusacademy.org)
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversDefaultClass \availability_coursecompleted

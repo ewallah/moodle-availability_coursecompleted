@@ -1,5 +1,9 @@
 ## v4.2.4 (2024-04-20)
 
+* infection
+  - Mutation Score Indicator (MSI): 100%
+  - Mutation Code Coverage: 100%
+  - Covered Code MSI: 100%
 * MOODLE_404_STABLE 
 * speed test
 * Changes.md
