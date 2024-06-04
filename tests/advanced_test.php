@@ -61,6 +61,7 @@ final class advanced_test extends \advanced_testcase {
      */
     public function setUp(): void {
         global $CFG, $DB;
+        parent::setUp();
         require_once($CFG->dirroot . '/completion/criteria/completion_criteria.php');
         require_once($CFG->dirroot . '/completion/criteria/completion_criteria_activity.php');
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
