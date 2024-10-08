@@ -1,3 +1,8 @@
+## v4.4.2 (2024-10-07)
+
+* version update
+* MOODLE_405_STABLE
+
 ## v4.2.4 (2024-04-20)
 
 * infection

@@ -30,4 +30,4 @@ $plugin->requires = 2023100900;
 $plugin->maturity = MATURITY_STABLE;
 $plugin->supported = [403, 405];
 $plugin->release = 'v4.4.2';
-$plugin->version = 2024042000;
+$plugin->version = 2024100700;
