@@ -66,7 +66,7 @@ This plugin is maintained for the latest major releases of Moodle.
 
 ## Copyright
 
-eWallah.net
+eWallah
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
