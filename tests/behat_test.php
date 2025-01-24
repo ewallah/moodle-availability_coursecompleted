@@ -32,12 +32,11 @@ namespace availability_coursecompleted;
  * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass \availability_coursecompleted
  */
 final class behat_test extends \advanced_testcase {
     /**
      * Test behat funcs
-     * @covers \behat_availability_coursecompleted
+     * #[CoversClass(availability_coursecompleted)]
      */
     public function test_behat(): void {
         global $CFG;

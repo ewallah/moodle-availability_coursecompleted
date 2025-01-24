@@ -25,7 +25,6 @@
 
 namespace availability_coursecompleted;
 
-
 use availability_coursecompleted\{condition, frontend};
 use completion_info;
 use core_availability\{tree, info_module, capability_checker};
@@ -38,7 +37,6 @@ use core_completion;
  * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @coversDefaultClass \availability_coursecompleted
  */
 final class advanced_test extends \advanced_testcase {
     /** @var stdClass course. */
@@ -91,7 +89,7 @@ final class advanced_test extends \advanced_testcase {
 
     /**
      * Tests constructing and using coursecompleted condition as part of tree.
-     * @covers \availability_coursecompleted\condition
+     * #[CoversClass(availability_coursecompleted\condition)]
      */
     public function test_tree(): void {
         $info1 = new \core_availability\mock_info($this->course, $this->userid);
@@ -113,8 +111,8 @@ final class advanced_test extends \advanced_testcase {
 
     /**
      * Tests the get_description and get_standalone_description functions.
-     * @covers \availability_coursecompleted\condition
-     * @covers \availability_coursecompleted\frontend
+     * #[CoversClass(availability_coursecompleted\condition)]
+     * #[CoversClass(availability_coursecompleted\frontend)]
      */
     public function test_get_description(): void {
         $nau = 'Not available unless: ';
@@ -155,7 +153,7 @@ final class advanced_test extends \advanced_testcase {
 
     /**
      * Tests is aplied to user lists.
-     * @covers \availability_coursecompleted\condition
+     * #[CoversClass(availability_coursecompleted\condition)]
      */
     public function test_is_applied_to_user_lists(): void {
         $info = new \core_availability\mock_info_module($this->userid, $this->cm);
@@ -184,8 +182,8 @@ final class advanced_test extends \advanced_testcase {
 
     /**
      * Tests a page before and after completion.
-     * @covers \availability_coursecompleted\condition
-     * @covers \availability_coursecompleted\frontend
+     * #[CoversClass(availability_coursecompleted\condition)]
+     * #[CoversClass(availability_coursecompleted\frontend)]
      */
     public function test_page(): void {
         $info = new info_module($this->cm);
