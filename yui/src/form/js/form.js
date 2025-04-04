@@ -26,7 +26,7 @@ M.availability_coursecompleted.form.getNode = function(json) {
     // Create HTML structure.
     var tit = M.util.get_string('title', 'availability_coursecompleted');
     var html = '<label class="form-group"><span class="p-r-1">' + tit + '</span>';
-    html += '<span class="availability-coursecompleted"><select class="custom-select" name="id" title=' + tit + '>';
+    html += '<span class="availability-coursecompleted"><select class="form-select" name="id" title=' + tit + '>';
     html += '<option value="choose">' + M.util.get_string('choosedots', 'moodle') + '</option>';
     html += '<option value="1">' + M.util.get_string('yes', 'moodle') + '</option>';
     html += '<option value="0">' + M.util.get_string('no', 'moodle') + '</option>';
