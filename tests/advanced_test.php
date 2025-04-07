@@ -38,8 +38,6 @@ use core_completion;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[CoversClass(\availability_coursecompleted\condition::class)]
-#[CoversClass(\availability_coursecompleted\frontend::class)]
 final class advanced_test extends \advanced_testcase {
     /** @var stdClass course. */
     private $course;
@@ -91,8 +89,8 @@ final class advanced_test extends \advanced_testcase {
 
     /**
      * Tests constructing and using coursecompleted condition as part of tree.
+     * @covers \availability_coursecompleted\condition
      */
-    #[CoversFunction('check_available')]
     public function test_tree(): void {
         $info1 = new \core_availability\mock_info($this->course, $this->userid);
         $info2 = new \core_availability\mock_info($this->course, $this->compid);
@@ -113,12 +111,9 @@ final class advanced_test extends \advanced_testcase {
 
     /**
      * Tests the get_description and get_standalone_description functions.
-     * #[CoversClass(availability_coursecompleted\condition)]
-     * #[CoversClass(availability_coursecompleted\frontend)]
+     * @covers \availability_coursecompleted\condition
+     * @covers \availability_coursecompleted\frontend
      */
-    #[CoversFunction('allow_add')]
-    #[CoversFunction('get_description')]
-    #[CoversFunction('get_standalone_description')]
     public function test_get_description(): void {
         $nau = 'Not available unless: ';
         $sections = get_fast_modinfo($this->course)->get_section_info_all();
@@ -158,8 +153,8 @@ final class advanced_test extends \advanced_testcase {
 
     /**
      * Tests is aplied to user lists.
+     * @covers \availability_coursecompleted\condition
      */
-    #[CoversFunction('filter_user_list')]
     public function test_is_applied_to_user_lists(): void {
         $info = new \core_availability\mock_info_module($this->userid, $this->cm);
         $cond = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
@@ -187,11 +182,8 @@ final class advanced_test extends \advanced_testcase {
 
     /**
      * Tests a page before and after completion.
+     * @covers \availability_coursecompleted\condition
      */
-    #[CoversFunction('is_available')]
-    #[CoversFunction('is_available_for_all')]
-    #[CoversFunction('update_dependency_id')]
-    #[CoversFunction('get_standalone_description')]
     public function test_page(): void {
         $info = new info_module($this->cm);
         $cond = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
