@@ -153,4 +153,3 @@ jobs:
         if: ${{ matrix.moodle-branch == 'main'}}
         run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome admin/tool/xmldb
         working-directory: moodle
-

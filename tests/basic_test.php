@@ -38,13 +38,13 @@ use core_completion;
  * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * #[CoversClass(availability_coursecompleted)]
  */
+#[CoversClass(\availability_coursecompleted\condition::class)]
 final class basic_test extends \basic_testcase {
     /**
      * Tests the constructor including error conditions.
-     * #[CoversClass(availability_coursecompleted\condition)]
      */
+    #[CoversFunction('__construct')]
     public function test_constructor(): void {
         // This works with no parameters.
         $structure = (object)[];
@@ -103,8 +103,8 @@ final class basic_test extends \basic_testcase {
 
     /**
      * Tests the save() function.
-     * #[CoversClass(availability_coursecompleted\condition)]
      */
+    #[CoversFunction('save')]
     public function test_save(): void {
         $structure = (object)['id' => '1'];
         $cond = new condition($structure);
@@ -114,8 +114,8 @@ final class basic_test extends \basic_testcase {
 
     /**
      * Tests json.
-     * #[CoversClass(availability_coursecompleted\condition)]
      */
+    #[CoversFunction('get_json')]
     public function test_json(): void {
         $this->assertEqualsCanonicalizing((object)['type' => 'coursecompleted', 'id' => '3'], condition::get_json('3'));
         $this->assertEqualsCanonicalizing((object)['type' => 'coursecompleted', 'id' => '0'], condition::get_json('0'));
