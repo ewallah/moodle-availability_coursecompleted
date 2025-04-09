@@ -33,12 +33,11 @@ namespace availability_coursecompleted;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[CoversClass(\behat_availability_coursecompleted::class)]
 final class behat_test extends \advanced_testcase {
     /**
      * Test behat funcs
+     * @covers \behat_availability_coursecompleted
      */
-    #[CoversFunction('i_mark_course_completed_for_user')]
     public function test_behat(): void {
         global $CFG;
         require_once($CFG->dirroot . '/availability/condition/coursecompleted/tests/behat/behat_availability_coursecompleted.php');

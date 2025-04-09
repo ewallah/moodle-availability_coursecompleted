@@ -31,6 +31,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: this-plugin
+          ref:  MOODLE_500_STABLE
 
       - name: setup PHP
         uses: shivammathur/setup-php@v2

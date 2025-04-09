@@ -37,12 +37,11 @@ use availability_coursecompleted\privacy\provider;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[CoversClass(\availability_coursecompleted\privacy\provider::class)]
 final class privacy_test extends provider_testcase {
     /**
      * Test returning metadata.
+     * @covers \availability_coursecompleted\privacy\provider
      */
-    #[CoversFunction('get_reason')]
     public function test_get_metadata(): void {
         $collection = new collection('availability_coursecompleted');
         $reason = provider::get_reason($collection);
