@@ -40,6 +40,7 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class condition extends \core_availability\condition {
+
     /** @var string coursecompleted 0 => No, 1 => Yes */
     protected $coursecompleted;
 
@@ -71,9 +72,6 @@ class condition extends \core_availability\condition {
     /**
      * Returns a JSON object which corresponds to a condition of this type.
      *
-     * Intended for unit testing, as normally the JSON values are constructed
-     * by JavaScript code.
-     *
      * @param string $coursecompleted default empty string
      * @return stdClass Object representing condition
      */
@@ -82,14 +80,11 @@ class condition extends \core_availability\condition {
     }
 
     /**
-     * Determines whether a particular item is currently available
-     * according to this availability condition.
+     * Determines whether a particular item is currently available according to this availability condition.
      *
      * @param bool $not Set true if we are inverting the condition
      * @param info $info Item we're checking
-     * @param bool $grabthelot Performance hint: if true, caches information
-     *   required for all course-modules, to make the front page and similar
-     *   pages work more quickly (works only for current user)
+     * @param bool $grabthelot (works only for current user)
      * @param int $userid User ID to check availability for
      * @return bool True if available
      */
@@ -107,16 +102,12 @@ class condition extends \core_availability\condition {
     }
 
     /**
-     * Obtains a string describing this restriction (whether or not
-     * it actually applies). Used to obtain information that is displayed to
-     * students if the activity is not available to them, and for staff to see
-     * what conditions are.
+     * Obtains a string describing this restriction (whether or not it actually applies).
      *
      * @param bool $full Set true if this is the 'full information' view
      * @param bool $not Set true if we are inverting the condition
      * @param info $info Item we're checking
-     * @return string Information string (for admin) about all restrictions on
-     *   this item
+     * @return string Information string (for admin) about all restrictions on this item
      */
     public function get_description($full, $not, info $info) {
         $allow = $this->coursecompleted;
@@ -127,8 +118,7 @@ class condition extends \core_availability\condition {
     }
 
     /**
-     * Obtains a representation of the options of this condition as a string,
-     * for debugging.
+     * Obtains a representation of the options of this condition as a string for debugging.
      *
      * @return string Text representation of parameters
      */

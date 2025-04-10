@@ -25,11 +25,11 @@
 
 namespace availability_coursecompleted;
 
-
 use availability_coursecompleted\{condition, frontend};
 use completion_info;
 use core_availability\{tree, info_module, mock_info, mock_condition};
 use core_completion;
+use PHPUnit\Framework\Attributes\{CoversClass, CoversFunction};
 
 /**
  * Bare tests for the coursecompleted condition.
@@ -39,10 +39,10 @@ use core_completion;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(condition::class)]
 final class basic_test extends \basic_testcase {
     /**
      * Tests the constructor including error conditions.
-     * @covers \availability_coursecompleted\condition
      */
     public function test_constructor(): void {
         // This works with no parameters.
@@ -102,7 +102,6 @@ final class basic_test extends \basic_testcase {
 
     /**
      * Tests the save() function.
-     * @covers \availability_coursecompleted\condition
      */
     public function test_save(): void {
         $structure = (object)['id' => '1'];
@@ -113,10 +112,20 @@ final class basic_test extends \basic_testcase {
 
     /**
      * Tests json.
-     * @covers \availability_coursecompleted\condition
      */
     public function test_json(): void {
         $this->assertEqualsCanonicalizing((object)['type' => 'coursecompleted', 'id' => '3'], condition::get_json('3'));
         $this->assertEqualsCanonicalizing((object)['type' => 'coursecompleted', 'id' => '0'], condition::get_json('0'));
+    }
+
+    /**
+     * Test debug string.
+     */
+    public function test_debug(): void {
+        $name = 'availability_coursecompleted\condition';
+        $condition = new condition((object)['type' => 'coursecompleted', 'id' => '0']);
+        $this->assertEquals('False', \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
+        $condition = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
+        $this->assertEquals('True', \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
     }
 }

@@ -1,3 +1,10 @@
+## v5.0.1 (2025-04-11)
+
+* version update
+* MOODLE_500_STABLE
+* Bootstrap5
+* php 8.3
+
 ## v4.4.2 (2024-10-07)
 
 * version update

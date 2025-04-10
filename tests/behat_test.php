@@ -23,7 +23,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace availability_coursecompleted;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Unit tests for the behat coursecompleted condition.
@@ -33,10 +33,10 @@ namespace availability_coursecompleted;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(\behat_availability_coursecompleted::class)]
 final class behat_test extends \advanced_testcase {
     /**
      * Test behat funcs
-     * @covers \behat_availability_coursecompleted
      */
     public function test_behat(): void {
         global $CFG;
