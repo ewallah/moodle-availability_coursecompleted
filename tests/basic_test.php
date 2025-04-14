@@ -29,7 +29,7 @@ use availability_coursecompleted\{condition, frontend};
 use completion_info;
 use core_availability\{tree, info_module, mock_info, mock_condition};
 use core_completion;
-use PHPUnit\Framework\Attributes\{CoversClass, CoversFunction};
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Bare tests for the coursecompleted condition.
