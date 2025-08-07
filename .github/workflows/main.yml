@@ -142,10 +142,10 @@ jobs:
 
       - name: admin bookmarks
         if: ${{ matrix.moodle-branch == 'main'}}
-        run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome blocks/admin_bookmarks
+        run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome public/blocks/admin_bookmarks
         working-directory: moodle
 
       - name: admin xmldb
         if: ${{ matrix.moodle-branch == 'main'}}
-        run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome admin/tool/xmldb
+        run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome public/admin/tool/xmldb
         working-directory: moodle
