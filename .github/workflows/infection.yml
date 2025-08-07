@@ -1,4 +1,4 @@
-name: Tests
+name: Infection
 
 on: [push, pull_request]
 
@@ -61,10 +61,9 @@ jobs:
         run: |
            echo '<?php' > vendor/autoloadmoodle.php
            echo 'define("PHPUNIT_UTIL", true);' >> vendor/autoloadmoodle.php
-           echo 'require(__DIR__ . "/../lib/phpunit/bootstrap.php");' >> vendor/autoloadmoodle.php
+           echo 'require(__DIR__ . "/../public/lib/phpunit/bootstrap.php");' >> vendor/autoloadmoodle.php
            echo 'require("autoload.php");' >> vendor/autoloadmoodle.php
 
       - name: infection
-        if: ${{ !cancelled() }}
-        run: infection -s --only-covered --configuration=availability/condition/coursecompleted/.infection.json5
+        run: infection -s --configuration=public/availability/condition/coursecompleted/.infection.json5
         working-directory: moodle

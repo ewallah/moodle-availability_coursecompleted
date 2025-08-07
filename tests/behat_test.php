@@ -22,6 +22,7 @@
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace availability_coursecompleted;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 
