@@ -154,35 +154,32 @@ class condition extends \core_availability\condition {
     ) {
 
         global $DB;
-
-        // If the array is empty already, just return it.
-        if (count($users) == 0) {
-            return $users;
-        }
-
-        $course = $info->get_course();
-        $cond = $this->coursecompleted ? 'NOT' : '';
-        $sql = "SELECT DISTINCT userid
-                  FROM {course_completions}
-                  WHERE timecompleted IS $cond NULL AND course = ?";
-        $compusers = $DB->get_records_sql($sql, [$course->id]);
-
-        // List users who have access to the completion report.
-        $adusers = $checker->get_users_by_capability('report/completion:view');
-        // Filter the user list.
         $result = [];
-        foreach ($users as $id => $user) {
-            // Always include users with access to completion report.
-            if (array_key_exists($id, $adusers)) {
-                $result[$id] = $user;
-            } else {
-                // Other users are included or not based on course completion.
-                $allow = array_key_exists($id, $compusers);
-                if ($not) {
-                    $allow = !$allow;
-                }
-                if ($allow) {
+        // If the array is not empty.
+        if (count($users) > 0) {
+            $course = $info->get_course();
+            $cond = $this->coursecompleted ? 'NOT' : '';
+            $sql = "SELECT DISTINCT userid
+                      FROM {course_completions}
+                      WHERE timecompleted IS $cond NULL AND course = ?";
+            $compusers = $DB->get_records_sql($sql, [$course->id]);
+
+            // List users who have access to the completion report.
+            $adusers = $checker->get_users_by_capability('report/completion:view');
+            // Filter the user list.
+            foreach ($users as $id => $user) {
+                // Always include users with access to completion report.
+                if (array_key_exists($id, $adusers)) {
                     $result[$id] = $user;
+                } else {
+                    // Other users are included or not based on course completion.
+                    $allow = array_key_exists($id, $compusers);
+                    if ($not) {
+                        $allow = !$allow;
+                    }
+                    if ($allow) {
+                        $result[$id] = $user;
+                    }
                 }
             }
         }
