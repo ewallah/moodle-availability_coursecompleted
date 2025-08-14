@@ -7,16 +7,6 @@ jobs:
     name: infection
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: 'postgres'
-          POSTGRES_HOST_AUTH_METHOD: 'trust'
-        options: --health-cmd="pg_isready" --health-interval 10s --health-timeout 5s --health-retries 5
-        ports:
-          - 5432:5432
-
     strategy:
       fail-fast: false
       matrix:
@@ -39,6 +29,14 @@ jobs:
           tools: infection, phpunit
           coverage: pcov
 
+      - name: setup pgsql
+        uses: m4nu56/postgresql-action@v1
+        with:
+          postgresql version: 15
+          postgresql db: test
+          postgresql user: test
+          postgresql password: test
+
       - name: composer
         run: |
            composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci
@@ -47,9 +45,8 @@ jobs:
            sudo locale-gen en_AU.UTF-8
 
       - name: install Moodle
-        run: moodle-plugin-ci install --db-host=127.0.0.1 --plugin this-plugin
+        run: moodle-plugin-ci install --db-host=127.0.0.1 --db-type=pgsql --db-user=test --db-pass=test --db-name=test --plugin this-plugin
         env:
-          DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
 
       - name: build component configs
