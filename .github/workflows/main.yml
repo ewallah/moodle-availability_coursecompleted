@@ -39,13 +39,10 @@ jobs:
 
       - name: setup mariadb
         if: ${{ matrix.database == 'mariadb' }}
-        uses: rusher/setup-mariadb@v1
+        uses: getong/mariadb-action@v1.1
         with:
-          tag: '10.6'
-          local: true
-          root-password: 'myRootPassword'
-          user: 'test'
-          password: 'test'
+            mysql user: 'test'
+            mysql password: 'test'
 
       - name: composer
         run: |
