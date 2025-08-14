@@ -156,7 +156,7 @@ class condition extends \core_availability\condition {
         global $DB;
 
         // If the array is empty already, just return it.
-        if (!$users) {
+        if (count($users) == 0) {
             return $users;
         }
 
