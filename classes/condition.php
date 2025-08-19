@@ -156,7 +156,7 @@ class condition extends \core_availability\condition {
         global $DB;
         $result = [];
         // If the array is not empty.
-        if (count($users) > 0) {
+        if (count($users) !== 0) {
             $course = $info->get_course();
             $cond = $this->coursecompleted ? 'NOT' : '';
             $sql = "SELECT DISTINCT userid

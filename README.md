@@ -61,7 +61,7 @@ This plugin is maintained for the latest major releases of Moodle.
 
 [![Build Status](https://github.com/ewallah/moodle-availability_coursecompleted/workflows/Tests/badge.svg)](https://github.com/ewallah/moodle-availability_coursecompleted/actions)
 [![Coverage Status](https://coveralls.io/repos/github/ewallah/moodle-availability_coursecompleted/badge.svg?branch=main)](https://coveralls.io/github/ewallah/moodle-availability_coursecompleted?branch=main)
-![Mutation score](https://badgen.net/badge/Mutation%20Score%20Indicator/100)
+![Mutation score](https://badgen.net/badge/Mutation%20Score%20Indicator/100?color=orange)
 
 
 ## Copyright
