@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: checkout plugin
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: this-plugin
           ref: MOODLE_500_STABLE

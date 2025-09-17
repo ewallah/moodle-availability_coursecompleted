@@ -1,3 +1,13 @@
+## v5.1.2 (2025-08-08)
+
+* version update
+* checkout@v5
+
+## v5.1.1 (2025-04-31)
+
+* version update
+* php 8.4
+
 ## v5.0.1 (2025-04-11)
 
 * version update
