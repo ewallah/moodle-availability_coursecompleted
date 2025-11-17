@@ -50,9 +50,10 @@ final class basic_test extends \basic_testcase {
         try {
             $completed = new condition($structure);
             $this->fail();
-        } catch (\exception $e) {
-            $this->assertEquals('', $e->getMessage());
+        } catch (\exception $exception) {
+            $this->assertEquals('', $exception->getMessage());
         }
+
         $this->assertNotEmpty($completed);
 
         // This works with '1'.
@@ -60,9 +61,10 @@ final class basic_test extends \basic_testcase {
         try {
             $completed = new condition($structure);
             $this->fail();
-        } catch (\exception $e) {
-            $this->assertEquals('', $e->getMessage());
+        } catch (\exception $exception) {
+            $this->assertEquals('', $exception->getMessage());
         }
+
         $this->assertNotEmpty($completed);
 
         // This works with '0'.
@@ -70,33 +72,34 @@ final class basic_test extends \basic_testcase {
         try {
             $completed = new condition($structure);
             $this->fail();
-        } catch (\exception $e) {
-            $this->assertEquals('', $e->getMessage());
+        } catch (\exception $exception) {
+            $this->assertEquals('', $exception->getMessage());
         }
+
         $this->assertNotEmpty($completed);
 
         // This fails with null.
         $structure->id = null;
         try {
             $completed = new condition($structure);
-        } catch (\coding_exception $e) {
-            $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
+        } catch (\coding_exception $codingexception) {
+            $this->assertStringContainsString('Invalid value for course completed condition', $codingexception->getMessage());
         }
 
         // Invalid ->id.
         $structure->id = false;
         try {
             $completed = new condition($structure);
-        } catch (\coding_exception $e) {
-            $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
+        } catch (\coding_exception $codingexception) {
+            $this->assertStringContainsString('Invalid value for course completed condition', $codingexception->getMessage());
         }
 
         // Invalid string. Should be checked 'longer string'.
         $structure->id = 1;
         try {
             $completed = new condition($structure);
-        } catch (\coding_exception $e) {
-            $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
+        } catch (\coding_exception $codingexception) {
+            $this->assertStringContainsString('Invalid value for course completed condition', $codingexception->getMessage());
         }
     }
 

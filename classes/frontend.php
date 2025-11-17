@@ -55,8 +55,10 @@ class frontend extends \core_availability\frontend {
             if (count($completioninfo->get_criteria()) > 0) {
                 $return = true;
             }
+
             unset($completioninfo);
         }
+
         return $return;
     }
 }

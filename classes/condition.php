@@ -94,9 +94,11 @@ class condition extends \core_availability\condition {
         if (!$this->coursecompleted) {
             $allow = !$allow;
         }
+
         if ($not) {
             $allow = !$allow;
         }
+
         return $allow;
     }
 
@@ -113,6 +115,7 @@ class condition extends \core_availability\condition {
         if ($not) {
             $allow = !$allow;
         }
+
         return get_string($allow ? 'getdescription' : 'getdescriptionnot', 'availability_coursecompleted');
     }
 
@@ -156,12 +159,12 @@ class condition extends \core_availability\condition {
         global $DB;
         $result = [];
         // If the array is not empty.
-        if (count($users) !== 0) {
+        if ($users !== []) {
             $course = $info->get_course();
             $cond = $this->coursecompleted ? 'NOT' : '';
             $sql = "SELECT DISTINCT userid
                       FROM {course_completions}
-                      WHERE timecompleted IS $cond NULL AND course = ?";
+                      WHERE timecompleted IS {$cond} NULL AND course = ?";
             $compusers = $DB->get_records_sql($sql, [$course->id]);
 
             // List users who have access to the completion report.
@@ -177,12 +180,14 @@ class condition extends \core_availability\condition {
                     if ($not) {
                         $allow = !$allow;
                     }
+
                     if ($allow) {
                         $result[$id] = $user;
                     }
                 }
             }
         }
+
         return $result;
     }
 }

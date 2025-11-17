@@ -81,6 +81,7 @@ final class advanced_test extends \advanced_testcase {
         $role = $DB->get_field('role', 'id', ['shortname' => 'student']);
         $dg->enrol_user($this->userid, $this->course->id, $role);
         $dg->enrol_user($this->compid, $this->course->id, $role);
+
         $role = $DB->get_field('role', 'id', ['shortname' => 'editingteacher']);
         $dg->enrol_user($this->teacherid, $this->course->id, $role);
         $feedback = $dg->get_plugin_generator('mod_feedback')->create_instance(['course' => $this->course]);

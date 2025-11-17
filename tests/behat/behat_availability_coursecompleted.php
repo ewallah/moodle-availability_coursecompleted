@@ -52,6 +52,7 @@ class behat_availability_coursecompleted extends behat_base {
         $userid = $this->get_user_id($user);
         $ccompletion = new \completion_completion(['course' => $courseid, 'userid' => $userid]);
         $ccompletion->mark_complete(time());
+
         $task = new \core\task\completion_regular_task();
         ob_start();
         $task->execute();
@@ -70,6 +71,7 @@ class behat_availability_coursecompleted extends behat_base {
         if (!$userid = $DB->get_field('user', 'id', ['username' => $username])) {
             throw new Exception("A user with username '{$username}' does not exist");
         }
+
         return $userid;
     }
 }
