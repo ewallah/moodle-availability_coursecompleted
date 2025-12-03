@@ -9,11 +9,11 @@ Feature: availability_coursecompleted
       | fullname | shortname | format | enablecompletion | numsections |
       | Course 1 | C1        | topics | 1                | 4           |
     And the following "activities" exist:
-      | activity   | name   | intro            | course | idnumber    | section | visible |
-      | page       | Page A | page description | C1     | page1       | 1       | 1       |
-      | page       | Page B | page description | C1     | page2       | 1       | 1       |
-      | page       | Page C | page description | C1     | page3       | 1       | 1       |
-      | page       | Page D | page description | C1     | page4       | 1       | 1       |
+      | activity   | name   | intro            | course | idnumber    | section | visible | completionview |
+      | page       | Page A | page description | C1     | page1       | 1       | 1       | 1              |
+      | page       | Page B | page description | C1     | page2       | 1       | 1       | 1              |
+      | page       | Page C | page description | C1     | page3       | 1       | 1       | 1              |
+      | page       | Page D | page description | C1     | page4       | 1       | 1       | 1              |
     And the following "users" exist:
       | username | firstname | lastname | email                |
       | student1 | Student   | First    | student1@example.com |
@@ -36,6 +36,8 @@ Feature: availability_coursecompleted
     # Configure Page A for users who did not completed this course.
     When I am on the "page1" "page activity editing" page
     And I expand all fieldsets
+    And I set the field "Add requirements" to "1"
+    And I set the field "View the activity" to "1"
     And I click on "Add restriction..." "button"
     And I click on "Course completed" "button" in the "Add restriction..." "dialogue"
     Then I should see "Please set" in the "region-main" "region"
@@ -46,6 +48,8 @@ Feature: availability_coursecompleted
     # Configure page B for users who did not completed the course.
     When I am on the "page2" "page activity editing" page
     And I expand all fieldsets
+    And I set the field "Add requirements" to "1"
+    And I set the field "View the activity" to "1"
     And I click on "Add restriction..." "button"
     And I click on "Course completed" "button"
     Then I should see "Please set" in the "region-main" "region"
@@ -69,10 +73,18 @@ Feature: availability_coursecompleted
     And I set the field "Course completed" to "Yes"
     And I click on ".availability-item .availability-eye img" "css_element"
     And I click on "Save and return to course" "button"
+    And I navigate to "Course completion" in current page administration
+    And I expand all fieldsets
+    And I set the field "Page - Page A" to "1"
+    And I set the field "Page - Page A" to "1"
+    And I click on "Save changes" "button"
     And I log out
 
     # Log in as student.
-    When I am on the "C1" "Course" page logged in as "student1"
+    When I am on the "page1" "Activity" page logged in as student1
+    And I am on the "page2" "Activity" page
+    And I should see "Done"
+    And I am on the "C1" "Course" page
     Then I should see "Page A" in the "region-main" "region"
     And I should see "Page B" in the "region-main" "region"
     And I should see "Page C" in the "region-main" "region"

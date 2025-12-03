@@ -86,6 +86,14 @@ final class advanced_test extends \advanced_testcase {
         $dg->enrol_user($this->teacherid, $this->course->id, $role);
         $feedback = $dg->get_plugin_generator('mod_feedback')->create_instance(['course' => $this->course]);
         $this->cm = get_fast_modinfo($this->course)->get_cm($feedback->cmid);
+        \mod_forum\event\course_module_viewed::create(
+            [
+                'context'  => \context_module::instance($feedback->cmid),
+                'courseid' => $this->course->id,
+                'objectid' => $feedback->id,
+            ]
+        )->trigger();
+
         $ccompletion = new \completion_completion(['course' => $this->course->id, 'userid' => $this->compid]);
         $ccompletion->mark_complete();
         rebuild_course_cache($this->course->id, true);
