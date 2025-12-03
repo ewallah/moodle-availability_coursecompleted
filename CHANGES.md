@@ -1,4 +1,4 @@
-## v5.2.1 (2025-12-03)
+## v5.2.2 (2025-12-03)
 
 * version update
 * make use of cache
