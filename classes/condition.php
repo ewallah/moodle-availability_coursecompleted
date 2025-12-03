@@ -90,8 +90,7 @@ class condition extends \core_availability\condition {
     public function is_available($not, info $info, $grabthelot, $userid) {
         $cache = \cache::make('core', 'coursecompletion');
         $course = $info->get_course();
-        $key = "{$userid}_{$course->id}";
-        $values = $cache->get($key);
+        $values = $cache->get("{$userid}_{$course->id}");
 
         if ($values && $value = current($values)) {
             $allow = (bool) $value->timecompleted;
