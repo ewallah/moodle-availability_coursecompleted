@@ -89,6 +89,14 @@ final class advanced_test extends \advanced_testcase {
         $ccompletion = new \completion_completion(['course' => $this->course->id, 'userid' => $this->compid]);
         $ccompletion->mark_complete();
         rebuild_course_cache($this->course->id, true);
+
+        $cache = \cache::make('core', 'coursecompletion');
+        $cache->set('1_1', 'pseudo');
+        $plususer = $this->compid + 1;
+        $pluscourse = $this->course->id + 1;
+        $cache->set("{$plususer}_{$this->course->id}", 'pseudo');
+        $cache->set("{$this->compid}_{$pluscourse}", 'pseudo');
+        $cache->set("{$this->compid}{$this->course->id}", 'pseudo');
     }
 
     /**

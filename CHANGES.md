@@ -1,3 +1,9 @@
+## v5.2.1 (2025-12-03)
+
+* version update
+* make use of cache
+* rector review
+
 ## v5.1.2 (2025-08-08)
 
 * version update
