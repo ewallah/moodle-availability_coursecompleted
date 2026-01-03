@@ -1,3 +1,9 @@
+## v5.3.1 (2025-01-03)
+
+* version update
+* availability other course completions
+* 
+
 ## v5.2.2 (2025-12-03)
 
 * version update
