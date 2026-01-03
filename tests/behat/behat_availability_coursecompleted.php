@@ -43,10 +43,10 @@ use Behat\Mink\Exception\ElementNotFoundException;
 class behat_availability_coursecompleted extends behat_base {
     /**
      * Complete user in a course
-     * @Then /^I mark course "(?P<course>[^"]*)" completed for user "(?P<user>[^"]*)"$/
      * @param string $course Course id
      * @param string $user User id
      */
+    #[\Behat\Step\Then('/^I mark course "(?P<course>[^"]*)" completed for user "(?P<user>[^"]*)"$/')]
     public function i_mark_course_completed_for_user(string $course, string $user): void {
         $courseid = $this->get_course_id($course);
         $userid = $this->get_user_id($user);

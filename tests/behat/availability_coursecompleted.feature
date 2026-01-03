@@ -40,7 +40,6 @@ Feature: availability_coursecompleted
     And I set the field "View the activity" to "1"
     And I click on "Add restriction..." "button"
     And I click on "Course completed" "button" in the "Add restriction..." "dialogue"
-    Then I should see "Please set" in the "region-main" "region"
     And I set the field "Course completed" to "No"
     And I click on ".availability-item .availability-eye img" "css_element"
     And I click on "Save and return to course" "button"
@@ -52,9 +51,7 @@ Feature: availability_coursecompleted
     And I set the field "View the activity" to "1"
     And I click on "Add restriction..." "button"
     And I click on "Course completed" "button"
-    Then I should see "Please set" in the "region-main" "region"
     And I set the field "Course completed" to "No"
-    But I should not see "Please set" in the "region-main" "region"
     And I click on "Save and return to course" "button"
 
     # Configure page C for users who completed the course.

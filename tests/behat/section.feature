@@ -4,8 +4,8 @@ Feature: Section 0 availability_coursecompleted
 
   Background:
     Given the following "courses" exist:
-      | fullname | shortname | category | enablecompletion |
-      | Course 1 | C1        | 0        | 1                |
+      | fullname | shortname | enablecompletion |
+      | Course 1 | C1        | 1                |
     And the following "users" exist:
       | username |
       | teacher1 |
@@ -15,7 +15,7 @@ Feature: Section 0 availability_coursecompleted
 
   @javascript
   Scenario: Restrict section0 on completing course
-    When I log in as "admin"
+    When I log in as "teacher1"
     And I am on "Course 1" course homepage
     And I navigate to "Course completion" in current page administration
     And I expand all fieldsets
@@ -29,7 +29,7 @@ Feature: Section 0 availability_coursecompleted
 
   @javascript
   Scenario: Section0 cannot be restricted without criteria
-    When I log in as "admin"
+    When I log in as "teacher1"
     And I am on "Course 1" course homepage
     And I turn editing mode on
     And I edit the section "0"

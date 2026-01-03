@@ -107,7 +107,7 @@ final class basic_test extends \basic_testcase {
      * Tests the save() function.
      */
     public function test_save(): void {
-        $structure = (object)['id' => '1'];
+        $structure = (object)['id' => '1', 'courseid' => '0'];
         $cond = new condition($structure);
         $structure->type = 'coursecompleted';
         $this->assertEquals($structure, $cond->save());
@@ -117,8 +117,19 @@ final class basic_test extends \basic_testcase {
      * Tests json.
      */
     public function test_json(): void {
-        $this->assertEqualsCanonicalizing((object)['type' => 'coursecompleted', 'id' => '3'], condition::get_json('3'));
-        $this->assertEqualsCanonicalizing((object)['type' => 'coursecompleted', 'id' => '0'], condition::get_json('0'));
+        $thing = (object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 0];
+        $this->assertEqualsCanonicalizing($thing, condition::get_json(true));
+        $thing = (object)['type' => 'coursecompleted', 'id' => false, 'courseid' => 0];
+        $this->assertEqualsCanonicalizing($thing, condition::get_json());
+        $this->assertEqualsCanonicalizing($thing, condition::get_json(false));
+        $thing = (object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 1];
+        $this->assertEqualsCanonicalizing($thing, condition::get_json(true, 1));
+        $thing = (object)['type' => 'coursecompleted', 'id' => false, 'courseid' => 2];
+        $this->assertEqualsCanonicalizing($thing, condition::get_json(false, 2));
+        $thing = (object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 2];
+        $this->assertEqualsCanonicalizing($thing, condition::get_json('2', '2'));
+        $thing = (object)['type' => 'coursecompleted', 'id' => false, 'courseid' => 0];
+        $this->assertEqualsCanonicalizing($thing, condition::get_json('', '0'));
     }
 
     /**
@@ -126,9 +137,11 @@ final class basic_test extends \basic_testcase {
      */
     public function test_debug(): void {
         $name = 'availability_coursecompleted\condition';
-        $condition = new condition((object)['type' => 'coursecompleted', 'id' => '0']);
+        $condition = new condition((object)['type' => 'coursecompleted', 'id' => false]);
         $this->assertEquals('False', \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
-        $condition = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
+        $condition = new condition((object)['type' => 'coursecompleted', 'id' => true]);
         $this->assertEquals('True', \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
+        $condition = new condition((object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 1]);
+        $this->assertEquals('True phpunit', \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
     }
 }

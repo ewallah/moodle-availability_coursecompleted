@@ -57,6 +57,12 @@ final class advanced_test extends \advanced_testcase {
     /** @var int teacherid. */
     private $teacherid;
 
+    /** @var stdClass othercourse. */
+    private $othercourse;
+
+    /** @var stdClass hiddencourse. */
+    private $hiddencourse;
+
     /**
      * Create course and page.
      */
@@ -70,11 +76,28 @@ final class advanced_test extends \advanced_testcase {
         require_once($CFG->libdir . '/completionlib.php');
         $this->resetAfterTest();
         $this->setAdminUser();
+        // Enable completion, otherwise the data is not written in DB.
         $CFG->enablecompletion = true;
         $CFG->enableavailability = true;
         set_config('enableavailability', true);
         $dg = $this->getDataGenerator();
         $this->course = $dg->create_course(['enablecompletion' => 1]);
+
+        $arr = ['criteriatype' => COMPLETION_CRITERIA_TYPE_SELF];
+        $criteria = \completion_criteria::factory($arr);
+        $criteriadata = (object) ['id' => $this->course->id, 'criteria_self' => 1];
+        $criteria->update_config($criteriadata);
+        $course = $dg->create_course(['enablecompletion' => 1]);
+        $criteria = \completion_criteria::factory($arr);
+        $criteriadata = (object) ['id' => $course->id, 'criteria_self' => 1];
+        $criteria->update_config($criteriadata);
+        $this->othercourse = $dg->create_course(['enablecompletion' => 1]);
+        $criteria = \completion_criteria::factory($arr);
+        $criteriadata = (object) ['id' => $this->othercourse->id, 'criteria_self' => 1];
+        $criteria->update_config($criteriadata);
+        $this->hiddencourse = $dg->create_course(['enablecompletion' => 1, 'visible' => false]);
+        $othercourse = $dg->create_course(['enablecompletion' => 1]);
+
         $this->userid = $dg->create_user()->id;
         $this->compid = $dg->create_user()->id;
         $this->teacherid = $dg->create_user()->id;
@@ -84,6 +107,10 @@ final class advanced_test extends \advanced_testcase {
 
         $role = $DB->get_field('role', 'id', ['shortname' => 'editingteacher']);
         $dg->enrol_user($this->teacherid, $this->course->id, $role);
+        $dg->enrol_user($this->teacherid, $this->othercourse->id, $role);
+        $dg->enrol_user($this->teacherid, $this->hiddencourse->id, $role);
+        $dg->enrol_user($this->teacherid, $othercourse->id, $role);
+
         $feedback = $dg->get_plugin_generator('mod_feedback')->create_instance(['course' => $this->course]);
         $this->cm = get_fast_modinfo($this->course)->get_cm($feedback->cmid);
         \mod_forum\event\course_module_viewed::create(
@@ -100,11 +127,23 @@ final class advanced_test extends \advanced_testcase {
 
         $cache = \cache::make('core', 'coursecompletion');
         $cache->set('1_1', 'pseudo');
+
         $plususer = $this->compid + 1;
         $pluscourse = $this->course->id + 1;
         $cache->set("{$plususer}_{$this->course->id}", 'pseudo');
         $cache->set("{$this->compid}_{$pluscourse}", 'pseudo');
         $cache->set("{$this->compid}{$this->course->id}", 'pseudo');
+
+        // Insert fake course_completion_criteria.
+        $DB->insert_record(
+            'course_completion_criteria',
+            [
+                'course' => $this->compid,
+                'criteriatype' => COMPLETION_CRITERIA_TYPE_ACTIVITY,
+                'module' => 667,
+                'moduleinstance' => 668,
+            ],
+        );
     }
 
     /**
@@ -114,18 +153,35 @@ final class advanced_test extends \advanced_testcase {
         $info1 = new \core_availability\mock_info($this->course, $this->userid);
         $info2 = new \core_availability\mock_info($this->course, $this->compid);
 
-        $structure1 = (object)['op' => '|', 'show' => true, 'c' => [(object)['type' => 'coursecompleted', 'id' => '1']]];
-        $structure2 = (object)['op' => '|', 'show' => true, 'c' => [(object)['type' => 'coursecompleted', 'id' => '0']]];
+        $structure1 = (object)[
+            'op' => '|',
+            'show' => true,
+            'c' => [(object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 0]],
+        ];
+        $structure2 = (object)[
+            'op' => '|',
+            'show' => true,
+            'c' => [(object)['type' => 'coursecompleted', 'id' => false, 'courseid' => 0]],
+        ];
+        $structure3 = (object)[
+            'op' => '|',
+            'show' => true,
+            'c' => [(object)['type' => 'coursecompleted', 'id' => false, 'courseid' => $this->othercourse->id]],
+        ];
+
         $tree1 = new tree($structure1);
         $tree2 = new tree($structure2);
+        $tree3 = new tree($structure3);
 
         $this->setuser($this->compid);
         $this->assertTrue($tree1->check_available(false, $info2, true, $this->compid)->is_available());
         $this->assertFalse($tree2->check_available(false, $info2, true, $this->compid)->is_available());
+        $this->assertTrue($tree3->check_available(false, $info2, true, $this->compid)->is_available());
 
         $this->setuser($this->userid);
         $this->assertFalse($tree1->check_available(false, $info1, true, $this->userid)->is_available());
         $this->assertTrue($tree2->check_available(false, $info1, true, $this->userid)->is_available());
+        $this->assertTrue($tree3->check_available(false, $info1, true, $this->userid)->is_available());
     }
 
     /**
@@ -137,17 +193,28 @@ final class advanced_test extends \advanced_testcase {
 
         $frontend = new frontend();
         $name = 'availability_coursecompleted\frontend';
-        $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$this->course], $name));
+        $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$this->course], $name));
 
         $data = (object) ['id' => $this->course->id, 'criteria_activity' => [$this->cm->id => 1]];
         $criterion = new \completion_criteria_activity();
         $criterion->update_config($data);
+        $this->setAdminUser();
+        $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$this->course], $name));
+        $this->setUser($this->teacherid);
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$this->course], $name));
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$this->course, null, $sections[0]], $name));
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$this->course, null, $sections[1]], $name));
+        $arr = \phpunit_util::call_internal_method($frontend, 'get_javascript_init_params', [$this->course], $name);
+        $arr = reset($arr);
+        $this->assertCount(2, $arr);
+        $this->assertEquals(['id' => 0, 'name' => 'Current course'], $arr[1]);
+        $this->assertEquals(['id' => $this->othercourse->id, 'name' => $this->othercourse->shortname], $arr[0]);
+        $arr = \phpunit_util::call_internal_method($frontend, 'get_javascript_strings', [], $name);
+        $this->assertEquals(['title', 'select'], $arr);
 
         $info = new \core_availability\mock_info_module($this->userid, $this->cm);
-        $completed = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
+
+        $completed = new condition((object)['type' => 'coursecompleted', 'id' => true]);
         $information = $completed->get_description(true, false, $info);
         $this->assertEquals($information, get_string('getdescription', 'availability_coursecompleted'));
         $information = $completed->get_description(true, true, $info);
@@ -157,7 +224,7 @@ final class advanced_test extends \advanced_testcase {
         $information = $completed->get_standalone_description(true, true, $info);
         $this->assertEquals($information, $nau . get_string('getdescriptionnot', 'availability_coursecompleted'));
 
-        $completed = new condition((object)['type' => 'coursecompleted', 'id' => '0']);
+        $completed = new condition((object)['type' => 'coursecompleted', 'id' => false]);
         $information = $completed->get_description(true, false, $info);
         $this->assertEquals($information, get_string('getdescriptionnot', 'availability_coursecompleted'));
         $information = $completed->get_description(true, true, $info);
@@ -166,6 +233,51 @@ final class advanced_test extends \advanced_testcase {
         $this->assertEquals($information, $nau . get_string('getdescriptionnot', 'availability_coursecompleted'));
         $information = $completed->get_standalone_description(true, true, $info);
         $this->assertEquals($information, $nau . get_string('getdescription', 'availability_coursecompleted'));
+
+        $name = format_string($this->othercourse->shortname);
+        $completed = new condition((object)['type' => 'coursecompleted', 'id' => true, 'courseid' => $this->othercourse->id]);
+        $information = $completed->get_description(true, false, $info);
+        $this->assertEquals($information, get_string('getotherdescription', 'availability_coursecompleted', $name));
+        $information = $completed->get_description(true, true, $info);
+        $this->assertEquals($information, get_string('getotherdescriptionnot', 'availability_coursecompleted', $name));
+        $information = $completed->get_standalone_description(true, false, $info);
+        $this->assertEquals($information, $nau . get_string('getotherdescription', 'availability_coursecompleted', $name));
+        $information = $completed->get_standalone_description(true, true, $info);
+        $this->assertEquals($information, $nau . get_string('getotherdescriptionnot', 'availability_coursecompleted', $name));
+    }
+
+    /**
+     * Tests the get_description and get_standalone_description functions.
+     */
+    public function test_get_description_2(): void {
+        global $DB;
+        $course = $this->getDataGenerator()->create_course(['enablecompletion' => 1]);
+        $user = $this->getDataGenerator()->create_and_enrol($course, 'teacher');
+        $this->setUser($user->id);
+        $name = 'availability_coursecompleted\frontend';
+        $frontend = new frontend();
+        $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
+        $DB->insert_record(
+            'course_completion_criteria',
+            [
+                'course' => $course->id,
+                'criteriatype' => COMPLETION_CRITERIA_TYPE_ACTIVITY,
+                'module' => 666,
+                'moduleinstance' => 666,
+            ],
+        );
+        $DB->insert_record(
+            'course_completion_criteria',
+            [
+                'course' => 666,
+                'criteriatype' => COMPLETION_CRITERIA_TYPE_ACTIVITY,
+                'module' => 666,
+                'moduleinstance' => 666,
+            ],
+        );
+        $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
+        $this->setUser($this->teacherid);
+        $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$this->hiddencourse], $name));
     }
 
     /**
@@ -173,7 +285,7 @@ final class advanced_test extends \advanced_testcase {
      */
     public function test_is_applied_to_user_lists(): void {
         $info = new \core_availability\mock_info_module($this->userid, $this->cm);
-        $cond = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
+        $cond = new condition((object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 0]);
         $this->assertTrue($cond->is_applied_to_user_lists());
 
         $checker = new \core_availability\capability_checker(\context_course::instance($this->course->id));
