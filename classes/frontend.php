@@ -40,8 +40,7 @@ use stdClass;
  */
 class frontend extends \core_availability\frontend {
     /**
-     * Decides whether this plugin should be available in a given course. The
-     * plugin can do this depending on course or system settings.
+     * Decides whether this plugin should be available in a given course.
      *
      * @param stdClass $course Course object
      * @param cm_info|null $cm Course-module currently being edited (null if none)
@@ -49,16 +48,55 @@ class frontend extends \core_availability\frontend {
      * @return bool True if there are completion criteria
      */
     protected function allow_add($course, ?cm_info $cm = null, ?section_info $section = null) {
-        $return = false;
-        if ($course->enablecompletion == 1) {
-            $completioninfo = new \completion_info($course);
-            if (count($completioninfo->get_criteria()) > 0) {
-                $return = true;
+        global $DB, $USER;
+        $courses = enrol_get_users_courses($USER->id, true, 'id, enablecompletion');
+        foreach ($courses as $course) {
+            if ($course->enablecompletion == 1) {
+                if ($DB->record_exists('course_completion_criteria', ['course' => $course->id])) {
+                    return true;
+                }
             }
-
-            unset($completioninfo);
         }
 
-        return $return;
+        return is_siteadmin();
+    }
+
+    /**
+     * Get JavaScript initialization parameters.
+     *
+     * @param stdClass $currentcourse The course object.
+     * @param cm_info|null $cm The course module info.
+     * @param section_info|null $section The section info.
+     * @return array The JavaScript initialization parameters.
+     */
+    protected function get_javascript_init_params($currentcourse, ?cm_info $cm = null, ?section_info $section = null) {
+        global $USER;
+        $courses = is_siteadmin() ? get_courses() : enrol_get_users_courses($USER->id, true, 'id, enablecompletion');
+        $arr = [];
+        foreach ($courses as $course) {
+            if ($course->enablecompletion == 1) {
+                if ($course->id == $currentcourse->id) {
+                    $arr[] = ['id' => 0, 'name' => get_string('currentcourse')];
+                } else {
+                    $completioninfo = new \completion_info($course);
+                    if ($completioninfo->has_criteria()) {
+                        $arr[] = ['id' => $course->id, 'name' => format_string($course->shortname)];
+                    }
+
+                    unset($completioninfo);
+                }
+            }
+        }
+
+        return [$arr];
+    }
+
+    /**
+     * Gets a list of string identifiers
+     *
+     * @return array Array of required string identifiers
+     */
+    protected function get_javascript_strings() {
+        return ['title', 'select'];
     }
 }
