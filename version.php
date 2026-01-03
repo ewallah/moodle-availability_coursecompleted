@@ -31,4 +31,3 @@ $plugin->release = 'v5.3.0';
 $plugin->version = 2026010300;
 $plugin->requires = 2025041400;
 $plugin->supported = [500, 501];
-

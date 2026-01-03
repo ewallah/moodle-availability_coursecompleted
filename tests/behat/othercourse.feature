@@ -90,19 +90,20 @@ Feature: availability coursecompleted other course completion
     And I should see "Not available unless:" in the "region-main" "region"
     And I follow "Complete course"
     And I press "Yes"
+    And I run the scheduled task "core\task\completion_regular_task"
 
     And I am on the "C2" "Course" page
     And I should see "Page B" in the "region-main" "region"
     And I should see "Not available unless:" in the "region-main" "region"
     And I follow "Complete course"
     And I press "Yes"
+    And I run the scheduled task "core\task\completion_regular_task"
 
     And I am on the "C3" "Course" page
     And I should see "Page C" in the "region-main" "region"
     And I should see "Not available unless:" in the "region-main" "region"
     And I follow "Complete course"
     And I press "Yes"
-
     And I run the scheduled task "core\task\completion_regular_task"
 
     And I am on the "C1" "Course" page
