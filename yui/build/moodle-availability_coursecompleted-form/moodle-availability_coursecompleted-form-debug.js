@@ -5,7 +5,6 @@ YUI.add('moodle-availability_coursecompleted-form', function (Y, NAME) {
  *
  * @module moodle-availability_coursecompleted-form
  */
-
 M.availability_coursecompleted = M.availability_coursecompleted || {};
 
 // Class M.availability_coursecompleted.form @extends M.core_availability.plugin.
@@ -18,10 +17,10 @@ M.availability_coursecompleted.form.completed = null;
  * Initialises this plugin.
  *
  * @method initInner
- * @param {boolean} completed Is completed or not
+ * @param {Array} courses Array of objects containing courseid => shortname
  */
-M.availability_coursecompleted.form.initInner = function(completed) {
-    this.completed = completed;
+M.availability_coursecompleted.form.initInner = function(courses) {
+    this.courses = courses;
 };
 
 M.availability_coursecompleted.form.getNode = function(json) {
@@ -29,18 +28,31 @@ M.availability_coursecompleted.form.getNode = function(json) {
     var tit = M.util.get_string('title', 'availability_coursecompleted');
     var html = '<label class="mb-3"><span class="p-r-1">' + tit + '</span>';
     html += '<span class="availability-coursecompleted"><select class="form-select" name="id" title=' + tit + '>';
-    html += '<option value="choose">' + M.util.get_string('choosedots', 'moodle') + '</option>';
     html += '<option value="1">' + M.util.get_string('yes', 'moodle') + '</option>';
     html += '<option value="0">' + M.util.get_string('no', 'moodle') + '</option>';
+    html += '</select></span></label><br/>';
+    var tut = M.util.get_string('select', 'availability_coursecompleted');
+    html += '<label class="mb-3"><span class="p-r-1">' + tut + '</span>';
+    html += '<select class="form-select" name="courses" title="courses">';
+    for (var i = 0; i < this.courses.length; i++) {
+        var course = this.courses[i];
+        // String has already been escaped using format_string.
+        html += '<option value="' + course.id + '">' + course.name + '</option>';
+    }
     html += '</select></span></label>';
     var node = Y.Node.create('<span class="d-flex flex-wrap align-items-center">' + html + '</span>');
 
     // Set initial values (leave default 'choose' if creating afresh).
     if (json.creating === undefined) {
-        if (json.id !== undefined && node.one('select[name=id] > option[value=' + json.id + ']')) {
+        if (json.id !== undefined) {
             node.one('select[name=id]').set('value', '' + json.id);
         } else if (json.id === undefined) {
-            node.one('select[name=id]').set('value', 'choose');
+            node.one('select[name=id]').set('value', 0);
+        }
+        if (json.courseid !== undefined) {
+            node.one('select[name=courses]').set('value', '' + json.courseid);
+        } else {
+            node.one('select[name=courses]').set('value', 0);
         }
     }
 
@@ -58,19 +70,9 @@ M.availability_coursecompleted.form.getNode = function(json) {
 };
 
 M.availability_coursecompleted.form.fillValue = function(value, node) {
-    var selected = node.one('select[name=id]').get('value');
-    if (selected === 'choose') {
-        value.id = '';
-    } else {
-        value.id = selected;
-    }
+    value.id = parseInt(node.one('select[name=id]').get('value'));
+    value.courseid = parseInt(node.one('select[name=courses]').get('value'));
 };
 
-M.availability_coursecompleted.form.fillErrors = function(errors, node) {
-    var selected = node.one('select[name=id]').get('value');
-    if (selected === 'choose') {
-        errors.push('availability_coursecompleted:missing');
-    }
-};
 
 }, '@VERSION@', {"requires": ["base", "node", "event", "moodle-core_availability-form"]});
