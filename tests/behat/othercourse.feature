@@ -104,7 +104,9 @@ Feature: availability coursecompleted other course completion
     And I press "Yes"
 
     And I run the scheduled task "core\task\completion_regular_task"
+    And I wait "1" seconds
     And I run the scheduled task "core\task\completion_regular_task"
+    And I reload the page
 
     And I am on the "C1" "Course" page
     And I should not see "Not available unless:" in the "region-main" "region"

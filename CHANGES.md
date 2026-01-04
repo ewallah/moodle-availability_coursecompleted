@@ -2,7 +2,10 @@
 
 * version update
 * availability other course completions
-* 
+* infection
+  - Mutation Score Indicator (MSI): 100%
+  - Mutation Code Coverage: 100%
+  - Covered Code MSI: 100%
 
 ## v5.2.2 (2025-12-03)
 
