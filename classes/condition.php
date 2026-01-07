@@ -51,7 +51,7 @@ class condition extends \core_availability\condition {
      * @param stdClass $structure Data structure from JSON decode
      */
     public function __construct($structure) {
-        $this->completed = property_exists($structure, 'id') ? (bool)$structure->id : false;
+        $this->completed = property_exists($structure, 'id') && (bool)$structure->id;
         $this->courseid = property_exists($structure, 'courseid') ? $structure->courseid : 0;
     }
 
