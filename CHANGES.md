@@ -1,9 +1,9 @@
-## v5.3.2 (2025-01-07)
+## v5.3.1 (2025-01-07)
 
 * version update
 * backup test
 
-## v5.3.1 (2025-01-03)
+## v5.3.0 (2025-01-03)
 
 * version update
 * availability other course completions
