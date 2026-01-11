@@ -309,11 +309,27 @@ final class advanced_test extends \advanced_testcase {
     }
 
     /**
+     * Tests no id
+     */
+    public function test_no_id(): void {
+        $info = new info_module($this->cm);
+        $cond = new condition((object)['type' => 'coursecompleted']);
+        $this->assertTrue($cond->is_available(false, $info, false, $this->userid));
+        $this->assertFalse($cond->is_available_for_all());
+        $this->assertFalse($cond->update_dependency_id(null, 1, 2));
+        $this->assertEquals($cond->__toString(), '{coursecompleted:False}');
+        $this->assertEquals(
+            $cond->get_standalone_description(true, true, $info),
+            'Not available unless: You completed this course.'
+        );
+    }
+
+    /**
      * Tests a page before and after completion.
      */
     public function test_page(): void {
         $info = new info_module($this->cm);
-        $cond = new condition((object)['type' => 'coursecompleted', 'id' => '1']);
+        $cond = new condition((object)['type' => 'coursecompleted', 'id' => true, 'courseid' => $this->course->id]);
         $this->assertFalse($cond->is_available(false, $info, true, $this->userid));
         $this->assertFalse($cond->is_available(false, $info, false, $this->userid));
         $this->assertTrue($cond->is_available(true, $info, false, $this->userid));
@@ -326,15 +342,11 @@ final class advanced_test extends \advanced_testcase {
         $this->assertFalse($cond->is_available(true, $info, false, $this->userid));
         $this->assertFalse($cond->is_available(true, $info, true, $this->userid));
 
-        // No id.
-        $cond = new condition((object)['type' => 'coursecompleted']);
+        // Delete course.
+        delete_course($this->course, false);
+        $this->assertFalse($cond->is_available(false, $info, true, $this->userid));
         $this->assertFalse($cond->is_available(false, $info, false, $this->userid));
-        $this->assertFalse($cond->is_available_for_all());
-        $this->assertFalse($cond->update_dependency_id(null, 1, 2));
-        $this->assertEquals($cond->__toString(), '{coursecompleted:False}');
-        $this->assertEquals(
-            $cond->get_standalone_description(true, true, $info),
-            'Not available unless: You completed this course.'
-        );
+        $this->assertFalse($cond->is_available(true, $info, false, $this->userid));
+        $this->assertFalse($cond->is_available(true, $info, true, $this->userid));
     }
 }

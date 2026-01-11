@@ -65,10 +65,8 @@ final class basic_test extends \basic_testcase {
             $this->assertEquals('', $exception->getMessage());
         }
 
-        $this->assertNotEmpty($completed);
-
-        // This works with '0'.
-        $structure->id = '0';
+        // This works with an integer.
+        $structure->id = 1;
         try {
             $completed = new condition($structure);
             $this->fail();
@@ -78,28 +76,35 @@ final class basic_test extends \basic_testcase {
 
         $this->assertNotEmpty($completed);
 
-        // This fails with null.
+        // This works with a course.
+        $structure->id = 0;
+        $structure->courseid = 33;
+        try {
+            $completed = new condition($structure);
+            $this->fail();
+        } catch (\exception $exception) {
+            $this->assertEquals('', $exception->getMessage());
+        }
+
+        $this->assertNotEmpty($completed);
+
+        // This does not fail with null.
         $structure->id = null;
         try {
             $completed = new condition($structure);
-        } catch (\coding_exception $codingexception) {
-            $this->assertStringContainsString('Invalid value for course completed condition', $codingexception->getMessage());
+            $this->fail();
+        } catch (\exception $exception) {
+            $this->assertEquals('', $exception->getMessage());
         }
 
-        // Invalid ->id.
+        // Works with courseid string.
         $structure->id = false;
+        $structure->courseid = '22';
         try {
             $completed = new condition($structure);
-        } catch (\coding_exception $codingexception) {
-            $this->assertStringContainsString('Invalid value for course completed condition', $codingexception->getMessage());
-        }
-
-        // Invalid string. Should be checked 'longer string'.
-        $structure->id = 1;
-        try {
-            $completed = new condition($structure);
-        } catch (\coding_exception $codingexception) {
-            $this->assertStringContainsString('Invalid value for course completed condition', $codingexception->getMessage());
+            $this->fail();
+        } catch (\exception $exception) {
+            $this->assertEquals('', $exception->getMessage());
         }
     }
 
@@ -107,7 +112,12 @@ final class basic_test extends \basic_testcase {
      * Tests the save() function.
      */
     public function test_save(): void {
-        $structure = (object)['id' => '1', 'courseid' => '0'];
+        $structure = (object)['id' => '1', 'courseid' => '33'];
+        $cond = new condition($structure);
+        $structure->type = 'coursecompleted';
+        $this->assertEquals($structure, $cond->save());
+
+        $structure = (object)['id' => true, 'courseid' => 33];
         $cond = new condition($structure);
         $structure->type = 'coursecompleted';
         $this->assertEquals($structure, $cond->save());

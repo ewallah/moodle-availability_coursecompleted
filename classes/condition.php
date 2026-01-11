@@ -51,7 +51,7 @@ class condition extends \core_availability\condition {
      * @param stdClass $structure Data structure from JSON decode
      */
     public function __construct($structure) {
-        $this->completed = property_exists($structure, 'id') && (bool)$structure->id;
+        $this->completed = property_exists($structure, 'id') && $structure->id;
         $this->courseid = property_exists($structure, 'courseid') ? $structure->courseid : 0;
     }
 
@@ -86,7 +86,12 @@ class condition extends \core_availability\condition {
      */
     public function is_available($not, info $info, $grabthelot, $userid) {
         $cache = \cache::make('core', 'coursecompletion');
-        $course = $this->courseid === 0 ? $info->get_course() : get_course($this->courseid);
+        try {
+            $course = $this->courseid === 0 ? $info->get_course() : get_course($this->courseid);
+        } catch (\exception) {
+            // Deleted courses alwas return false.
+            return false;
+        }
         $values = $cache->get("{$userid}_{$course->id}");
         if ($values && $value = current($values)) {
             $allow = (bool)$value->timecompleted;
