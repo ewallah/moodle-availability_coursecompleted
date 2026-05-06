@@ -8,10 +8,6 @@ This availability condition makes it easy to show modules or sections only when 
 completed a course. A course certificate is a good sample, but it can also be used to close
 discussion forums, hide quizes or exams when a user finished a course.
 
-## New
-
-Now you can also restrict access unless other courses are completed.
-
 ## Conditional availability conditions
 
 Check the global documentation about conditional availability conditions: https://docs.moodle.org/en/Conditional_activities_settings
@@ -65,12 +61,12 @@ This plugin is maintained for the latest major releases of Moodle.
 
 [![Build Status](https://github.com/ewallah/moodle-availability_coursecompleted/workflows/Tests/badge.svg)](https://github.com/ewallah/moodle-availability_coursecompleted/actions)
 [![Coverage Status](https://coveralls.io/repos/github/ewallah/moodle-availability_coursecompleted/badge.svg?branch=main)](https://coveralls.io/github/ewallah/moodle-availability_coursecompleted?branch=main)
-![Mutation score](https://badgen.net/badge/Mutation%20Score%20Indicator/100?color=orange)
+![Mutation score](https://badgen.net/badge/Mutation%20Score%20Indicator/100)
 
 
 ## Copyright
 
-eWallah
+eWallah.net
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software

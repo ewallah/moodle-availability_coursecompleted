@@ -25,11 +25,11 @@
 
 namespace availability_coursecompleted;
 
+
 use availability_coursecompleted\{condition, frontend};
 use completion_info;
 use core_availability\{tree, info_module, mock_info, mock_condition};
 use core_completion;
-use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Bare tests for the coursecompleted condition.
@@ -38,11 +38,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
  * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @coversDefaultClass \availability_coursecompleted
  */
-#[CoversClass(condition::class)]
 final class basic_test extends \basic_testcase {
     /**
      * Tests the constructor including error conditions.
+     * @covers \availability_coursecompleted\condition
      */
     public function test_constructor(): void {
         // This works with no parameters.
@@ -50,10 +51,9 @@ final class basic_test extends \basic_testcase {
         try {
             $completed = new condition($structure);
             $this->fail();
-        } catch (\exception $exception) {
-            $this->assertEquals('', $exception->getMessage());
+        } catch (\exception $e) {
+            $this->assertEquals('', $e->getMessage());
         }
-
         $this->assertNotEmpty($completed);
 
         // This works with '1'.
@@ -61,63 +61,52 @@ final class basic_test extends \basic_testcase {
         try {
             $completed = new condition($structure);
             $this->fail();
-        } catch (\exception $exception) {
-            $this->assertEquals('', $exception->getMessage());
+        } catch (\exception $e) {
+            $this->assertEquals('', $e->getMessage());
         }
+        $this->assertNotEmpty($completed);
 
-        // This works with an integer.
-        $structure->id = 1;
+        // This works with '0'.
+        $structure->id = '0';
         try {
             $completed = new condition($structure);
             $this->fail();
-        } catch (\exception $exception) {
-            $this->assertEquals('', $exception->getMessage());
+        } catch (\exception $e) {
+            $this->assertEquals('', $e->getMessage());
         }
-
         $this->assertNotEmpty($completed);
 
-        // This works with a course.
-        $structure->id = 0;
-        $structure->courseid = 33;
-        try {
-            $completed = new condition($structure);
-            $this->fail();
-        } catch (\exception $exception) {
-            $this->assertEquals('', $exception->getMessage());
-        }
-
-        $this->assertNotEmpty($completed);
-
-        // This does not fail with null.
+        // This fails with null.
         $structure->id = null;
         try {
             $completed = new condition($structure);
-            $this->fail();
-        } catch (\exception $exception) {
-            $this->assertEquals('', $exception->getMessage());
+        } catch (\coding_exception $e) {
+            $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
         }
 
-        // Works with courseid string.
+        // Invalid ->id.
         $structure->id = false;
-        $structure->courseid = '22';
         try {
             $completed = new condition($structure);
-            $this->fail();
-        } catch (\exception $exception) {
-            $this->assertEquals('', $exception->getMessage());
+        } catch (\coding_exception $e) {
+            $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
+        }
+
+        // Invalid string. Should be checked 'longer string'.
+        $structure->id = 1;
+        try {
+            $completed = new condition($structure);
+        } catch (\coding_exception $e) {
+            $this->assertStringContainsString('Invalid value for course completed condition', $e->getMessage());
         }
     }
 
     /**
      * Tests the save() function.
+     * @covers \availability_coursecompleted\condition
      */
     public function test_save(): void {
-        $structure = (object)['id' => '1', 'courseid' => '33'];
-        $cond = new condition($structure);
-        $structure->type = 'coursecompleted';
-        $this->assertEquals($structure, $cond->save());
-
-        $structure = (object)['id' => true, 'courseid' => 33];
+        $structure = (object)['id' => '1'];
         $cond = new condition($structure);
         $structure->type = 'coursecompleted';
         $this->assertEquals($structure, $cond->save());
@@ -125,33 +114,10 @@ final class basic_test extends \basic_testcase {
 
     /**
      * Tests json.
+     * @covers \availability_coursecompleted\condition
      */
     public function test_json(): void {
-        $thing = (object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 0];
-        $this->assertEqualsCanonicalizing($thing, condition::get_json(true));
-        $thing = (object)['type' => 'coursecompleted', 'id' => false, 'courseid' => 0];
-        $this->assertEqualsCanonicalizing($thing, condition::get_json());
-        $this->assertEqualsCanonicalizing($thing, condition::get_json(false));
-        $thing = (object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 1];
-        $this->assertEqualsCanonicalizing($thing, condition::get_json(true, 1));
-        $thing = (object)['type' => 'coursecompleted', 'id' => false, 'courseid' => 2];
-        $this->assertEqualsCanonicalizing($thing, condition::get_json(false, 2));
-        $thing = (object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 2];
-        $this->assertEqualsCanonicalizing($thing, condition::get_json('2', '2'));
-        $thing = (object)['type' => 'coursecompleted', 'id' => false, 'courseid' => 0];
-        $this->assertEqualsCanonicalizing($thing, condition::get_json('', '0'));
-    }
-
-    /**
-     * Test debug string.
-     */
-    public function test_debug(): void {
-        $name = 'availability_coursecompleted\condition';
-        $condition = new condition((object)['type' => 'coursecompleted', 'id' => false]);
-        $this->assertEquals('False', \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
-        $condition = new condition((object)['type' => 'coursecompleted', 'id' => true]);
-        $this->assertEquals('True', \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
-        $condition = new condition((object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 1]);
-        $this->assertEquals('True phpunit', \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
+        $this->assertEqualsCanonicalizing((object)['type' => 'coursecompleted', 'id' => '3'], condition::get_json('3'));
+        $this->assertEqualsCanonicalizing((object)['type' => 'coursecompleted', 'id' => '0'], condition::get_json('0'));
     }
 }

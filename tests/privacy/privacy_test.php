@@ -28,7 +28,6 @@ namespace availability_coursecompleted\privacy;
 use core_privacy\tests\provider_testcase;
 use core_privacy\local\metadata\collection;
 use availability_coursecompleted\privacy\provider;
-use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Coursecompleted enrolment privacy tests.
@@ -38,13 +37,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[CoversClass(provider::class)]
 final class privacy_test extends provider_testcase {
     /**
      * Test returning metadata.
+     * @covers \availability_coursecompleted\privacy\provider
      */
     public function test_get_metadata(): void {
-        $reason = provider::get_reason();
+        $collection = new collection('availability_coursecompleted');
+        $reason = provider::get_reason($collection);
         $this->assertEquals($reason, 'privacy:metadata');
         $this->assertStringContainsString('does not store', get_string($reason, 'availability_coursecompleted'));
     }

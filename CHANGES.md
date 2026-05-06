@@ -1,40 +1,3 @@
-## v5.3.1 (2025-01-07)
-
-* version update
-* backup test
-
-## v5.3.0 (2025-01-03)
-
-* version update
-* availability other course completions
-* infection
-  - Mutation Score Indicator (MSI): 100%
-  - Mutation Code Coverage: 100%
-  - Covered Code MSI: 100%
-
-## v5.2.2 (2025-12-03)
-
-* version update
-* make use of cache
-* rector review
-
-## v5.1.2 (2025-08-08)
-
-* version update
-* checkout@v5
-
-## v5.1.1 (2025-04-31)
-
-* version update
-* php 8.4
-
-## v5.0.1 (2025-04-11)
-
-* version update
-* MOODLE_500_STABLE
-* Bootstrap5
-* php 8.3
-
 ## v4.4.2 (2024-10-07)
 
 * version update
@@ -97,7 +60,7 @@
 
 ## v3.9.5 (2022-03-12)
 
-* @covers )]
+* @covers 
 * Version update 
 
 

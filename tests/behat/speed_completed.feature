@@ -9,8 +9,7 @@ Feature: availability coursecompleted fast completion
     And the following "activities" exist:
       | activity  | name   | course | idnumber | completion |
       | page      | Page 1 | C1     | page1    | 1          |
-      | page      | Page 2 | C1     | page2    | 1          |
-      | page      | Page 3 | C1     | page3    | 0          |
+      | page      | Page 2 | C1     | page2    | 0          |
     And the following "users" exist:
       | username |
       | student1 |
@@ -19,14 +18,12 @@ Feature: availability coursecompleted fast completion
       | student1 | C1     | student        |
 
   @javascript
-  Scenario: A restricted module becomes available when restricting
-    # Page 1 is only available when course is completed.
+  Scenario: Bulk upload of users and restrict completion
     Given I am on the "C1" "Course" page logged in as "admin"
     And I navigate to "Course completion" in current page administration
     And I expand all fieldsets
     And I set the field "Page 1" to "1"
     And I click on "Save changes" "button"
-    # Page 2 is only available when Page 1 is done and course is completed.
     And I am on the "page2" "page activity editing" page
     And I expand all fieldsets
     And I click on "Add restriction..." "button"

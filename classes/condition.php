@@ -30,6 +30,7 @@ use core_availability\info;
 use coding_exception;
 use stdClass;
 
+
 /**
  * Condition main class.
  *
@@ -39,20 +40,23 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class condition extends \core_availability\condition {
-    /** @var bool completed Is course completed or not */
-    protected bool $completed;
-
-    /** @var int courseid 0 => Current course, 2 => course 2 ... */
-    protected int $courseid = 0;
+    /** @var string coursecompleted 0 => No, 1 => Yes */
+    protected $coursecompleted;
 
     /**
      * Constructor.
      *
      * @param stdClass $structure Data structure from JSON decode
+     * @throws coding_exception If invalid data.
      */
     public function __construct($structure) {
-        $this->completed = property_exists($structure, 'id') && $structure->id;
-        $this->courseid = property_exists($structure, 'courseid') ? $structure->courseid : 0;
+        if (!property_exists($structure, 'id')) {
+            $this->coursecompleted = '';
+        } else if (is_string($structure->id)) {
+            $this->coursecompleted = $structure->id;
+        } else {
+            new coding_exception('Invalid value for course completed condition');
+        }
     }
 
     /**
@@ -61,91 +65,75 @@ class condition extends \core_availability\condition {
      * @return stdClass Structure object (ready to be made into JSON format)
      */
     public function save() {
-        return (object)['type' => 'coursecompleted', 'id' => $this->completed, 'courseid' => $this->courseid];
+        return (object)['type' => 'coursecompleted', 'id' => $this->coursecompleted];
     }
 
     /**
      * Returns a JSON object which corresponds to a condition of this type.
      *
-     * @param bool $completed Completed or not, default false
-     * @param int $courseid Course id, default 0
+     * Intended for unit testing, as normally the JSON values are constructed
+     * by JavaScript code.
+     *
+     * @param string $coursecompleted default empty string
      * @return stdClass Object representing condition
      */
-    public static function get_json(bool $completed = false, int $courseid = 0) {
-        return (object)['type' => 'coursecompleted', 'id' => $completed, 'courseid' => $courseid];
+    public static function get_json($coursecompleted = '') {
+        return (object)['type' => 'coursecompleted', 'id' => $coursecompleted];
     }
 
     /**
-     * Determines whether an item is currently available according to this availability condition.
+     * Determines whether a particular item is currently available
+     * according to this availability condition.
      *
      * @param bool $not Set true if we are inverting the condition
      * @param info $info Item we're checking
-     * @param bool $grabthelot (works only for current user)
+     * @param bool $grabthelot Performance hint: if true, caches information
+     *   required for all course-modules, to make the front page and similar
+     *   pages work more quickly (works only for current user)
      * @param int $userid User ID to check availability for
      * @return bool True if available
      */
     public function is_available($not, info $info, $grabthelot, $userid) {
-        $cache = \cache::make('core', 'coursecompletion');
-        try {
-            $course = $this->courseid === 0 ? $info->get_course() : get_course($this->courseid);
-        } catch (\exception) {
-            // Deleted courses alwas return false.
-            return false;
-        }
-        $values = $cache->get("{$userid}_{$course->id}");
-        if ($values && $value = current($values)) {
-            $allow = (bool)$value->timecompleted;
-        } else {
-            $completioninfo = new \completion_info($course);
-            $allow = $completioninfo->is_course_complete($userid);
-            unset($completioninfo);
-        }
-
-        if (!$this->completed) {
+        $completioninfo = new \completion_info($info->get_course());
+        $allow = $completioninfo->is_course_complete($userid);
+        unset($completioninfo);
+        if (!$this->coursecompleted) {
             $allow = !$allow;
         }
-
         if ($not) {
-            return !$allow;
+            $allow = !$allow;
         }
-
         return $allow;
     }
 
     /**
-     * Obtains a string describing this restriction (whether or not it actually applies).
+     * Obtains a string describing this restriction (whether or not
+     * it actually applies). Used to obtain information that is displayed to
+     * students if the activity is not available to them, and for staff to see
+     * what conditions are.
      *
      * @param bool $full Set true if this is the 'full information' view
      * @param bool $not Set true if we are inverting the condition
      * @param info $info Item we're checking
-     * @return string Information string (for admin) about all restrictions on this item
+     * @return string Information string (for admin) about all restrictions on
+     *   this item
      */
     public function get_description($full, $not, info $info) {
-        $allow = $this->completed;
+        $allow = $this->coursecompleted;
         if ($not) {
             $allow = !$allow;
         }
-
-        if ($this->courseid === 0) {
-            return get_string($allow ? 'getdescription' : 'getdescriptionnot', 'availability_coursecompleted');
-        }
-
-        $name = format_string(get_course($this->courseid)->shortname);
-        return get_string($allow ? 'getotherdescription' : 'getotherdescriptionnot', 'availability_coursecompleted', $name);
+        return get_string($allow ? 'getdescription' : 'getdescriptionnot', 'availability_coursecompleted');
     }
 
     /**
-     * Obtains a representation of the options of this condition as a string for debugging.
+     * Obtains a representation of the options of this condition as a string,
+     * for debugging.
      *
      * @return string Text representation of parameters
      */
     protected function get_debug_string() {
-        if ($this->courseid === 0) {
-            return get_string($this->completed ? 'true' : 'false', 'mod_quiz');
-        }
-
-        $name = format_string(get_course($this->courseid)->shortname);
-        return get_string($this->completed ? 'true' : 'false', 'mod_quiz') . ' ' . $name;
+        return get_string($this->coursecompleted ? 'true' : 'false', 'mod_quiz');
     }
 
     /**
@@ -154,7 +142,8 @@ class condition extends \core_availability\condition {
      * @return bool True if this condition applies to user lists
      */
     public function is_applied_to_user_lists() {
-        // Course completions are assumed to be 'permanent'.
+        // Course completions are assumed to be 'permanent', so they affect the
+        // display of user lists for activities.
         return true;
     }
 
@@ -176,37 +165,38 @@ class condition extends \core_availability\condition {
     ) {
 
         global $DB;
+
+        // If the array is empty already, just return it.
+        if (!$users) {
+            return $users;
+        }
+
+        $course = $info->get_course();
+        $cond = $this->coursecompleted ? 'NOT' : '';
+        $sql = "SELECT DISTINCT userid
+                  FROM {course_completions}
+                  WHERE timecompleted IS $cond NULL AND course = ?";
+        $compusers = $DB->get_records_sql($sql, [$course->id]);
+
+        // List users who have access to the completion report.
+        $adusers = $checker->get_users_by_capability('report/completion:view');
+        // Filter the user list.
         $result = [];
-        // If the array is not empty.
-        if ($users !== []) {
-            $courseid = $this->courseid === 0 ? $info->get_course()->id : $this->courseid;
-            $cond = $this->completed ? 'NOT' : '';
-            $sql = "SELECT DISTINCT userid
-                      FROM {course_completions}
-                      WHERE timecompleted IS {$cond} NULL AND course = ?";
-            $compusers = $DB->get_records_sql($sql, [$courseid]);
-
-            // List users who have access to the completion report.
-            $adusers = $checker->get_users_by_capability('report/completion:view');
-            // Filter the user list.
-            foreach ($users as $id => $user) {
-                // Always include users with access to completion report.
-                if (array_key_exists($id, $adusers)) {
+        foreach ($users as $id => $user) {
+            // Always include users with access to completion report.
+            if (array_key_exists($id, $adusers)) {
+                $result[$id] = $user;
+            } else {
+                // Other users are included or not based on course completion.
+                $allow = array_key_exists($id, $compusers);
+                if ($not) {
+                    $allow = !$allow;
+                }
+                if ($allow) {
                     $result[$id] = $user;
-                } else {
-                    // Other users are included or not based on course completion.
-                    $allow = array_key_exists($id, $compusers);
-                    if ($not) {
-                        $allow = !$allow;
-                    }
-
-                    if ($allow) {
-                        $result[$id] = $user;
-                    }
                 }
             }
         }
-
         return $result;
     }
 }

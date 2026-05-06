@@ -43,16 +43,15 @@ use Behat\Mink\Exception\ElementNotFoundException;
 class behat_availability_coursecompleted extends behat_base {
     /**
      * Complete user in a course
-     * @param string $course Course id
-     * @param string $user User id
+     * @Then /^I mark course "(?P<course>[^"]*)" completed for user "(?P<user>[^"]*)"$/
+     * @param string $course
+     * @param string $user
      */
-    #[\Behat\Step\Then('/^I mark course "(?P<course>[^"]*)" completed for user "(?P<user>[^"]*)"$/')]
-    public function i_mark_course_completed_for_user(string $course, string $user): void {
+    public function i_mark_course_completed_for_user($course, $user) {
         $courseid = $this->get_course_id($course);
         $userid = $this->get_user_id($user);
         $ccompletion = new \completion_completion(['course' => $courseid, 'userid' => $userid]);
         $ccompletion->mark_complete(time());
-
         $task = new \core\task\completion_regular_task();
         ob_start();
         $task->execute();
@@ -71,7 +70,6 @@ class behat_availability_coursecompleted extends behat_base {
         if (!$userid = $DB->get_field('user', 'id', ['username' => $username])) {
             throw new Exception("A user with username '{$username}' does not exist");
         }
-
         return $userid;
     }
 }
