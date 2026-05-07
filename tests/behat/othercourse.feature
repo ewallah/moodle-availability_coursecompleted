@@ -3,7 +3,9 @@ Feature: availability coursecompleted other course completion
   I need to test other course completions when using availability course completion
 
   Background:
-    Given the following "courses" exist:
+    Given the following config values are set as admin:
+      | courselistshortnames | true |
+    And the following "courses" exist:
       | fullname | shortname | format | enablecompletion |
       | Course 1 | C1        | topics | 1                |
       | Course 2 | C2        | topics | 1                |

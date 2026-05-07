@@ -192,6 +192,7 @@ final class advanced_test extends \advanced_testcase {
         $sections = get_fast_modinfo($this->course)->get_section_info_all();
 
         $frontend = new frontend();
+        $plug = 'availability_coursecompleted';
         $name = 'availability_coursecompleted\frontend';
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$this->course], $name));
 
@@ -216,34 +217,40 @@ final class advanced_test extends \advanced_testcase {
 
         $completed = new condition((object)['type' => 'coursecompleted', 'id' => true]);
         $information = $completed->get_description(true, false, $info);
-        $this->assertEquals($information, get_string('getdescription', 'availability_coursecompleted'));
+        $this->assertEquals($information, get_string('getdescription', $plug));
         $information = $completed->get_description(true, true, $info);
-        $this->assertEquals($information, get_string('getdescriptionnot', 'availability_coursecompleted'));
+        $this->assertEquals($information, get_string('getdescriptionnot', $plug));
         $information = $completed->get_standalone_description(true, false, $info);
-        $this->assertEquals($information, $nau . get_string('getdescription', 'availability_coursecompleted'));
+        $this->assertEquals($information, $nau . get_string('getdescription', $plug));
         $information = $completed->get_standalone_description(true, true, $info);
-        $this->assertEquals($information, $nau . get_string('getdescriptionnot', 'availability_coursecompleted'));
+        $this->assertEquals($information, $nau . get_string('getdescriptionnot', $plug));
 
         $completed = new condition((object)['type' => 'coursecompleted', 'id' => false]);
         $information = $completed->get_description(true, false, $info);
-        $this->assertEquals($information, get_string('getdescriptionnot', 'availability_coursecompleted'));
+        $this->assertEquals($information, get_string('getdescriptionnot', $plug));
         $information = $completed->get_description(true, true, $info);
-        $this->assertEquals($information, get_string('getdescription', 'availability_coursecompleted'));
+        $this->assertEquals($information, get_string('getdescription', $plug));
         $information = $completed->get_standalone_description(true, false, $info);
-        $this->assertEquals($information, $nau . get_string('getdescriptionnot', 'availability_coursecompleted'));
+        $this->assertEquals($information, $nau . get_string('getdescriptionnot', $plug));
         $information = $completed->get_standalone_description(true, true, $info);
-        $this->assertEquals($information, $nau . get_string('getdescription', 'availability_coursecompleted'));
+        $this->assertEquals($information, $nau . get_string('getdescription', $plug));
 
-        $name = format_string($this->othercourse->shortname);
+        $name = format_string($this->othercourse->fullname);
         $completed = new condition((object)['type' => 'coursecompleted', 'id' => true, 'courseid' => $this->othercourse->id]);
         $information = $completed->get_description(true, false, $info);
-        $this->assertEquals($information, get_string('getotherdescription', 'availability_coursecompleted', $name));
+        $this->assertEquals(strip_tags($information), get_string('getotherdescription', $plug, $name));
         $information = $completed->get_description(true, true, $info);
-        $this->assertEquals($information, get_string('getotherdescriptionnot', 'availability_coursecompleted', $name));
+        $this->assertEquals(strip_tags($information, '<b>'), get_string('getotherdescriptionnot', $plug, $name));
         $information = $completed->get_standalone_description(true, false, $info);
-        $this->assertEquals($information, $nau . get_string('getotherdescription', 'availability_coursecompleted', $name));
+        $this->assertEquals(strip_tags($information), $nau . get_string('getotherdescription', $plug, $name));
         $information = $completed->get_standalone_description(true, true, $info);
-        $this->assertEquals($information, $nau . get_string('getotherdescriptionnot', 'availability_coursecompleted', $name));
+        $this->assertEquals(strip_tags($information, '<b>'), $nau . get_string('getotherdescriptionnot', $plug, $name));
+
+        set_config('courselistshortnames', true);
+        $name = format_string($this->othercourse->shortname);
+        $information = $completed->get_description(true, false, $info);
+        $this->assertEquals(strip_tags($information), get_string('getotherdescription', $plug, $name));
+        $this->assertStringContainsString("/course/view.php?id={$this->othercourse->id}", $information);
     }
 
     /**

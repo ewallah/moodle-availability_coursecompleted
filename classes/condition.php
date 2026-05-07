@@ -28,6 +28,7 @@ namespace availability_coursecompleted;
 use completion_info;
 use core_availability\info;
 use coding_exception;
+use moodle_url;
 use stdClass;
 
 /**
@@ -92,6 +93,7 @@ class condition extends \core_availability\condition {
             // Deleted courses alwas return false.
             return false;
         }
+
         $values = $cache->get("{$userid}_{$course->id}");
         if ($values && $value = current($values)) {
             $allow = (bool)$value->timecompleted;
@@ -121,6 +123,7 @@ class condition extends \core_availability\condition {
      * @return string Information string (for admin) about all restrictions on this item
      */
     public function get_description($full, $not, info $info) {
+        global $CFG;
         $allow = $this->completed;
         if ($not) {
             $allow = !$allow;
@@ -130,8 +133,10 @@ class condition extends \core_availability\condition {
             return get_string($allow ? 'getdescription' : 'getdescriptionnot', 'availability_coursecompleted');
         }
 
-        $name = format_string(get_course($this->courseid)->shortname);
-        return get_string($allow ? 'getotherdescription' : 'getotherdescriptionnot', 'availability_coursecompleted', $name);
+        $course = get_course($this->courseid);
+        $name = $CFG->courselistshortnames ? format_string($course->shortname) : format_string($course->fullname);
+        $url = \html_writer::link(new moodle_url('/course/view.php', ['id' => $this->courseid]), $name);
+        return get_string($allow ? 'getotherdescription' : 'getotherdescriptionnot', 'availability_coursecompleted', $url);
     }
 
     /**
