@@ -134,7 +134,7 @@ class condition extends \core_availability\condition {
         }
 
         $course = get_course($this->courseid);
-        $name = $CFG->courselistshortnames ? format_string($course->shortname) : format_string($course->fullname);
+        $name = empty($CFG->navshowfullcoursenames) ? format_string($course->shortname) : format_string($course->fullname);
         $url = \html_writer::link(new moodle_url('/course/view.php', ['id' => $this->courseid]), $name);
         return get_string($allow ? 'getotherdescription' : 'getotherdescriptionnot', 'availability_coursecompleted', $url);
     }

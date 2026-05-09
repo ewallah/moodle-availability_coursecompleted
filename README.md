@@ -10,7 +10,8 @@ discussion forums, hide quizes or exams when a user finished a course.
 
 ## New
 
-Now you can also restrict access unless other courses are completed.
+ 1. Now you can also restrict access unless other courses are completed.
+ 2. If $CFG->navshowfullcoursenames is true, course full names are shown, otherwise the short course name is displayed.
 
 ## Conditional availability conditions
 

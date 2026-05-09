@@ -235,7 +235,7 @@ final class advanced_test extends \advanced_testcase {
         $information = $completed->get_standalone_description(true, true, $info);
         $this->assertEquals($information, $nau . get_string('getdescription', $plug));
 
-        $name = format_string($this->othercourse->fullname);
+        $name = format_string($this->othercourse->shortname);
         $completed = new condition((object)['type' => 'coursecompleted', 'id' => true, 'courseid' => $this->othercourse->id]);
         $information = $completed->get_description(true, false, $info);
         $this->assertEquals(strip_tags($information), get_string('getotherdescription', $plug, $name));
@@ -246,8 +246,8 @@ final class advanced_test extends \advanced_testcase {
         $information = $completed->get_standalone_description(true, true, $info);
         $this->assertEquals(strip_tags($information, '<b>'), $nau . get_string('getotherdescriptionnot', $plug, $name));
 
-        set_config('courselistshortnames', true);
-        $name = format_string($this->othercourse->shortname);
+        set_config('navshowfullcoursenames', true);
+        $name = format_string($this->othercourse->fullname);
         $information = $completed->get_description(true, false, $info);
         $this->assertEquals(strip_tags($information), get_string('getotherdescription', $plug, $name));
         $this->assertStringContainsString("/course/view.php?id={$this->othercourse->id}", $information);
