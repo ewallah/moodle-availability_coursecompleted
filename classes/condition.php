@@ -133,8 +133,13 @@ class condition extends \core_availability\condition {
             return get_string($allow ? 'getdescription' : 'getdescriptionnot', 'availability_coursecompleted');
         }
 
-        $course = get_course($this->courseid);
-        $name = empty($CFG->navshowfullcoursenames) ? format_string($course->shortname) : format_string($course->fullname);
+        try {
+            $course = get_course($this->courseid);
+        } catch (\dml_missing_record_exception) {
+            return get_string('missing', 'availability_coursecompleted');
+        }
+        $rawname = empty($CFG->navshowfullcoursenames) ? $course->shortname : $course->fullname;
+        $name = self::description_format_string($rawname);
         $url = \html_writer::link(new moodle_url('/course/view.php', ['id' => $this->courseid]), $name);
         return get_string($allow ? 'getotherdescription' : 'getotherdescriptionnot', 'availability_coursecompleted', $url);
     }

@@ -28,7 +28,7 @@ This plugin is 100% open source and has NOT been tested in Moodle Workplace, Tot
 
 ## Requirements
 
-This plugin requires Moodle 4.02+
+This plugin requires Moodle 5.1+
 
 ## Troubleshooting
 
@@ -67,6 +67,7 @@ This plugin is maintained for the latest major releases of Moodle.
 [![Build Status](https://github.com/ewallah/moodle-availability_coursecompleted/workflows/Tests/badge.svg)](https://github.com/ewallah/moodle-availability_coursecompleted/actions)
 [![Coverage Status](https://coveralls.io/repos/github/ewallah/moodle-availability_coursecompleted/badge.svg?branch=main)](https://coveralls.io/github/ewallah/moodle-availability_coursecompleted?branch=main)
 ![Mutation score](https://badgen.net/badge/Mutation%20Score%20Indicator/100?color=orange)
+[![MDL Shield](https://img.shields.io/endpoint?url=https%3A%2F%2Fmdlshield.com%2Fapi%2Fbadge%2Favailability_coursecompleted)](https://mdlshield.com/plugins/availability_coursecompleted)
 
 
 ## Copyright
