@@ -152,6 +152,10 @@ final class basic_test extends \basic_testcase {
         $condition = new condition((object)['type' => 'coursecompleted', 'id' => true]);
         $this->assertEquals('True', \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
         $condition = new condition((object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 1]);
-        $this->assertEquals('True phpunit', \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
+        $str = 'True <AVAILABILITY_FORMAT_STRING>phpunit</AVAILABILITY_FORMAT_STRING>';
+        $this->assertEquals($str, \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
+        $condition = new condition((object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 666]);
+        $str = '(You must decide if the course has to be completed or not)';
+        $this->assertEquals($str, \phpunit_util::call_internal_method($condition, 'get_debug_string', [], $name));
     }
 }

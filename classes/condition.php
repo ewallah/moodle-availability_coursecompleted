@@ -154,7 +154,12 @@ class condition extends \core_availability\condition {
             return get_string($this->completed ? 'true' : 'false', 'mod_quiz');
         }
 
-        $name = format_string(get_course($this->courseid)->shortname);
+        try {
+            $course = get_course($this->courseid);
+        } catch (\dml_missing_record_exception) {
+            return get_string('missing', 'availability_coursecompleted');
+        }
+        $name = self::description_format_string($course->shortname);
         return get_string($this->completed ? 'true' : 'false', 'mod_quiz') . ' ' . $name;
     }
 

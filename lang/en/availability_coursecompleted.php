@@ -31,9 +31,11 @@ $string['getotherdescriptionnot'] = 'You did <b>not</b> complete course: {$a}.';
 $string['missing'] = '(You must decide if the course has to be completed or not)';
 $string['pluginname'] = 'Restriction by course completion';
 $string['privacy:metadata'] = 'The course completed availability plugin does not store any personal data.';
+$string['select'] = 'Select course';
+$string['title'] = 'Course completed';
+
+// Deprecated since v5.5.2.
 $string['requires_completed'] = 'You completed this course.';
 $string['requires_notcompleted'] = 'You did <b>not</b> complete this course.';
 $string['requires_othercompleted'] = 'You completed course: {$a}.';
 $string['requires_othernotcompleted'] = 'You did <b>not</b> complete course: {$a}';
-$string['select'] = 'Select course';
-$string['title'] = 'Course completed';

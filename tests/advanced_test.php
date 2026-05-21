@@ -257,11 +257,32 @@ final class advanced_test extends \advanced_testcase {
      * Tests the get_description and get_standalone_description functions.
      */
     public function test_get_description_2(): void {
+        $info = new \core_availability\mock_info_module($this->userid, $this->cm);
+        $completed = new condition((object)['type' => 'coursecompleted', 'id' => true, 'courseid' => 666]);
+        $information = $completed->get_description(true, false, $info);
+        $this->assertEquals($information, get_string('missing', 'availability_coursecompleted'));
+    }
+
+    /**
+     * Tests the allow add function.
+     */
+    public function test_allow_add(): void {
         global $DB;
-        $course = $this->getDataGenerator()->create_course(['enablecompletion' => 1]);
-        $user = $this->getDataGenerator()->create_and_enrol($course, 'teacher');
+        $role = $DB->get_field('role', 'id', ['shortname' => 'editingteacher']);
+        $dg = $this->getDataGenerator();
+        $course = $dg->create_course();
+        $user = $dg->create_and_enrol($course, 'teacher');
         $this->setUser($user->id);
         $name = 'availability_coursecompleted\frontend';
+        $frontend = new frontend();
+        $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
+
+        $course = $dg->create_course();
+        $dg->enrol_user($user->id, $course->id, $role);
+        $course = $dg->create_course(['enablecompletion' => 1]);
+        $dg->enrol_user($user->id, $course->id, $role);
+        $course = $dg->create_course(['enablecompletion' => 1]);
+        $dg->enrol_user($user->id, $course->id, $role);
         $frontend = new frontend();
         $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
         $DB->insert_record(

@@ -49,16 +49,18 @@ class frontend extends \core_availability\frontend {
      */
     protected function allow_add($course, ?cm_info $cm = null, ?section_info $section = null) {
         global $DB, $USER;
-        $courses = enrol_get_users_courses($USER->id, true, 'id, enablecompletion');
-        foreach ($courses as $course) {
-            if ($course->enablecompletion == 1) {
-                if ($DB->record_exists('course_completion_criteria', ['course' => $course->id])) {
-                    return true;
-                }
-            }
+        if (is_siteadmin()) {
+            return true;
         }
 
-        return is_siteadmin();
+        $courses = enrol_get_users_courses($USER->id, true, 'id, enablecompletion');
+        $ids = array_keys(array_filter($courses, fn($c) => $c->enablecompletion == 1));
+        if (!$ids) {
+            return false;
+        }
+
+        [$insql, $params] = $DB->get_in_or_equal($ids);
+        return $DB->record_exists_select('course_completion_criteria', "course {$insql}", $params);
     }
 
     /**
