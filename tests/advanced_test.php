@@ -267,13 +267,19 @@ final class advanced_test extends \advanced_testcase {
      * Tests the allow add function.
      */
     public function test_allow_add(): void {
-        global $DB;
+        global $DB, $SITE;
         $role = $DB->get_field('role', 'id', ['shortname' => 'editingteacher']);
         $dg = $this->getDataGenerator();
+        $user = $dg->create_user();
+        $this->setUser($user->id);
+        $name = 'availability_coursecompleted\frontend';
+
+        $frontend = new frontend();
+        $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$SITE], $name));
+
         $course = $dg->create_course();
         $user = $dg->create_and_enrol($course, 'teacher');
         $this->setUser($user->id);
-        $name = 'availability_coursecompleted\frontend';
         $frontend = new frontend();
         $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
 
@@ -281,7 +287,7 @@ final class advanced_test extends \advanced_testcase {
         $dg->enrol_user($user->id, $course->id, $role);
         $course = $dg->create_course(['enablecompletion' => 1]);
         $dg->enrol_user($user->id, $course->id, $role);
-        $course = $dg->create_course(['enablecompletion' => 1]);
+        $course = $dg->create_course();
         $dg->enrol_user($user->id, $course->id, $role);
         $frontend = new frontend();
         $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
@@ -303,7 +309,7 @@ final class advanced_test extends \advanced_testcase {
                 'moduleinstance' => 666,
             ],
         );
-        $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
+        $this->assertFalse(\phpunit_util::call_internal_method($frontend, 'allow_add', [$course], $name));
         $this->setUser($this->teacherid);
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$this->hiddencourse], $name));
     }

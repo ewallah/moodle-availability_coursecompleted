@@ -55,12 +55,12 @@ class frontend extends \core_availability\frontend {
 
         $courses = enrol_get_users_courses($USER->id, true, 'id, enablecompletion');
         $ids = array_keys(array_filter($courses, fn($c) => $c->enablecompletion == 1));
-        if (!$ids) {
-            return false;
+        foreach ($ids as $courseid) {
+            if ($DB->record_exists('course_completion_criteria', ['course' => $courseid])) {
+                return true;
+            }
         }
-
-        [$insql, $params] = $DB->get_in_or_equal($ids);
-        return $DB->record_exists_select('course_completion_criteria', "course {$insql}", $params);
+        return false;
     }
 
     /**
