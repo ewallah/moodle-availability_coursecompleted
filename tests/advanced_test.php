@@ -74,6 +74,7 @@ final class advanced_test extends \advanced_testcase {
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info.php');
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info_module.php');
         require_once($CFG->libdir . '/completionlib.php');
+        require_once($CFG->dirroot . '/backup/util/helper/backup_helper.class.php');
         $this->resetAfterTest();
         $this->setAdminUser();
         // Enable completion, otherwise the data is not written in DB.
@@ -377,7 +378,7 @@ final class advanced_test extends \advanced_testcase {
         $this->assertFalse($cond->is_available(true, $info, true, $this->userid));
 
         // Delete course.
-        delete_course($this->course, false);
+        delete_course($this->course, false, false);
         $this->assertFalse($cond->is_available(false, $info, true, $this->userid));
         $this->assertFalse($cond->is_available(false, $info, false, $this->userid));
         $this->assertFalse($cond->is_available(true, $info, false, $this->userid));
