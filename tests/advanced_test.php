@@ -75,7 +75,7 @@ final class advanced_test extends \advanced_testcase {
         require_once($CFG->dirroot . '/availability/tests/fixtures/mock_info_module.php');
         require_once($CFG->libdir . '/completionlib.php');
         require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
-        
+
         $this->resetAfterTest();
         $this->setAdminUser();
         // Enable completion, otherwise the data is not written in DB.
