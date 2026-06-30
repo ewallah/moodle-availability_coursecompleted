@@ -1,0 +1,10 @@
+{
+    "name": "ewallah/moodle-availability_coursecompleted",
+    "description": "A description of my Moodle block plugin",
+    "type": "moodle-availability",
+    "require": {
+        "moodle/moodle": "^5.1",
+        "moodle/composer-installer": "*"
+    },
+    "license": "GPL-3.0-or-later"
+}
