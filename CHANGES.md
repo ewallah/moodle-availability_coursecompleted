@@ -1,3 +1,29 @@
+## v5.5.3 (2026-07-01)
+
+* version update
+* composer
+* changes.md
+
+## v5.5.2 (2026-06-04)
+
+* version update
+* mdl shield
+
+## v5.5.1 (2026-05-09)
+
+* version update
+* show full course names
+* issue #9
+
+## v5.4.2 (2026-04-21)
+
+* version update
+
+## v5.4.1 (2026-04-20)
+
+* version update
+* Moodle 502
+
 ## v5.3.1 (2025-01-07)
 
 * version update
