@@ -1,7 +1,13 @@
+## v5.5.4 (2026-07-06)
+
+* version update
+* fix composer.json
+* mdl shield 2
+
 ## v5.5.3 (2026-07-01)
 
 * version update
-* composer
+* composer.json
 * changes.md
 
 ## v5.5.2 (2026-06-04)

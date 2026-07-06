@@ -72,21 +72,18 @@ class frontend extends \core_availability\frontend {
      * @return array The JavaScript initialization parameters.
      */
     protected function get_javascript_init_params($currentcourse, ?cm_info $cm = null, ?section_info $section = null) {
-        global $USER;
+        global $DB, $USER;
         $courses = is_siteadmin() ? get_courses() : enrol_get_users_courses($USER->id, true, 'id, enablecompletion');
+        $withcriteria = $DB->get_fieldset_select('course_completion_criteria', 'DISTINCT course', '');
+        $withcriteria = array_flip($withcriteria);
         $arr = [];
         foreach ($courses as $course) {
-            if ($course->enablecompletion == 1) {
-                if ($course->id == $currentcourse->id) {
-                    $arr[] = ['id' => 0, 'name' => get_string('currentcourse')];
-                } else {
-                    $completioninfo = new \completion_info($course);
-                    if ($completioninfo->has_criteria()) {
-                        $arr[] = ['id' => $course->id, 'name' => format_string($course->shortname)];
-                    }
-
-                    unset($completioninfo);
-                }
+            if (isset($withcriteria[$course->id])) {
+                $iscurrent = $course->id == $currentcourse->id;
+                $arr[] = [
+                    'id' => $course->id == $iscurrent ? 0 : $course->id,
+                    'name' => $iscurrent ? get_string('currentcourse') : format_string($course->shortname),
+                ];
             }
         }
 

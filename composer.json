@@ -1,10 +1,15 @@
 {
     "name": "ewallah/moodle-availability_coursecompleted",
-    "description": "A description of my Moodle block plugin",
+    "description": "Moodle availability condition that restricts access based on course completion.",
     "type": "moodle-availability",
+    "homepage": "https://github.com/ewallah/moodle-availability_coursecompleted",
+    "license": "GPL-3.0-or-later",
     "require": {
-        "moodle/moodle": "^5.1",
-        "moodle/composer-installer": "*"
+        "composer/installers": "*",
+        "moodle/moodle": "5.1.*||5.2.*"
     },
-    "license": "GPL-3.0-or-later"
+    "support": {
+        "issues": "https://github.com/ewallah/moodle-availability_coursecompleted/issues",
+        "source": "https://github.com/ewallah/moodle-availability_coursecompleted"
+    }
 }

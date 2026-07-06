@@ -143,7 +143,7 @@ class condition extends \core_availability\condition {
      */
     protected function get_debug_string() {
         if ($this->courseid === 0) {
-            return get_string($this->completed ? 'true' : 'false', 'mod_quiz');
+            return $this->completed ? 'True' : 'False';
         }
 
         try {
@@ -152,7 +152,7 @@ class condition extends \core_availability\condition {
             return get_string('missing', 'availability_coursecompleted');
         }
         $name = self::description_format_string($course->shortname);
-        return get_string($this->completed ? 'true' : 'false', 'mod_quiz') . ' ' . $name;
+        return $this->completed ? "True {$name}" : "False {$name}";
     }
 
     /**
