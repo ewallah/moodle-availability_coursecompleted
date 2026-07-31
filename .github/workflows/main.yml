@@ -54,6 +54,8 @@ jobs:
            echo $(cd ci/bin; pwd) >> $GITHUB_PATH
            echo $(cd ci/vendor/bin; pwd) >> $GITHUB_PATH
            sudo locale-gen en_AU.UTF-8
+           echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
+
 
       - name: install Moodle
         run: moodle-plugin-ci --ansi install --db-host=127.0.0.1 --plugin this-plugin
@@ -108,6 +110,7 @@ jobs:
         working-directory: moodle
 
       - name: coveralls
+        continue-on-error: true
         if: ${{ matrix.moodle-branch == 'main'}}
         run: moodle-plugin-ci coveralls-upload
         env:
