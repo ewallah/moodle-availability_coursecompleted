@@ -9,21 +9,21 @@ jobs:
 
     services:
       postgres:
-        image: postgres
+        image: ${{ matrix.database == 'pgsql' && 'postgres' || '' }}
         env:
           POSTGRES_USER: 'postgres'
           POSTGRES_HOST_AUTH_METHOD: 'trust'
-        options: --health-cmd="pg_isready" --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd="pg_isready" --health-interval 10s --health-timeout 5s --health-retries 3
         ports:
           - 5432:5432
       mariadb:
-        image: mariadb
+        image: ${{ matrix.database == 'mariadb' && 'mariadb' || '' }}
         env:
           MYSQL_USER: 'root'
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
           MYSQL_CHARACTER_SET_SERVER: "utf8mb4"
           MYSQL_COLLATION_SERVER: "utf8mb4_unicode_ci"
-        options: --health-cmd="mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 3
+        options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval 10s --health-timeout 5s --health-retries 3
         ports:
           - 3306:3306
 
@@ -44,7 +44,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          ini-values: max_input_vars=5000
+          ini-values: max_input_vars=5000,  opcache.enable_cli=1, opcache.jit = disable
           tools: composer:v2.5
           coverage: pcov
 
