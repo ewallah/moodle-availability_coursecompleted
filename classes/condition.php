@@ -53,7 +53,7 @@ class condition extends \core_availability\condition {
      */
     public function __construct($structure) {
         $this->completed = property_exists($structure, 'id') && $structure->id;
-        $this->courseid = property_exists($structure, 'courseid') ? $structure->courseid : 0;
+        $this->courseid = property_exists($structure, 'courseid') && isset($structure->courseid) ? $structure->courseid : 0;
     }
 
     /**
@@ -62,7 +62,9 @@ class condition extends \core_availability\condition {
      * @return stdClass Structure object (ready to be made into JSON format)
      */
     public function save() {
-        return (object)['type' => 'coursecompleted', 'id' => $this->completed, 'courseid' => $this->courseid];
+        if (isset($this->courseid)) {
+            return (object)['type' => 'coursecompleted', 'id' => $this->completed, 'courseid' => $this->courseid];
+        }
     }
 
     /**

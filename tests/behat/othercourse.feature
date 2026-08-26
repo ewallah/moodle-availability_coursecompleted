@@ -19,6 +19,7 @@ Feature: availability coursecompleted other course completion
       | username |
       | student1 |
       | teacher1 |
+      | teacher2 |
     And the following "course enrolments" exist:
       | user     | course | role           |
       | student1 | C1     | student        |
@@ -27,16 +28,14 @@ Feature: availability coursecompleted other course completion
       | teacher1 | C1     | editingteacher |
       | teacher1 | C2     | editingteacher |
       | teacher1 | C3     | editingteacher |
+      | teacher2 | C3     | editingteacher |
     And I enable "selfcompletion" "block" plugin
     And the following "blocks" exist:
       | blockname        | contextlevel | reference | pagetypepattern | defaultregion |
       | selfcompletion   | Course       | C1        | course-view-*   | side-pre      |
       | selfcompletion   | Course       | C2        | course-view-*   | side-pre      |
       | selfcompletion   | Course       | C3        | course-view-*   | side-pre      |
-
-  @javascript
-  Scenario: A restricted module becomes available when completing another course
-    Given I log in as "admin"
+    And I log in as "admin"
     And I am on "Course 1" course homepage with editing mode on
     And I navigate to "Course completion" in current page administration
     And I expand all fieldsets
@@ -57,6 +56,8 @@ Feature: availability coursecompleted other course completion
     And I press "Save changes"
     And I log out
 
+  @javascript
+  Scenario: A restricted module becomes available when completing another course
     # Page 1 is only available when course2 is completed.
     Given I am on the "C1" "Course" page logged in as "teacher1"
     And I am on the "page1" "page activity editing" page
@@ -118,3 +119,23 @@ Feature: availability coursecompleted other course completion
 
     And I am on the "C3" "Course" page
     And I should not see "Not available unless:" in the "region-main" "region"
+
+  @javascript
+  Scenario: A restricted module should be no problem when a teacher has no access to the course
+    Given I am on the "C3" "Course" page logged in as "teacher1"
+    And I am on the "page3" "page activity editing" page
+    And I expand all fieldsets
+    And I click on "Add restriction..." "button"
+    And I click on "Course completed" "button" in the "Add restriction..." "dialogue"
+    And I set the field "Course completed" to "Yes"
+    And I set the field "Select course" to "C2"
+    And I click on "Save and return to course" "button"
+    And I should see "Not available unless: You completed course: C2" in the "region-main" "region"
+    And I log out
+
+    When I am on the "C3" "Course" page logged in as "teacher2"
+    And I am on the "page3" "page activity editing" page
+    And I expand all fieldsets
+    And I set the field "id_showdescription" to "1"
+    And I click on "Save and return to course" "button"
+    Then I should see "Not available unless: You completed course: C2" in the "region-main" "region"

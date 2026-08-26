@@ -209,9 +209,9 @@ final class advanced_test extends \advanced_testcase {
         $this->assertTrue(\phpunit_util::call_internal_method($frontend, 'allow_add', [$this->course, null, $sections[1]], $name));
         $arr = \phpunit_util::call_internal_method($frontend, 'get_javascript_init_params', [$this->course], $name);
         $arr = reset($arr);
-        $this->assertCount(2, $arr);
-        $this->assertEquals(['id' => 0, 'name' => 'Current course'], $arr[1]);
-        $this->assertEquals(['id' => $this->othercourse->id, 'name' => $this->othercourse->shortname], $arr[0]);
+        $this->assertCount(3, $arr);
+        $this->assertEquals(['id' => 0, 'name' => 'Current course'], $arr[0]);
+        $this->assertEquals(['id' => $this->othercourse->id, 'name' => $this->othercourse->shortname], $arr[1]);
         $arr = \phpunit_util::call_internal_method($frontend, 'get_javascript_strings', [], $name);
         $this->assertEquals(['title', 'select'], $arr);
 

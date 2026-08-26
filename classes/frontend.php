@@ -49,6 +49,7 @@ class frontend extends \core_availability\frontend {
      */
     protected function allow_add($course, ?cm_info $cm = null, ?section_info $section = null) {
         global $DB, $USER;
+        
         if (is_siteadmin()) {
             return true;
         }
@@ -72,18 +73,15 @@ class frontend extends \core_availability\frontend {
      * @return array The JavaScript initialization parameters.
      */
     protected function get_javascript_init_params($currentcourse, ?cm_info $cm = null, ?section_info $section = null) {
-        global $DB, $USER;
-        $courses = is_siteadmin() ? get_courses() : enrol_get_users_courses($USER->id, true, 'id, enablecompletion');
+        global $DB;
+        // Issue 12, olready checks if user can view course info.
+        $courses = get_courses();
         $withcriteria = $DB->get_fieldset_select('course_completion_criteria', 'DISTINCT course', '');
         $withcriteria = array_flip($withcriteria);
-        $arr = [];
+        $arr = [['id' => 0, 'name' => get_string('currentcourse')]];
         foreach ($courses as $course) {
-            if (isset($withcriteria[$course->id])) {
-                $iscurrent = $course->id == $currentcourse->id;
-                $arr[] = [
-                    'id' => $course->id == $iscurrent ? 0 : $course->id,
-                    'name' => $iscurrent ? get_string('currentcourse') : format_string($course->shortname),
-                ];
+            if (isset($withcriteria[$course->id]) && $course->id !== $currentcourse->id) {
+                $arr[] = ['id' => $course->id, 'name' => format_string($course->shortname)];
             }
         }
 
