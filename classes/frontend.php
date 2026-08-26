@@ -49,7 +49,7 @@ class frontend extends \core_availability\frontend {
      */
     protected function allow_add($course, ?cm_info $cm = null, ?section_info $section = null) {
         global $DB, $USER;
-        
+
         if (is_siteadmin()) {
             return true;
         }
