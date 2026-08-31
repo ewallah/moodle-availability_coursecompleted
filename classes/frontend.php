@@ -39,6 +39,7 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class frontend extends \core_availability\frontend {
+
     /**
      * Decides whether this plugin should be available in a given course.
      *
@@ -46,9 +47,16 @@ class frontend extends \core_availability\frontend {
      * @param cm_info|null $cm Course-module currently being edited (null if none)
      * @param section_info|null $section Section currently being edited (null if Course object)
      * @return bool True if there are completion criteria
-     */
+    [] */
     protected function allow_add($course, ?cm_info $cm = null, ?section_info $section = null) {
         global $DB, $USER;
+
+        // Issue 12, store ori value if user can view course info.
+        if ($cm && $cm->availability) {
+            $orivalue = $cm->availability;
+        } elseif ($section && $section->availability) {
+            $orivalue = $section->availability;
+        }
 
         if (is_siteadmin()) {
             return true;
@@ -74,7 +82,6 @@ class frontend extends \core_availability\frontend {
      */
     protected function get_javascript_init_params($currentcourse, ?cm_info $cm = null, ?section_info $section = null) {
         global $DB;
-        // Issue 12, olready checks if user can view course info.
         $courses = get_courses();
         $withcriteria = $DB->get_fieldset_select('course_completion_criteria', 'DISTINCT course', '');
         $withcriteria = array_flip($withcriteria);

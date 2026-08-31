@@ -212,7 +212,7 @@ final class advanced_test extends \advanced_testcase {
         $this->assertCount(3, $arr);
         $this->assertEquals(['id' => 0, 'name' => 'Current course'], $arr[0]);
         $this->assertEquals(['id' => $this->othercourse->id, 'name' => $this->othercourse->shortname], $arr[1]);
-        $arr = \phpunit_util::call_internal_method($frontend, 'get_javascript_strings', [], $name);
+        $arr = \phpunit_util::call_internal_method($frontend, 'get_javascript_strings', [$this->course, $this->cm], $name);
         $this->assertEquals(['title', 'select'], $arr);
 
         $info = new \core_availability\mock_info_module($this->userid, $this->cm);

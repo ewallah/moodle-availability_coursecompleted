@@ -11,5 +11,10 @@
     "support": {
         "issues": "https://github.com/ewallah/moodle-availability_coursecompleted/issues",
         "source": "https://github.com/ewallah/moodle-availability_coursecompleted"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }
