@@ -17,4 +17,3 @@ jobs:
       tag: ${{ inputs.tag }}
     secrets:
       MOODLE_MARKETPLACE_TOKEN: ${{ secrets.MOODLE_MARKETPLACE_TOKEN }}
-name: Releasing in the Plugins directory

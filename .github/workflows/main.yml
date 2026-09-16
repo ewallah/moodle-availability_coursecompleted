@@ -33,10 +33,6 @@ jobs:
         moodle-branch: ['MOODLE_502_STABLE', 'MOODLE_501_STABLE', 'main']
         php: ['8.3', '8.4']
         database: ['mariadb', 'pgsql']
-        include:
-          - php: '8.5'
-            moodle-branch: 'main'
-            database: 'pgsql'
 
     steps:
       - name: checkout plugin
