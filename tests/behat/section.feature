@@ -3,7 +3,8 @@ Feature: Section 0 availability_coursecompleted
   Section 0 cannot be restricted
 
   Background:
-    Given the following "courses" exist:
+    Given the site is running Moodle version 5.2 or lower
+    And the following "courses" exist:
       | fullname | shortname | enablecompletion |
       | Course 1 | C1        | 1                |
     And the following "users" exist:
