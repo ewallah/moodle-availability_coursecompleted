@@ -1,0 +1,12 @@
+name: availability_coursecompleted
+summary: Restrict module and section access based on course completion.
+description: |
+  This availability condition makes it easy to show modules or sections only when a user
+  completed this or another course. A course certificate is a good sample, but it can also be used to close
+  discussion forums, hide quizes or exams when a user finished a course.
+labels:
+  - fully-free
+category: availability
+links:
+  docs: https://github.com/ewallah/moodle-availability_coursecompleted/README.md
+  issues: https://github.com/ewallah/moodle-availability_coursecompleted/issues
