@@ -135,6 +135,5 @@ Feature: availability_coursecompleted
     # Go in as teacher and check the users who haven't completed it.
     And I am on the Frogs "feedback activity" page logged in as teacher1
     And I navigate to "Responses" in current page administration
-    Then I select "Show non-respondents" from the "jump" singleselect
-    But I should not see "Student 2"
-    And I should not see "Student 1"
+    And I should see "Student First"
+    But I should not see "Student Second"
