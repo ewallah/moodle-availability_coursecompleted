@@ -56,11 +56,11 @@ jobs:
            sudo locale-gen en_AU.UTF-8
            echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
 
-     - name: mysql
+      - name: mysql
         if: ${{ matrix.database == 'mysql' }}
         run: sudo systemctl start mysql.service
 
-     - name: postgresql
+      - name: postgresql
         if: ${{ matrix.database == 'pgsql' }}
         run: sudo systemctl start postgresql.service
 
