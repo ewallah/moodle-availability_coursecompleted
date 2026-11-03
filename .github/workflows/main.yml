@@ -32,7 +32,7 @@ jobs:
       matrix:
         moodle-branch: ['MOODLE_503_STABLE', 'MOODLE_502_STABLE', 'MOODLE_501_STABLE', 'main']
         php: ['8.3', '8.4']
-        database: ['pgsql', 'mysql']
+        database: ['mariadb', 'pgsql']
 
     steps:
       - name: checkout plugin
@@ -56,19 +56,15 @@ jobs:
            sudo locale-gen en_AU.UTF-8
            echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
 
-     - name: mysql
-        if: ${{ matrix.database == 'mysql' }}
-        run: sudo systemctl start mysql.service
-
-     - name: postgresql
-        if: ${{ matrix.database == 'pgsql' }}
-        run: sudo systemctl start postgresql.service
 
       - name: install Moodle
         run: moodle-plugin-ci --ansi install --db-host=127.0.0.1 --plugin this-plugin
         env:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
+
+      - name: behat window size
+        run: moodle-plugin-ci add-config '$CFG->behat_increasetimeout = 3;'
 
       - name: phplint
         if: ${{ !cancelled() }}
